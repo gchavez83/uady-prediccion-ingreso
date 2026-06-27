@@ -212,6 +212,16 @@ if "calc" in st.session_state:
     )
     st.caption("🟩 Verde = el modelo predice que **serías admitido** en ese programa con tus índices.")
 
+    # Botón de exportación explícito (visible y funcional también en móvil)
+    csv = vista.to_csv(index=False).encode("utf-8-sig")
+    st.download_button(
+        "⬇️ Descargar resultados (CSV)",
+        data=csv,
+        file_name=f"simulacion_uady_cen{c['ceneval']}_pm{c['pensamiento']}.csv",
+        mime="text/csv",
+        use_container_width=True,
+    )
+
 # Pie de marca
 st.divider()
 st.caption("Desarrollado por **IA Enterprise** · Sistema Synapse · Datos: ingreso.uady.mx")
