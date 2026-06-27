@@ -16,9 +16,10 @@ def main() -> None:
     print("OK: render inicial sin excepciones")
     print("   titulos:", [h.value for h in at.subheader])
 
-    # Simula Calcular
+    # Simula llenar el formulario (ahora los campos inician vacios) y Calcular
     at.number_input[0].set_value(1030)
     at.number_input[1].set_value(1040)
+    at.selectbox[0].set_value("CIRUJANO DENTISTA - ODO")
     at.button[0].click().run()
     assert not at.exception, f"Excepcion tras Calcular: {at.exception}"
     print("OK: clic Calcular sin excepciones")

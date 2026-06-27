@@ -142,20 +142,34 @@ col_form, col_res = st.columns([1, 1])
 
 with col_form:
     st.subheader("Formulario de Cálculo")
-    ceneval = st.number_input("Índice Ceneval", min_value=600, max_value=1400, value=1030, step=1)
+    ceneval = st.number_input(
+        "Índice Ceneval", min_value=600, max_value=1400, value=None, step=1,
+        placeholder="ej. 1030",
+    )
     pensamiento = st.number_input(
         f"Pensamiento Matemático  ·  *Introducir valor entre {PENS_MIN} y {PENS_MAX}*",
-        min_value=PENS_MIN, max_value=PENS_MAX, value=1040, step=10,
+        min_value=PENS_MIN, max_value=PENS_MAX, value=None, step=10,
+        placeholder="ej. 1040",
     )
-    etiqueta = st.selectbox("Especialidad", ref["etiqueta"].tolist(),
-                            index=int(ref.index[ref["abv"] == "ODO"][0]) if "ODO" in ref["abv"].values else 0)
-    fila = ref[ref["etiqueta"] == etiqueta].iloc[0]
-    st.text_input("Campus", value=fila["campus"], disabled=True)
+    etiqueta = st.selectbox(
+        "Especialidad", ref["etiqueta"].tolist(),
+        index=None, placeholder="Selecciona una especialidad (ej. CIRUJANO DENTISTA - ODO)",
+    )
+    fila = ref[ref["etiqueta"] == etiqueta].iloc[0] if etiqueta else None
+    st.text_input("Campus", value=fila["campus"] if fila is not None else "",
+                  disabled=True, placeholder="Se autocompleta al elegir la especialidad")
     calcular = st.button("Calcular", type="primary", use_container_width=True)
 
-# Estado de calculo
+# Estado de calculo — valida que el usuario haya llenado todo
 if calcular:
-    st.session_state["calc"] = {"ceneval": ceneval, "pensamiento": pensamiento, "abv": fila["abv"]}
+    faltantes = []
+    if ceneval is None: faltantes.append("Índice Ceneval")
+    if pensamiento is None: faltantes.append("Pensamiento Matemático")
+    if etiqueta is None: faltantes.append("Especialidad")
+    if faltantes:
+        st.warning("Completa: " + ", ".join(faltantes))
+    else:
+        st.session_state["calc"] = {"ceneval": ceneval, "pensamiento": pensamiento, "abv": fila["abv"]}
 
 with col_res:
     st.subheader("Resultado")
