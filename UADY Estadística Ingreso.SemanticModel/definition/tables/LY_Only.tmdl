@@ -1,0 +1,26 @@
+table LY_Only
+	lineageTag: 45e066db-cbb6-4765-8b19-d6ad483ee59c
+
+	calculationGroup
+		precedence: 1
+
+		calculationItem LY = CALCULATE( SELECTEDMEASURE() , SAMEPERIODLASTYEAR( Calendario[IdFecha] ) )
+
+	column LY_Name
+		dataType: string
+		lineageTag: 2a060c92-b44d-4689-b01d-d3d3322b3b38
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: 20c929c8-3f3f-4075-9761-309c6737c28e
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

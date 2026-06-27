@@ -1,0 +1,395 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "fb85ffa6368e79c0e29b",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "height": 271.5503173164098,
+    "width": 669.59202175883956,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Programas Educativos"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Programas Educativos",
+              "nativeQueryRef": "Programas Educativos",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Cluster Final Rename"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Cluster Final Rename",
+              "nativeQueryRef": "Cluster Final Rename",
+              "active": false
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Sustentantes OF"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Sustentantes OF",
+              "nativeQueryRef": "Sustentantes OF"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Avg Sustentantes OF"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Avg Sustentantes OF",
+              "nativeQueryRef": "Avg Sustentantes OF"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Total Admitidos OF"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Total Admitidos OF",
+              "nativeQueryRef": "Total Admitidos OF"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Avg Total Admitidos OF"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Avg Total Admitidos OF",
+              "nativeQueryRef": "Avg Total Admitidos OF"
+            }
+          ]
+        }
+      }
+    },
+    "expansionStates": [
+      {
+        "roles": [
+          "Rows"
+        ],
+        "levels": [
+          {
+            "queryRefs": [
+              "Consolidado_Reportes_Oficiales.Programas Educativos"
+            ],
+            "isCollapsed": true,
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Programas Educativos"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "Consolidado_Reportes_Oficiales.Cluster Final Rename"
+            ],
+            "isCollapsed": true,
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Cluster Final Rename"
+                }
+              }
+            ],
+            "isPinned": true
+          }
+        ],
+        "root": {}
+      }
+    ],
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "74.67783175004422D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Consolidado_Reportes_Oficiales.Total Admitidos OF"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "102.65341945960935D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Consolidado_Reportes_Oficiales.Avg Total Admitidos OF"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "160.60781852954116D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Consolidado_Reportes_Oficiales.Cluster Final Rename"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "215.94117647058823D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Consolidado_Reportes_Oficiales.Programas Educativos"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "94bb37c1ad06686d3ebe",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Consolidado_Reportes_Oficiales"
+              }
+            },
+            "Property": "Programas Educativos"
+          }
+        },
+        "type": "Categorical",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "604323d5f268afb62886",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Calendario"
+              }
+            },
+            "Property": "Año"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "Calendario",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "c"
+                          }
+                        },
+                        "Property": "Año"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'2024'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "12056e74883eb99c0088",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Consolidado_Reportes_Oficiales"
+              }
+            },
+            "Property": "Cluster Final Rename"
+          }
+        },
+        "type": "Categorical",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "41221cdf66795441b033",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Consolidado_Reportes_Oficiales"
+              }
+            },
+            "Property": "Facultad"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "365bdc7e5daa02dee6b4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Consolidado_Reportes_Oficiales"
+              }
+            },
+            "Property": "Cluster Final Rename"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {}
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

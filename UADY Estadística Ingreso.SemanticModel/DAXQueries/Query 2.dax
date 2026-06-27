@@ -1,0 +1,73 @@
+DEFINE
+	VAR __DS0FilterTable = 
+		TREATAS({"2024"}, 'Calendario'[Año])
+
+	VAR __DS0FilterTable2 = 
+		FILTER(
+			KEEPFILTERS(VALUES('Metrics_OF'[Metrics_OF Fields])),
+			AND(
+				'Metrics_OF'[Metrics_OF Fields] IN {"'Consolidado_Reportes_Oficiales'[% Ingreso OF]"},
+				'Metrics_OF'[Metrics_OF Fields] IN {"'Consolidado_Reportes_Oficiales'[Sustentantes OF]"}
+			)
+		)
+
+	VAR __DS0FilterTable3 = 
+		FILTER(
+			KEEPFILTERS(VALUES('Consolidado_Reportes_Oficiales'[Facultad])),
+			NOT('Consolidado_Reportes_Oficiales'[Facultad] IN {BLANK()})
+		)
+
+	VAR __DS0FilterTable4 = 
+		FILTER(
+			KEEPFILTERS(VALUES('Consolidado_Reportes_Oficiales'[Cluster Final Rename])),
+			NOT('Consolidado_Reportes_Oficiales'[Cluster Final Rename] IN {BLANK()})
+		)
+
+	VAR __DM3FilterTable = 
+		TREATAS(
+			{"Cluster 1",
+				"Cluster 2",
+				"Cluster 3"},
+			'Consolidado_Reportes_Oficiales'[Cluster Final Rename]
+		)
+
+	VAR __DS0Core = 
+		SUMMARIZECOLUMNS(
+			ROLLUPADDISSUBTOTAL(
+				'Consolidado_Reportes_Oficiales'[Cluster Final Rename], "IsGrandTotalRowTotal",
+				'Consolidado_Reportes_Oficiales'[Programas Educativos],
+				"IsDM1Total",
+				NONVISUAL(__DM3FilterTable)
+			),
+			__DS0FilterTable,
+			__DS0FilterTable2,
+			__DS0FilterTable3,
+			__DS0FilterTable4,
+			"Avg_Sustentantes_OF", 'Consolidado_Reportes_Oficiales'[Avg Sustentantes OF],
+			"v_Avg_Sustentantes_OF_FormatString", IGNORE('Consolidado_Reportes_Oficiales'[_Avg Sustentantes OF FormatString]),
+			"Sustentantes_OF", 'Consolidado_Reportes_Oficiales'[Sustentantes OF],
+			"v_Sustentantes_OF_FormatString", IGNORE('Consolidado_Reportes_Oficiales'[_Sustentantes OF FormatString])
+		)
+
+	VAR __DS0PrimaryWindowed = 
+		TOPN(
+			502,
+			__DS0Core,
+			[IsGrandTotalRowTotal],
+			0,
+			'Consolidado_Reportes_Oficiales'[Cluster Final Rename],
+			1,
+			[IsDM1Total],
+			0,
+			'Consolidado_Reportes_Oficiales'[Programas Educativos],
+			1
+		)
+
+EVALUATE
+	__DS0PrimaryWindowed
+
+ORDER BY
+	[IsGrandTotalRowTotal] DESC,
+	'Consolidado_Reportes_Oficiales'[Cluster Final Rename],
+	[IsDM1Total] DESC,
+	'Consolidado_Reportes_Oficiales'[Programas Educativos]

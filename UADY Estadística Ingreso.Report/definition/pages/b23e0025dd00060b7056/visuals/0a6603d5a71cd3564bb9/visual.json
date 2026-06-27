@@ -1,0 +1,76 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "0a6603d5a71cd3564bb9",
+  "position": {
+    "x": 0,
+    "y": 166.95652173913044,
+    "z": 0,
+    "height": 469.62623951182303,
+    "width": 439.35926773455378,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Encabezado"
+                    }
+                  },
+                  "Property": "Ciclo"
+                }
+              },
+              "queryRef": "Encabezado.Ciclo",
+              "nativeQueryRef": "Ciclo",
+              "active": true
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Encabezado"
+                    }
+                  },
+                  "Property": "Abv.1"
+                }
+              },
+              "queryRef": "Encabezado.Abv.1",
+              "nativeQueryRef": "Abv.1",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Sustentantes Total"
+                }
+              },
+              "queryRef": "Metrics.Sustentantes Total",
+              "nativeQueryRef": "Sustentantes Total"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

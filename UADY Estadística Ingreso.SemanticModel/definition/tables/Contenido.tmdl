@@ -1,0 +1,73 @@
+table Contenido
+	lineageTag: ea5eab59-54e5-41f7-8cb5-c9765dc29bb0
+
+	column Name
+		dataType: string
+		lineageTag: 8b1c282b-a4a6-48d2-92aa-c91ac36cd26d
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column POSICIÓN
+		dataType: int64
+		formatString: 0
+		lineageTag: aed2d9ae-c8fa-4f48-b699-48100677b05f
+		summarizeBy: sum
+		sourceColumn: POSICIÓN
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FOLIO CENEVAL'
+		dataType: string
+		lineageTag: 2cd6daeb-77d1-43a6-b016-12cfbe81c806
+		summarizeBy: none
+		sourceColumn: FOLIO CENEVAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'INDICE CENEVAL'
+		dataType: int64
+		formatString: 0
+		lineageTag: 284bd187-2e01-4434-ade5-b1e4c78c7d72
+		summarizeBy: sum
+		sourceColumn: INDICE CENEVAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'INDICE PENSAMIENTOMATEMATICO'
+		dataType: int64
+		formatString: 0
+		lineageTag: c46393d9-7e63-4ebb-88d7-385c4fcb2aac
+		summarizeBy: sum
+		sourceColumn: INDICE PENSAMIENTOMATEMATICO
+
+		annotation SummarizationSetBy = Automatic
+
+	column ESTATUS
+		dataType: string
+		lineageTag: 22a2d4f3-0419-46a2-8ea8-e6b6b0a9f360
+		summarizeBy: none
+		sourceColumn: ESTATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Contenido-1336c353-48e9-4426-bbe3-cd972089f3f1 = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files("https://analiticaempresarial.sharepoint.com/sites/PurpuraSolutionsSite/", [ApiVersion = 15]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each ([Extension] = ".pdf")),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"Name", "Content"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Removed Other Columns", each ([Name] <> "INC.pdf")),
+				    #"Invoked Custom Function" = Table.AddColumn(#"Filtered Rows1", "FnContenido", each FnContenido([Content])),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Invoked Custom Function",{"Name", "FnContenido"}),
+				    #"Expanded FnContenido" = Table.ExpandTableColumn(#"Removed Other Columns1", "FnContenido", {"POSICIÓN", "FOLIO CENEVAL", "INDICE CENEVAL", "INDICE PENSAMIENTO#(lf)MATEMATICO", "ESTATUS"}, {"POSICIÓN", "FOLIO CENEVAL", "INDICE CENEVAL", "INDICE PENSAMIENTO#(lf)MATEMATICO", "ESTATUS"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded FnContenido",{{"Name", type text}, {"POSICIÓN", Int64.Type}, {"FOLIO CENEVAL", type text}, {"INDICE CENEVAL", Int64.Type}, {"INDICE PENSAMIENTO#(lf)MATEMATICO", Int64.Type}, {"ESTATUS", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

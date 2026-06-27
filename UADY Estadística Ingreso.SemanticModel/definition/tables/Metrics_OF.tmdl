@@ -1,0 +1,59 @@
+table Metrics_OF
+	lineageTag: b992130c-ba54-4bb4-8349-318309bab4f7
+
+	column Metrics_OF
+		lineageTag: 43966f12-58c7-4687-b4ae-10a93704c4c2
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Metrics_OF Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Metrics_OF Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Metrics_OF Fields'
+		isHidden
+		lineageTag: 65b1b280-0cf9-4e59-94f1-37b926f5e106
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Metrics_OF Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Metrics_OF Order'
+		isHidden
+		formatString: 0
+		lineageTag: c9c18140-b054-46aa-bc4c-e7eba7c8d35b
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value4
+		lineageTag: e62f6960-4f50-4351-8af9-51bad3eb8118
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value4]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Metrics_OF = calculated
+		mode: import
+		source =
+				{
+				    ("Sustentantes OF", NAMEOF('Consolidado_Reportes_Oficiales'[Sustentantes OF]), 0, "Sustentantes"),
+				    ("Total Admitidos OF", NAMEOF('Consolidado_Reportes_Oficiales'[Total Admitidos OF]), 1, "Admitidos"),
+				    ("Avg Punto de Corte OF", NAMEOF('Consolidado_Reportes_Oficiales'[Avg Punto de Corte OF]), 2, "Avg Punto de Corte"),
+				    ("% Ingreso OF", NAMEOF('Consolidado_Reportes_Oficiales'[% Ingreso OF]), 3, "% Ingreso"),
+				    ("% Admitidos OF Cupo", NAMEOF('Consolidado_Reportes_Oficiales'[% Admitidos OF Cupo]), 4, "% Admitidos Cupo")
+				}
+
+	annotation PBI_Id = a5e8ac1e59b84a46b6eb0e97e79a5002
+

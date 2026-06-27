@@ -1,0 +1,85 @@
+table 'ClusterMappingTable 5'
+	isHidden
+	isPrivate
+	lineageTag: 7b80c5b1-6af3-4e9e-99ea-b2a4a1b71559
+
+	column Programas_Educativos
+		lineageTag: e60080a7-d357-4225-a179-01388476cbe7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Programas_Educativos]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column ClusterId
+		formatString: 0
+		lineageTag: 7a1a2285-04e3-455e-aa1a-d80d3d7bdb46
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [ClusterId]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	partition 'ClusterMappingTable 5' = calculated
+		mode: import
+		source = ```
+				VAR __DS0FilterTable = 
+					FILTER(
+						KEEPFILTERS(VALUES('Consolidado_Reportes_Oficiales'[Programas Educativos])),
+						NOT(
+							'Consolidado_Reportes_Oficiales'[Programas Educativos] IN {"Derecho Virtual",
+								"Ingeniería de Software Virtual"}
+						)
+					)
+				
+				VAR __DS0FilterTable2 = 
+					TREATAS({"2024"}, 'Calendario'[Año])
+				
+				VAR __DS0FilterTable3 = 
+					TREATAS({"Cluster1"}, 'Consolidado_Reportes_Oficiales'[Programas Educativos (clusters)])
+				
+				VAR __DS0FilterTable4 = 
+					FILTER(
+						KEEPFILTERS(VALUES('Consolidado_Reportes_Oficiales'[Facultad])),
+						NOT('Consolidado_Reportes_Oficiales'[Facultad] IN {BLANK()})
+					)
+				
+				VAR __DS0Core = 
+					SUMMARIZECOLUMNS(
+						'Consolidado_Reportes_Oficiales'[Programas Educativos],
+						__DS0FilterTable,
+						__DS0FilterTable2,
+						__DS0FilterTable3,
+						__DS0FilterTable4,
+						"Avg_Punto_de_Corte_OF", 'Consolidado_Reportes_Oficiales'[Avg Punto de Corte OF],
+						"v__Ingreso_OF", 'Consolidado_Reportes_Oficiales'[% Ingreso OF]
+					)
+				
+				VAR __DataTransformT0 = 
+					KMeansClustering(
+						SELECTCOLUMNS(
+							__DS0Core,
+							"Programas_Educativos", 'Consolidado_Reportes_Oficiales'[Programas Educativos],
+							"Avg_Punto_de_Corte_OF", [Avg_Punto_de_Corte_OF],
+							"v__Ingreso_OF", [v__Ingreso_OF]
+						),
+						{("[Avg_Punto_de_Corte_OF]", "Attribute"),
+							("[Programas_Educativos]", "Item"),
+							("[v__Ingreso_OF]", "Attribute")},
+						{("[Programas_Educativos]", BLANK()),
+							("ClusterId", "ClusterId")},
+						2
+					)
+				
+				RETURN __DataTransformT0
+				```
+			retainDataTillForceCalculate
+
+	annotation ClusterMappingTable = true
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"}]
+

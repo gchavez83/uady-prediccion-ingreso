@@ -1,0 +1,64 @@
+table 'ClusterMappingTable 3'
+	isHidden
+	isPrivate
+	lineageTag: 1460fea3-1840-4842-8ccc-3c90dad29e90
+
+	column Programa_de_licenciatura
+		lineageTag: a8923ac1-2641-468a-87fc-12a357238d03
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Programa_de_licenciatura]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Sensibilidad al Punto Corte","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column ClusterId
+		formatString: 0
+		lineageTag: 32cb8fb8-0cc5-4a45-8af5-d7b8a7849590
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [ClusterId]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Sensibilidad al Punto Corte","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	partition 'ClusterMappingTable 3' = calculated
+		mode: import
+		source = ```
+				VAR __DS0FilterTable = 
+					TREATAS({"2024"}, 'Calendario'[Año])
+				
+				VAR __DS0Core = 
+					SUMMARIZECOLUMNS(
+						'Encabezado'[Programa de licenciatura],
+						__DS0FilterTable,
+						"Var___Punto_de_Corte", 'Metrics'[Var % Punto de Corte],
+						"Var___Admitidos", 'Metrics'[Var % Admitidos]
+					)
+				
+				VAR __DataTransformT0 = 
+					KMeansClustering(
+						SELECTCOLUMNS(
+							__DS0Core,
+							"Programa_de_licenciatura", 'Encabezado'[Programa de licenciatura],
+							"Var___Punto_de_Corte", [Var___Punto_de_Corte],
+							"Var___Admitidos", [Var___Admitidos]
+						),
+						{("[Programa_de_licenciatura]", "Item"),
+							("[Var___Punto_de_Corte]", "Attribute"),
+							("[Var___Admitidos]", "Attribute")},
+						{("[Programa_de_licenciatura]", BLANK()),
+							("ClusterId", "ClusterId")},
+						5
+					)
+				
+				RETURN __DataTransformT0
+				```
+			retainDataTillForceCalculate
+
+	annotation ClusterMappingTable = true
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Sensibilidad al Punto Corte","ObjectType":4},"LinkType":"UsedInGroup"}]
+

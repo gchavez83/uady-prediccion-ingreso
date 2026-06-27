@@ -1,0 +1,7 @@
+# Tema de marca — IA Enterprise · Sistema Synapse
+[theme]
+primaryColor = "#2A6FDB"            # Azure (primario)
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F7F4EE" # Ivory (lienzo cálido)
+textColor = "#0A1628"               # Ink
+font = "sans serif"

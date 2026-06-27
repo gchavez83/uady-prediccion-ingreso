@@ -1,0 +1,48 @@
+DEFINE
+	VAR __DS0FilterTable = 
+		TREATAS(
+			{"'Consolidado_Reportes_Oficiales'[Sustentantes OF]"},
+			'Metrics_OF'[Metrics_OF Fields]
+		)
+
+	VAR __DS0FilterTable2 = 
+		TREATAS({"Economía"}, 'Consolidado_Reportes_Oficiales'[Programas Educativos])
+
+	VAR __DS0FilterTable3 = 
+		FILTER(
+			KEEPFILTERS(VALUES('Consolidado_Reportes_Oficiales'[Facultad])),
+			NOT('Consolidado_Reportes_Oficiales'[Facultad] IN {BLANK()})
+		)
+
+	VAR __DS0FilterTable4 = 
+		FILTER(
+			KEEPFILTERS(VALUES('Consolidado_Reportes_Oficiales'[Cluster Final Rename])),
+			NOT('Consolidado_Reportes_Oficiales'[Cluster Final Rename] IN {BLANK()})
+		)
+
+	VAR __DS0Core = 
+		SUMMARIZECOLUMNS(
+			'Calendario'[IdFecha],
+			__DS0FilterTable,
+			__DS0FilterTable2,
+			__DS0FilterTable3,
+			__DS0FilterTable4,
+			"Sustentantes_OF", 'Consolidado_Reportes_Oficiales'[Sustentantes OF],
+			"v_Sustentantes_OF_FormatString", IGNORE('Consolidado_Reportes_Oficiales'[_Sustentantes OF FormatString])
+		)
+
+	VAR __DS0IntersectionCount = CALCULATE(COUNTROWS(__DS0Core))
+
+	VAR __DS0BodyBinnedSample = 
+		SAMPLEAXISWITHLOCALMINMAX(3500, __DS0Core, 'Calendario'[IdFecha], [Sustentantes_OF], 350, , ALPHABETICAL, ASC, 105000, 60)
+
+EVALUATE
+	ROW(
+	"DS0IntersectionCount", __DS0IntersectionCount
+)
+
+EVALUATE
+	__DS0BodyBinnedSample
+
+ORDER BY
+	'Calendario'[IdFecha]

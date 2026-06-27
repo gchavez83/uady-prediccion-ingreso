@@ -1,0 +1,26 @@
+relationship 90c2c353-2d31-4623-94be-7e26220a366c
+	fromColumn: Contenido.Name
+	toColumn: Encabezado.Name
+
+relationship 221c534d-6875-4e6e-aec4-e6303b719ca3
+	fromColumn: Encabezado.Date
+	toColumn: Calendario.IdFecha
+
+relationship 1ae91e9b-f20e-d6ed-f941-b650b550932c
+	fromColumn: Consolidado_Reportes_Oficiales.Ciclo
+	toColumn: Calendario.IdFecha
+
+relationship AutoDetected_7842f541-6dea-4c6b-80f5-2347edd0518d
+	fromColumn: Consolidado_Reportes_Oficiales.'Programas Educativos'
+	toColumn: Cat_Licenciaturas_Abv.'Programas Educativos'
+
+relationship AutoDetected_a6d8a7d7-2855-4952-b3f9-0ced75f0b089
+	fromColumn: Encabezado.'Abv.1'
+	toColumn: Cat_Licenciaturas_Abv.ABV
+
+relationship AutoDetected_60864d20-0338-4e7f-bfc0-c88a127f85b6
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: Licenciaturas_Campus.'Abv.1'
+	toColumn: Cat_Licenciaturas_Abv.ABV
+

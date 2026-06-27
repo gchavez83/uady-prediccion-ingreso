@@ -1,0 +1,113 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "5ce71be0de783743db09",
+  "position": {
+    "x": 738.82352941176475,
+    "y": 51.764705882352942,
+    "z": 1000,
+    "height": 201.41176470588235,
+    "width": 511.05882352941177,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Clusters Final"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Clusters Final",
+              "nativeQueryRef": "Clusters Final"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Sustentantes OF"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Sustentantes OF",
+              "nativeQueryRef": "Sustentantes OF"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Avg Sustentantes OF"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Avg Sustentantes OF",
+              "nativeQueryRef": "Avg Sustentantes OF"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Total Admitidos OF"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Total Admitidos OF",
+              "nativeQueryRef": "Total Admitidos OF"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Consolidado_Reportes_Oficiales"
+                    }
+                  },
+                  "Property": "Avg Total Admitidos OF"
+                }
+              },
+              "queryRef": "Consolidado_Reportes_Oficiales.Avg Total Admitidos OF",
+              "nativeQueryRef": "Avg Total Admitidos OF"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "841eb49bdfcb76a4b150",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Calendario"
+              }
+            },
+            "Property": "Año"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ]
+  }
+}

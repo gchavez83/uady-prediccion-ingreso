@@ -1,0 +1,72 @@
+table ClusterMappingTable
+	isHidden
+	isPrivate
+	lineageTag: 4f6a8598-45cd-40f5-9413-95ea4236c0d3
+
+	column Abv_1
+		lineageTag: 404a1acb-4f06-4788-b127-dc7f498b475d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Abv_1]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column ClusterId
+		formatString: 0
+		lineageTag: 5c29e658-0f5b-4dd0-9c13-b047d5d82f98
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [ClusterId]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	partition ClusterMappingTable = calculated
+		mode: import
+		source = ```
+				VAR __DS0FilterTable = 
+					TREATAS(
+						{"'Metrics'[Avg. Índice Ceneval Admitivo]",
+							"'Metrics'[Avg. Pensamiento Mat. Admitido]"},
+						'Parameter'[Parameter Fields]
+					)
+				
+				VAR __DS0FilterTable2 = 
+					TREATAS({2023}, 'Encabezado'[Ciclo])
+				
+				VAR __DS0Core = 
+					SUMMARIZECOLUMNS(
+						'Encabezado'[Abv.1],
+						__DS0FilterTable,
+						__DS0FilterTable2,
+						"Pct_Ingreso", 'Metrics'[Pct Ingreso],
+						"Avg__punto_de_corte", 'Metrics'[Avg. punto de corte]
+					)
+				
+				VAR __DataTransformT0 = 
+					KMeansClustering(
+						SELECTCOLUMNS(
+							__DS0Core,
+							"Abv_1", 'Encabezado'[Abv.1],
+							"Pct_Ingreso", [Pct_Ingreso],
+							"Avg__punto_de_corte", [Avg__punto_de_corte]
+						),
+						{("[Abv_1]", "Item"),
+							("[Pct_Ingreso]", "Attribute"),
+							("[Avg__punto_de_corte]", "Attribute")},
+						{("[Abv_1]", BLANK()),
+							("ClusterId", "ClusterId")},
+						5
+					)
+				
+				RETURN __DataTransformT0
+				```
+			retainDataTillForceCalculate
+
+	annotation ClusterMappingTable = true
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"}]
+

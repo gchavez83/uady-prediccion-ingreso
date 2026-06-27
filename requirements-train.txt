@@ -1,0 +1,11 @@
+# Entorno de ENTRENAMIENTO (local, Python 3.11) — pesado, usa PyCaret
+# Versiones alineadas con el entorno Colab original donde los modelos funcionaban.
+pycaret[full]==3.3.2
+pandas==2.1.4
+numpy==1.26.4
+scikit-learn==1.4.2
+lightgbm==4.6.0
+catboost
+xgboost
+openpyxl
+matplotlib<3.8.0

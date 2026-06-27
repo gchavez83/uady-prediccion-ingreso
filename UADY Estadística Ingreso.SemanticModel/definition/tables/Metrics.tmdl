@@ -1,0 +1,699 @@
+table Metrics
+	lineageTag: 58c2a8e1-d33a-4d1e-8fe9-333b908b0b08
+
+	measure _ = ```
+			
+			IF (
+			    HASONEVALUE ( Contenido[FOLIO CENEVAL] ),
+			    IF (
+			        NOT ISBLANK ( MAX ( 'Contenido'[ESTATUS] ) ),
+			        IF ( MAX ( Contenido[ESTATUS] ) = "Admitido", "🟢", "🔴" )
+			    ),
+			    BLANK ()
+			)
+			
+			```
+		displayFolder: Tabla_Contenido
+		lineageTag: 908ca9c5-cbd5-4b73-8e23-05d69f30b1a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg. Índice Ceneval' = AVERAGE(Contenido[INDICE CENEVAL] )
+		formatString: #,0.0
+		displayFolder: Tabla_Contenido
+		lineageTag: 047e8697-0ac1-494a-9d28-735b77727654
+
+		changedProperty = FormatString
+
+	measure 'Avg. Índice Ceneval Admitivo' = CALCULATE( [Avg. Índice Ceneval] , Contenido[ESTATUS] = "Admitido" )
+		formatString: #,0.0
+		displayFolder: Tabla_Contenido
+		lineageTag: ec9745ea-225a-4a55-8b98-2628ff5211d7
+
+	measure 'Avg. Índice Ceneval No Admitivo' = ```
+			
+			IF (
+			    ISBLANK (
+			        CALCULATE ( [Avg. Índice Ceneval], Contenido[ESTATUS] = "No Admitido" )
+			    ),
+			    "NA",
+			    CALCULATE ( [Avg. Índice Ceneval], Contenido[ESTATUS] = "No Admitido" )
+			)
+			
+			```
+		displayFolder: Tabla_Contenido
+		lineageTag: b43b073c-b89f-4a43-9b75-f33178d7f0b6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg. Índice Pensamiento Matemático' = AVERAGE(Contenido[INDICE PENSAMIENTOMATEMATICO])
+		formatString: #,0.0
+		displayFolder: Tabla_Contenido
+		lineageTag: 03ad1eb2-41a7-4557-99f2-8d86fe6b30b4
+
+		changedProperty = FormatString
+
+	measure 'Avg. Pensamiento Mat. Admitido' = ```
+			
+			CALCULATE (
+			    [Avg. Índice Pensamiento Matemático],
+			    'Contenido'[ESTATUS] = "Admitido"
+			)
+			
+			```
+		formatString: #,0.0
+		displayFolder: Tabla_Contenido
+		lineageTag: b3adda60-050c-4ea9-99dd-97a0cd03d336
+
+	measure 'Avg. Pensamiento Mat. No Admitido' = ```
+			
+			IF (
+			    ISBLANK (
+			        CALCULATE (
+			            [Avg. Índice Pensamiento Matemático],
+			            'Contenido'[ESTATUS] = "No Admitido"
+			        )
+			    ),
+			    "NA",
+			    CALCULATE (
+			        [Avg. Índice Pensamiento Matemático],
+			        'Contenido'[ESTATUS] = "No Admitido"
+			    )
+			)
+			
+			```
+		displayFolder: Tabla_Contenido
+		lineageTag: 4cf1700d-b3e7-4c39-99ab-13c647150ed4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Color Scatter' = ```
+			
+			IF (
+			    MAX ( Contenido[FOLIO CENEVAL] ) = SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] ),
+			    "orange",
+			    "RGBA(211, 211, 211, 0.19)"
+			)
+			
+			```
+		displayFolder: Tabla_Contenido
+		lineageTag: 95ff0593-b024-453c-887b-4a4b811da5f5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Desviaciones Ind. Ceneval vs P. Mate' = [Avg. Índice Ceneval] - [Avg. Índice Pensamiento Matemático]
+		displayFolder: Tabla_Contenido
+		lineageTag: a683cea9-caa2-4145-8eee-4e4336ee740d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Estatus_Contenido = SELECTEDVALUE( Contenido[ESTATUS] )
+		displayFolder: Tabla_Contenido
+		lineageTag: 94ffeb27-639a-4b64-8156-500bd1841a80
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Filtro Scatter' = ```
+			
+			COUNTROWS ( FILTER ( Contenido, Contenido[Name] = [Name folio] ) )
+			
+			```
+		formatString: 0
+		displayFolder: Tabla_Contenido
+		lineageTag: 6bf8c920-a2a6-4b02-8cb9-f9061bc7c777
+
+	measure 'Min Pensamiento Mat Admitido' =
+			
+			CALCULATE (
+			    MIN ( Contenido[INDICE PENSAMIENTOMATEMATICO] ),
+			    Contenido[ESTATUS] = "Admitido"
+			)
+		formatString: 0
+		displayFolder: Tabla_Contenido
+		lineageTag: c506ca61-02a6-4e26-9122-c53c92f4627d
+
+	measure 'Ranking Avg. Índice Ceneval Admitido' = ```
+			
+			IF (
+			    HASONEVALUE ( Encabezado[Programa de licenciatura] ),
+			    RANKX (
+			        ALLSELECTED ( Encabezado[Programa de licenciatura] ),
+			        [Avg. Índice Ceneval Admitivo]
+			    )
+			)
+			
+			```
+		formatString: 0
+		displayFolder: Tabla_Contenido
+		lineageTag: 4c325d54-2083-4279-9c5b-86ad2e33ac88
+
+	measure 'Ranking Avg. Índice Pensamiento Mat. Admitido' = ```
+			
+			IF (
+			    HASONEVALUE ( Encabezado[Programa de licenciatura] ),
+			    RANKX (
+			        ALLSELECTED ( Encabezado[Programa de licenciatura] ),
+			        [Avg. Pensamiento Mat. Admitido]
+			    )
+			)
+			
+			```
+		formatString: 0
+		displayFolder: Tabla_Contenido
+		lineageTag: 8a11abee-049e-4fd7-82a1-306f84ba4ee7
+
+	measure 'Ranking Pct Ingreso' = ```
+			
+			IF (
+			    HASONEVALUE ( Encabezado[Programa de licenciatura] ),
+			    RANKX (
+			        ALLSELECTED ( Encabezado[Programa de licenciatura] ),
+			        [Pct Ingreso],
+			        ,
+			        ASC
+			    )
+			)
+			
+			```
+		formatString: 0
+		displayFolder: Tabla_Contenido
+		lineageTag: 8d45ec21-2557-4e69-9e14-c423e5164b6e
+
+	measure 'Var Pct' = ```
+			
+			DIVIDE (
+			    [Avg. Índice Ceneval Admitivo] - [Avg. punto de corte],
+			    [Avg. punto de corte]
+			)
+			
+			```
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: Tabla_Contenido
+		lineageTag: c8314f1a-78d0-4fba-88a6-484f1bdf4227
+
+		changedProperty = FormatString
+
+	measure 110_% = ```
+			1.1 
+			```
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: Tabla_Encabezado
+		lineageTag: c11da5f0-8e96-404f-9d29-c72bd0f7d1d5
+
+	measure 'Alternativas Licenciaturas' = ```
+			
+			COUNTROWS (
+			    FILTER (
+			        ADDCOLUMNS (
+			            VALUES ( Encabezado[Programa de licenciatura] ),
+			            "@Pto_Corte", [Avg. punto de corte],
+			            "@Min_P.Mat", [Min Pensamiento Mat Admitido]
+			        ),
+			        [@Pto_Corte] <= [Índice Ceneval folio]
+			            && [@Min_P.Mat] <= [Índice Pensamiento Mat. folio]
+			    )
+			)
+			
+			```
+		displayFolder: Tabla_Encabezado
+		lineageTag: 4e139595-b37d-4081-9ff2-895138e08b7c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Alternativas Licenciaturas Simulación' =
+			
+			COUNTROWS (
+			    FILTER (
+			        ADDCOLUMNS (
+			            VALUES ( Encabezado[Programa de licenciatura] ),
+			            "@Pto_Corte", [Avg. punto de corte],
+			            "@Min_P.Mat", [Min Pensamiento Mat Admitido]
+			        ),
+			        [@Pto_Corte] <= [Simulación Indice Ceneval Value]
+			            && [@Min_P.Mat] <= [Simulación Indice Pensamiento Mat. Value]
+			    )
+			)
+		displayFolder: Tabla_Encabezado
+		lineageTag: 6c8a4a68-4894-459f-ad0f-ab8f73b5f2fc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Punto de Corte 2022' = ```
+			
+			CALCULATE ( [Avg. punto de corte], Encabezado[Ciclo] = 2022 )
+			
+			```
+		displayFolder: Tabla_Encabezado
+		lineageTag: 619b78f3-4609-4835-94b2-9b65436b864f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Punto de Corte 2023' = ```
+			
+			CALCULATE ( [Avg. punto de corte], Encabezado[Ciclo] = 2023 )
+			
+			```
+		displayFolder: Tabla_Encabezado
+		lineageTag: b11cf0de-ee03-4d50-a05b-64beae9590b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg. punto de corte' = AVERAGE( Encabezado[Punto de corte] )
+		formatString: #,0
+		displayFolder: Tabla_Encabezado
+		lineageTag: 8d22a8fe-f9a5-4e08-b952-5a911dd26d0a
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	measure cero = 0
+		formatString: 0
+		displayFolder: Tabla_Encabezado
+		lineageTag: 7e2c4f0d-cdd4-482b-a09b-6b9edef9391b
+
+	measure 'Color Licenciatura con Tabla Desc' = ```
+			
+			IF ( [Título] = [Filtro Licenciatura Desconectada], "Orange" )
+			
+			```
+		displayFolder: Tabla_Encabezado
+		lineageTag: 3f346dd8-93ed-469f-8d08-928c49abc91d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Dif % Font Color' = ```
+			
+			VAR _selectedvalueParameter =
+			    SELECTCOLUMNS (
+			        SUMMARIZE (
+			            'Relevant Metrics',
+			            'Relevant Metrics'[Relevant Metrics],
+			            'Relevant Metrics'[Relevant Metrics Fields]
+			        ),
+			        'Relevant Metrics'[Relevant Metrics]
+			    )
+			VAR metric_total_sustentantes =
+			    IF (
+			        SELECTEDVALUE ( 'Time Intelligence'[Name] ) IN { "Dif %" },
+			        [Sustentantes Total],
+			        BLANK ()
+			    )
+			VAR metric_total_sustentantes_admitidos =
+			    IF (
+			        SELECTEDVALUE ( 'Time Intelligence'[Name] ) IN { "Dif %" },
+			        [Sustentantes Admitidos Total],
+			        BLANK ()
+			    )
+			VAR metric_total_pct_ingreso =
+			    IF (
+			        SELECTEDVALUE ( 'Time Intelligence'[Name] ) IN { "Dif %" },
+			        [Pct Ingreso],
+			        BLANK ()
+			    )
+			VAR metric_avg_punto_corte =
+			    IF (
+			        SELECTEDVALUE ( 'Time Intelligence'[Name] ) IN { "Dif %" },
+			        [Avg. punto de corte],
+			        BLANK ()
+			    )
+			VAR metric_Indice_Ceneval_Admitido =
+			    IF (
+			        SELECTEDVALUE ( 'Time Intelligence'[Name] ) IN { "Dif %" },
+			        [Avg. Índice Ceneval Admitivo],
+			        BLANK ()
+			    )
+			VAR metric_Avg_Pensamiento_mat_Admitido =
+			    IF (
+			        SELECTEDVALUE ( 'Time Intelligence'[Name] ) IN { "Dif %" },
+			        [Avg. Pensamiento Mat. Admitido],
+			        BLANK ()
+			    )
+			VAR metric_Min_Pensamiento_mat_Admitido =
+			    IF (
+			        SELECTEDVALUE ( 'Time Intelligence'[Name] ) IN { "Dif %" },
+			        [Min Pensamiento Mat Admitido],
+			        BLANK ()
+			    )
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        _selectedvalueParameter = "Total de Sustentantes", metric_total_sustentantes,
+			        _selectedvalueParameter = "Total de Sustentantes Admitidos", metric_total_sustentantes_admitidos,
+			        _selectedvalueParameter = "Pct Ingreso", metric_total_pct_ingreso,
+			        _selectedvalueParameter = "Punto de corte Ceneval", metric_avg_punto_corte,
+			        _selectedvalueParameter = "Avg. Índice Ceneval Admitido", metric_Indice_Ceneval_Admitido,
+			        _selectedvalueParameter = "Avg. Pensamiento Mat. Admitido", metric_Avg_Pensamiento_mat_Admitido,
+			        _selectedvalueParameter = "Mín. Pensamiento Mat. Admitido", metric_Min_Pensamiento_mat_Admitido
+			    )
+			
+			
+			```
+		displayFolder: Tabla_Encabezado
+		lineageTag: 2d6b3f24-d436-45f2-96df-ae9097993210
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Eq recta' = ```
+			
+			VAR line =
+			    LINESTX (
+			        ALLSELECTED ( Encabezado[Abv.1] ),
+			        [Pct Ingreso],
+			        [Avg. punto de corte]
+			    )
+			VAR R2 =
+			    SELECTCOLUMNS ( line, [CoefficientOfDetermination] )
+			VAR Fstat =
+			    SELECTCOLUMNS ( line, [FStatistic] )
+			VAR slope_1 =
+			    SELECTCOLUMNS ( line, [Slope1] )
+			VAR intercept =
+			    SELECTCOLUMNS ( line, [Intercept] )
+			VAR Std_Error_Slope1 =
+			    SELECTCOLUMNS ( line, [StandardErrorSlope1] )
+			VAR Regression_Sum_Squares =
+			    SELECTCOLUMNS ( line, [RegressionSumOfSquares] )
+			RETURN
+			    "y = " & FORMAT ( slope_1, "0.#####0" ) & "x " & "+ "
+			        & FORMAT ( intercept, "#.####0" )
+			
+			```
+		displayFolder: Tabla_Encabezado
+		lineageTag: 5cae8421-e2da-47be-bdac-527d94e6d7b2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Eq recta _v2' =
+			
+			VAR line =
+			    LINESTX (
+			        ALLSELECTED ( Encabezado[Abv.1] ),
+			        [Pct Ingreso],
+			        [Var % Punto de Corte]
+			    )
+			VAR R2 =
+			    SELECTCOLUMNS ( line, [CoefficientOfDetermination] )
+			VAR Fstat =
+			    SELECTCOLUMNS ( line, [FStatistic] )
+			VAR slope_1 =
+			    SELECTCOLUMNS ( line, [Slope1] )
+			VAR intercept =
+			    SELECTCOLUMNS ( line, [Intercept] )
+			VAR Std_Error_Slope1 =
+			    SELECTCOLUMNS ( line, [StandardErrorSlope1] )
+			VAR Regression_Sum_Squares =
+			    SELECTCOLUMNS ( line, [RegressionSumOfSquares] )
+			RETURN
+			    "y = " & FORMAT ( slope_1, "0.#####0" ) & "x " & "+ "
+			        & FORMAT ( intercept, "#.####0" )
+		displayFolder: Tabla_Encabezado
+		lineageTag: 78c17bb1-c64d-4a1d-81e6-f01ae96f688b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Linear Reg Ceneval-Pct Ing' = ```
+			
+			VAR line =
+			    LINESTX (
+			        ALLSELECTED ( Encabezado[Abv.1] ),
+			        [Pct Ingreso],
+			        [Avg. punto de corte]
+			    )
+			VAR R2 =
+			    SELECTCOLUMNS ( line, [CoefficientOfDetermination] )
+			VAR Fstat =
+			    SELECTCOLUMNS ( line, [FStatistic] )
+			VAR slope_1 =
+			    SELECTCOLUMNS ( line, [Slope1] )
+			VAR intercept =
+			    SELECTCOLUMNS ( line, [Intercept] )
+			VAR Std_Error_Slope1 =
+			    SELECTCOLUMNS ( line, [StandardErrorSlope1] )
+			VAR Regression_Sum_Squares =
+			    SELECTCOLUMNS ( line, [RegressionSumOfSquares] )
+			RETURN
+			    R2
+			
+			
+			```
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: Tabla_Encabezado
+		lineageTag: 561e208d-15e1-490f-ac36-c6f313813859
+
+	measure 'Pct Ingreso' = DIVIDE( [Sustentantes Admitidos Total] , [Sustentantes Total] )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: Tabla_Encabezado
+		lineageTag: d07303c1-aab8-47b6-9fd6-e731f765b251
+
+		changedProperty = FormatString
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	measure 'R ^2 _v2' = ```
+			
+			VAR line =
+			    LINESTX (
+			        ALLSELECTED ( Encabezado[Abv.1] ),
+			        [Pct Ingreso],
+			        [Var % Punto de Corte]
+			    )
+			VAR R2 =
+			    SELECTCOLUMNS ( line, [CoefficientOfDetermination] )
+			VAR Fstat =
+			    SELECTCOLUMNS ( line, [FStatistic] )
+			VAR slope_1 =
+			    SELECTCOLUMNS ( line, [Slope1] )
+			VAR intercept =
+			    SELECTCOLUMNS ( line, [Intercept] )
+			VAR Std_Error_Slope1 =
+			    SELECTCOLUMNS ( line, [StandardErrorSlope1] )
+			VAR Regression_Sum_Squares =
+			    SELECTCOLUMNS ( line, [RegressionSumOfSquares] )
+			RETURN
+			   R2 
+			```
+		displayFolder: Tabla_Encabezado
+		lineageTag: 1773b13c-2120-48cd-a007-794d3a0f50af
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Resaltado Negro' = ```
+			
+			VAR j =
+			    SELECTEDVALUE ( Encabezado[Programa de licenciatura] )
+			VAR i =
+			    MAX ( Encabezado[Programa de licenciatura] )
+			RETURN
+			    IF ( j = 1, "black" )
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: Tabla_Encabezado
+		lineageTag: 217c80f2-7123-4ea7-9afa-9c4aca0b2a83
+
+	measure 'Sustentantes Admitidos Total' = SUM( Encabezado[Sustentantes admitidos] )
+		formatString: #,0
+		displayFolder: Tabla_Encabezado
+		lineageTag: d41dad22-9bc9-476b-a5a2-8a704686e3ea
+
+		changedProperty = FormatString
+
+	measure 'Sustentantes Admitidos Total LY' = ```
+			
+			CALCULATE (
+			    [Sustentantes Admitidos Total],
+			    SAMEPERIODLASTYEAR ( Calendario[IdFecha] )
+			)
+			
+			```
+		displayFolder: Tabla_Encabezado
+		lineageTag: 1a3e4d16-753c-4e75-86b7-81a64973c3a9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sustentantes Total' = SUM(Encabezado[Total de sustentantes])
+		formatString: #,0
+		displayFolder: Tabla_Encabezado
+		lineageTag: b07c492e-728a-4619-b1bb-1e85dd16b165
+
+		changedProperty = FormatString
+
+	measure 'Sustentantes Total 2022' = ```
+			
+			CALCULATE ( [Sustentantes Total], Encabezado[Ciclo] = 2022 )
+			
+			```
+		formatString: 0
+		displayFolder: Tabla_Encabezado
+		lineageTag: c71d59b3-e442-4da6-ab06-cafb085e5cd9
+
+	measure 'Sustentantes Total 2023' = ```
+			
+			CALCULATE ( [Sustentantes Total], Encabezado[Ciclo] = 2023 )
+			
+			```
+		formatString: 0
+		displayFolder: Tabla_Encabezado
+		lineageTag: 0df3f7cc-4c63-4071-ac20-903d2cd98439
+
+	measure 'Sustentantes Total LY' = ```
+			
+			CALCULATE ( [Sustentantes Total], SAMEPERIODLASTYEAR ( Calendario[IdFecha] ) )
+			
+			```
+		formatString: 0
+		displayFolder: Tabla_Encabezado
+		lineageTag: e36904d2-d353-47b1-a344-3847322f2e38
+
+	measure 'Sustentantes Total YOY %' = ```
+			
+			DIVIDE ( [Sustentantes YOY], [Sustentantes Total LY] )
+			
+			```
+		displayFolder: Tabla_Encabezado
+		lineageTag: dea5e373-ce68-4617-a89f-c21acad4d702
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sustentantes YOY' = ```
+			
+			VAR ValueCurrentPeriod = [Sustentantes Total]
+			VAR ValuePreviousPeriod = [Sustentantes Total LY]
+			VAR Result = ValueCurrentPeriod - ValuePreviousPeriod
+			RETURN
+			    Result
+			
+			```
+		formatString: 0
+		displayFolder: Tabla_Encabezado
+		lineageTag: ef30434b-02b5-4ce7-a0d9-2af25175c60c
+
+	measure Título = SELECTEDVALUE( Encabezado[Programa de licenciatura])
+		displayFolder: Tabla_Encabezado
+		lineageTag: 326da447-c0ba-4aa6-8ab9-6b1e44572624
+
+	measure 'Var % Punto de Corte' = ```
+			
+			DIVIDE (
+			    [Avg. punto de corte] - [Avg. punto de corte LY] , [Avg. punto de corte LY]
+			)
+			
+			```
+		formatString: 0.0000\ %;-0.0000\ %;0.0000\ %
+		displayFolder: Tabla_Encabezado
+		lineageTag: 6b9d0b8a-252a-43ca-85ee-beceaf25d38d
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Sensibilidad al Punto Corte","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	measure 'LY Dyn' = ```
+			
+			Var _Selector = SELECTEDVALUE( 'Relevant Metrics'[Metric_Name] )
+			RETURN 
+			SWITCH( TRUE() , 
+			            _Selector = "Total de Sustentantes", [Sustentantes Total LY],
+			            _Selector = "Total de Sustentantes Admitidos", [Sustentantes Admitidos Total LY],
+			            _Selector = "Pct Ingreso", [Pct Ingreso LY],
+			            _Selector = "Punto de corte Ceneval" , [Avg. punto de corte LY],
+			            _Selector = "Avg. Índice Ceneval Admitido", [Avg. Índice Ceneval Admitido LY],
+			            _Selector = "Avg. Pensamiento Mat. Admitido", [Avg. Pensamiento Mat. Admitido LY],
+			            _Selector = "Mín. Pensamiento Mat. Admitido", [Min Pensamiento Mat Admitido LY], BLANK() 
+			             )
+			```
+		lineageTag: 23071268-ba52-489f-8cd1-0a7ddf973814
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Pct Ingreso LY' = CALCULATE( [Pct Ingreso] , SAMEPERIODLASTYEAR( Calendario[IdFecha] ) )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: Tabla_Encabezado
+		lineageTag: 33ec3f34-b0e4-4b44-8343-10d1d3244a6f
+
+	measure 'Avg. punto de corte LY' = CALCULATE( [Avg. punto de corte] , SAMEPERIODLASTYEAR( Calendario[IdFecha] ) )
+		displayFolder: Tabla_Encabezado
+		lineageTag: f3cc3f28-b17d-4619-9ccd-9a5c1b937f15
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Min Pensamiento Mat Admitido LY' = CALCULATE( [Min Pensamiento Mat Admitido] , SAMEPERIODLASTYEAR( Calendario[IdFecha] ) )
+		displayFolder: Tabla_Contenido
+		lineageTag: 9e935c92-7ecc-42b4-965b-15ce724f05cf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg. Índice Ceneval Admitido LY' = CALCULATE( [Avg. Índice Ceneval Admitivo] , SAMEPERIODLASTYEAR( Calendario[IdFecha] ))
+		displayFolder: Tabla_Contenido
+		lineageTag: 989934c0-8a51-4d6f-b683-98661640c5cc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg. Pensamiento Mat. Admitido LY' = CALCULATE( [Avg. Pensamiento Mat. Admitido] , SAMEPERIODLASTYEAR( Calendario[IdFecha] ))
+		displayFolder: Tabla_Contenido
+		lineageTag: 241d566c-20ae-4b76-ae50-0d9c7f0a87b7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Licenciatura Selected' = SELECTEDVALUE( Encabezado[Programa de licenciatura] )
+		displayFolder: Tabla_Encabezado
+		lineageTag: b6159ccb-be03-4913-8c6d-e0e08ae2d42e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Var % Admitidos' = ```
+			
+			DIVIDE (
+			    [Sustentantes Admitidos Total] - [Sustentantes Admitidos Total LY] , [Sustentantes Admitidos Total LY] )
+			
+			```
+		formatString: 0.0000\ %;-0.0000\ %;0.0000\ %
+		displayFolder: Tabla_Encabezado
+		lineageTag: 4affaa66-f78b-4195-99f2-2d0037eb42a1
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Sensibilidad al Punto Corte","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	measure 'Dif Punto de Corte' = [Avg. punto de corte] - [Avg. punto de corte LY]
+		displayFolder: Tabla_Encabezado
+		lineageTag: 8ec54de8-5bc5-4a7c-b17e-666b5941ce99
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Dif Admitidos Total' = [Sustentantes Admitidos Total] - [Sustentantes Admitidos Total LY]
+		displayFolder: Tabla_Encabezado
+		lineageTag: e4b16dcc-dfb5-4f82-94b8-15e758b5638d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg. Punto Corte Campus' = ```
+			
+			AVERAGEX( 
+			    SUMMARIZE( Encabezado ,
+			    Calendario[Año],
+			    Encabezado[Campus],
+			    "@Pto Corte", [Avg. punto de corte] ), 
+			    [@Pto Corte] )
+			
+			```
+		formatString: 0
+		lineageTag: 764f3dd8-9677-4c5e-9da7-47b56f40f0b7
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition Metrics = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlSKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Sensibilidad al Punto Corte","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	annotation PBI_NavigationStepName = Navigation
+

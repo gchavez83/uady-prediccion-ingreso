@@ -1,0 +1,106 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "4033fefb434d8c970806",
+  "position": {
+    "x": 469.22134733158356,
+    "y": 445.70428696412949,
+    "z": 3000,
+    "height": 258.68766404199476,
+    "width": 481.53980752405948,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Encabezado"
+                    }
+                  },
+                  "Property": "Abv.1"
+                }
+              },
+              "queryRef": "Encabezado.Abv.1",
+              "nativeQueryRef": "Abv.1",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "GroupRef": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Encabezado"
+                    }
+                  },
+                  "Property": "Clusters_2026",
+                  "GroupedColumns": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Encabezado"
+                          }
+                        },
+                        "Property": "Abv.1"
+                      }
+                    }
+                  ]
+                }
+              },
+              "queryRef": "Encabezado.Clusters_2026",
+              "nativeQueryRef": "Clusters_2026"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Avg. punto de corte"
+                }
+              },
+              "queryRef": "Metrics.Avg. punto de corte",
+              "nativeQueryRef": "Avg. punto de corte",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Pct Ingreso"
+                }
+              },
+              "queryRef": "Metrics.Pct Ingreso",
+              "nativeQueryRef": "Pct Ingreso"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

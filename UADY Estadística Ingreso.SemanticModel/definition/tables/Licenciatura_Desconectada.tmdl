@@ -1,0 +1,64 @@
+table Licenciatura_Desconectada
+	lineageTag: 8ab6e209-5460-419d-9f70-be77dc795c03
+
+	measure 'Filtro Licenciatura Desconectada' = SELECTEDVALUE( Licenciatura_Desconectada[Programa de licenciatura] )
+		lineageTag: 0d670b39-aab4-4f01-b42f-258110bb4829
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Programa de licenciatura'
+		dataType: string
+		lineageTag: 7cfbb385-31f1-43ee-bcfb-88add01f4e96
+		summarizeBy: none
+		sourceColumn: Programa de licenciatura
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Abv.1'
+		dataType: string
+		lineageTag: 8e210842-168f-4f87-b6c4-90c7d512fb7c
+		summarizeBy: none
+		sourceColumn: Abv.1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Abr-Lic
+		dataType: string
+		lineageTag: ad3395e9-8d32-43e7-a2c1-381a300ed144
+		summarizeBy: none
+		sourceColumn: Abr-Lic
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Licenciatura_Desconectada-456b91bc-bafc-489f-81d9-c980e979aac9 = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files("https://analiticaempresarial.sharepoint.com/sites/PurpuraSolutionsSite/", [ApiVersion = 15]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each ([Extension] = ".pdf")),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"Name", "Content"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Removed Other Columns", each ([Name] <> "INC.pdf")),
+				    #"Invoked Custom Function" = Table.AddColumn(#"Filtered Rows1", "Custom.1", each FnEncabezado([Content])),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Invoked Custom Function",{"Name", "Custom.1"}),
+				    #"Expanded Custom.1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Custom.1", {"Programa de licenciatura", "Total de sustentantes", "Sustentantes admitidos", "Punto de corte"}, {"Programa de licenciatura", "Total de sustentantes", "Sustentantes admitidos", "Punto de corte"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Custom.1",{{"Name", type text}, {"Programa de licenciatura", type text}, {"Total de sustentantes", Int64.Type}, {"Sustentantes admitidos", Int64.Type}, {"Punto de corte", Int64.Type}}),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Changed Type", "Name", "Name2"),
+				    #"Replaced Value" = Table.ReplaceValue(#"Duplicated Column",".pdf","",Replacer.ReplaceText,{"Name2"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Replaced Value",{{"Name2", "Abv"}}),
+				    #"Split Column by Delimiter" = Table.SplitColumn(#"Renamed Columns", "Abv", Splitter.SplitTextByEachDelimiter({"_"}, QuoteStyle.Csv, false), {"Abv.1", "Abv.2"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Split Column by Delimiter",null,"2022",Replacer.ReplaceValue,{"Abv.2"}),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Replaced Value1",{{"Abv.2", "Ciclo"}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns1",{{"Ciclo", Int64.Type}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type1", "Date", each "15" & "/" & "01" & "/" & Text.From ( [Ciclo] )),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Added Custom",{{"Date", type date}}),
+				    #"Removed Other Columns2" = Table.SelectColumns(#"Changed Type2",{"Programa de licenciatura", "Abv.1"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns2"),
+				    #"Added Custom1" = Table.AddColumn(#"Removed Duplicates", "Abr-Lic", each [Abv.1] & ".- " &[Programa de licenciatura]),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Added Custom1",{{"Abr-Lic", type text}})
+				in
+				    #"Changed Type3"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

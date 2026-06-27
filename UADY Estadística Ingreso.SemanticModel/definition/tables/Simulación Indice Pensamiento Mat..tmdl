@@ -1,0 +1,26 @@
+table 'Simulación Indice Pensamiento Mat.'
+	lineageTag: cd24eb7d-b01f-4a02-b6b4-98e4f9d5d5e3
+
+	measure 'Simulación Indice Pensamiento Mat. Value' = SELECTEDVALUE('Simulación Indice Pensamiento Mat.'[Simulación Indice Pensamiento Mat.], 1200)
+		formatString: 0
+		lineageTag: d4041148-da8a-4c72-aeba-3c55529fac75
+
+	column 'Simulación Indice Pensamiento Mat.'
+		formatString: 0
+		lineageTag: 359a6de8-70d3-4715-a3f2-0a95cdbb9f76
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition 'Simulación Indice Pensamiento Mat.-70d64396-4079-47c3-8182-3bc62260dd93' = calculated
+		mode: import
+		source = GENERATESERIES(700, 1300, 1)
+
+	annotation PBI_Id = 0cd8399c3c85404b87477f514630ee84
+

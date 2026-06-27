@@ -1,0 +1,51 @@
+table 'Time Intelligence'
+	lineageTag: e3b4650c-729a-464d-a0bd-ddcc20404633
+
+	calculationGroup
+
+		calculationItem 'Medida Seleccionada' = SELECTEDMEASURE ()
+
+		calculationItem 'Año Previo' =
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    SAMEPERIODLASTYEAR ( Calendario[IdFecha] )
+				)
+
+		calculationItem 'Diferencia Año Previo' =
+				VAR ValueCurrentPeriod =
+				    SELECTEDMEASURE ()
+				VAR ValuePreviousPeriod =
+				    CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( Calendario[IdFecha] ) )
+				VAR Result = ValueCurrentPeriod - ValuePreviousPeriod
+				RETURN
+				    Result
+
+		calculationItem 'Dif %' =
+				VAR ValueCurrentPeriod =
+				    SELECTEDMEASURE ()
+				VAR ValuePreviousPeriod =
+				    CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( Calendario[IdFecha] ) )
+				VAR Result = ValueCurrentPeriod - ValuePreviousPeriod
+				RETURN
+				    DIVIDE ( Result, ValuePreviousPeriod )
+
+			formatStringDefinition = "0.00%;(0.00%)"
+
+	column Name
+		dataType: string
+		lineageTag: 2e88581d-c987-412f-8327-1d0985272119
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		isHidden
+		lineageTag: 75c1e50c-f202-4ba2-ba17-4bc6c7925527
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

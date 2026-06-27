@@ -1,0 +1,40 @@
+table Cat_Licenciaturas_Abv
+	lineageTag: 76ad8b11-27dc-45a7-bd5c-fb1a8a47e2a8
+
+	column 'Programas Educativos'
+		dataType: string
+		lineageTag: 2debb058-ed58-4b87-bebe-4d4ba98f6092
+		summarizeBy: none
+		sourceColumn: Programas Educativos
+
+		annotation SummarizationSetBy = Automatic
+
+	column ABV
+		dataType: string
+		lineageTag: 72a7376b-c885-468c-8442-dd1ebadad17e
+		summarizeBy: none
+		sourceColumn: ABV
+
+		annotation SummarizationSetBy = Automatic
+
+	column Facultad
+		dataType: string
+		lineageTag: 382e7394-f925-4dea-97ce-63f7dbbb5ce9
+		summarizeBy: none
+		sourceColumn: Facultad
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Cat_Licenciaturas_Abv = m
+		mode: import
+		queryGroup: 'Reportes Oficiales PDF'
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("rVXLbqMwFP0Vq+tq/oEAmVgT8iQZqVUXDripK7BbY3fU/k2XXXQx6m62/NjcayCQRydUmo2V4HPOfV9fX194+tEKwxNjNbu4vPAWczy7H28uEWV4QdaisCzjBSLW9BQuEAUvfyuS8oyMyteNMMwALhjFJ1Wl0epBZWpbvjOyVIlgGeLiJZy+4BI+FKRBlR9bkbCiYm614knNRMr3EM6IpyIRkpE1N1zDDy0YeSZXSoFVKZpQHi3vMKl3zthAtPABnfY15KvcShBJRPkh2+j85bi3QRIxVHd2o752R6IwCi4AP6JnMxmVb6CpOopqp1cYFInWV31Nj6G8mmF9yZgZIRXLAZswF8J4fDbTobzlGigu9PJNixSJ4WSIZ3vnsLHVosgV3MSrxTnhWLMNu1dtFeKFd0LTS3OBYeuqaNgeAebdV9Kw1Dq/nskhqptGX2h7zyS6Ffm0k7dGHwjfSAwpq0tcwKwQKm+VzlujMe1ldGINZLcmTVbxobkFv2MbkcEQNqBFODoENR6TgEtTl3waYJdPU/CgaX2Ezm35nmOUQ4belm/W4L8BiAMKY54PB3hWuIpE5ZZLUdXUF08Cs099nIHOzRFyWL4XqACoIT2D5ZKEkusqmwsu1RPbVFuKhovz3IgnzGjIT20vCs9zvEzkkC7ljHingqmqpzSZlX82GaapbWh/turXVFwnoFENGGAmfAv9qwroF5gzCUgl630c/Yh7SQZc8+QOSxW43DT/3fSlttlWneEL0Nf2qp5TXPNMvjC36WkqVM7Aq21WvqE3ods7ByTYhxAPrJc979HrKVY4TJRUeZO+9h/c+NOj+xl0R7uVZ0tU6H7rxArPljbWWQrcq9WNuWlV4j1AkZgLee7N9gtKPm1oaAVY1qYdZyQOaF86lamF+sBKImOkF6buQTruK7ELoNVC6vyfPnjwBjNdP4C+2xvM8Lx8NbuNuVunsJ4ymFyVP9h2j/jT6BRpry+AVpA9CBQx8k7xuo4CcaluzS+meacN6fLnOSLU4sBL6hrniHTgU+SdTsDRAMfiRUADuvhnyFlJcC4lkc2MSEWRCOih6mHcQQ/mqiMRBl+R6DyMXY3hFzQ+S3JHjy7/g147blC09VFqb/4C", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Programas Educativos" = _t, ABV = _t, Facultad = _t])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

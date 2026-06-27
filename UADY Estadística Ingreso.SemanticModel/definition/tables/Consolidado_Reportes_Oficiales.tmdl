@@ -1,0 +1,480 @@
+table Consolidado_Reportes_Oficiales
+	lineageTag: 7192562a-e027-4515-b81e-381ca21e7fd1
+
+	measure 'Total Admitidos OF' = SUM( Consolidado_Reportes_Oficiales[Total Admitidos] )
+		formatString: #,0
+		lineageTag: aa77824f-458c-4ddb-b63b-4c1556f11b89
+
+	measure 'Admitidos OF' = SUM( Consolidado_Reportes_Oficiales[Admitidos]  )
+		formatString: #,0
+		lineageTag: 875949db-7d6a-46a0-b5c3-1de72dc50e38
+
+	measure 'Admitidos Adicional OF' = SUM( Consolidado_Reportes_Oficiales[Admitidos Proceso Adicional] )
+		formatString: #,0
+		lineageTag: 51f67b19-dfe5-4ae2-9e1f-d29af6764bc6
+
+	measure 'Sustentantes OF' = SUM( Consolidado_Reportes_Oficiales[Sustentantes] )
+		lineageTag: 3b89ee83-4456-4fe5-aeb5-1da8b2e5d756
+
+		formatStringDefinition = "0"
+
+	measure 'Avg Punto de Corte OF' = AVERAGE(Consolidado_Reportes_Oficiales[Punto de corte] )
+		formatString: 0.0
+		lineageTag: 8f5d5d85-e703-4386-836b-b69704b2b4ae
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Programas Educativos (clusters)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_2_División","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_3_División","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	measure '% Ingreso OF' = DIVIDE( [Total Admitidos OF] , [Sustentantes OF] )
+		lineageTag: dea62492-c2d9-472e-9888-57a9890cbf2d
+
+		formatStringDefinition = "0.0%;-0.0%;0.0%"
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Programas Educativos (clusters)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_2_División","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_3_División","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	measure 'Avg Punto de Corte OF LY' = CALCULATE( [Avg Punto de Corte OF] , DATEADD( Calendario[IdFecha] , -1 , YEAR ) )
+		formatString: #,0.0
+		lineageTag: 696f2e66-891c-4bff-a392-34427fdc9ea0
+
+	measure 'Sustentantes OF LY' = CALCULATE( [Sustentantes OF] , DATEADD( Calendario[IdFecha] , -1 , YEAR ) )
+		formatString: #,0
+		lineageTag: 1d1ee191-9bb0-4457-8dd1-a41b11d8e264
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Total Admitidos OF LY' = CALCULATE( [Total Admitidos OF] , DATEADD( Calendario[IdFecha] , -1 , YEAR ) )
+		formatString: #,0
+		lineageTag: b5f35a21-e29b-44c2-b218-c99d736a2475
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '% Ingreso OF LY' = CALCULATE( [% Ingreso OF] , DATEADD( Calendario[IdFecha] , -1 , YEAR ) )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: b1544760-6a58-4863-b7c3-31e899f5de21
+
+	measure 'Metrics OF LY Dinámico' = ```
+			
+			var _selector = SELECTEDVALUE( Metrics_OF[Value4])
+			RETURN 
+			SWITCH( TRUE() , 
+			    _selector = "Sustentantes" , [Sustentantes OF LY] , 
+			    _selector = "Admitidos", [Total Admitidos OF LY], 
+			    _selector = "Avg Punto de Corte" , [Avg Punto de Corte OF LY] , 
+			    _selector = "% Ingreso" , [% Ingreso OF LY],
+			     _selector = "% Admitidos Cupo" , [% Admitidos OF Cupo LY])
+			```
+		lineageTag: bc250cf1-ccab-4878-a3df-ed423be02b21
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Titulo_1 = SELECTEDVALUE( Metrics_OF[Value4] ) & " vs Año Anterior por Campus y Programa de Licenciatura"
+		lineageTag: ba726ac9-97a8-4c2c-bf7c-3ab924a633e3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cupo Gral' = SUM( Consolidado_Reportes_Oficiales[Cupo General] )
+		lineageTag: 546f409b-4861-4586-83c1-146d28174a28
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Admitidos OF Cupo' = DIVIDE( [Total Admitidos OF] , [Cupo Gral] )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: cf299ebd-9e23-4a83-8294-d4fb7abc6d10
+
+	measure '% Admitidos OF Cupo LY' = CALCULATE( [% Admitidos OF Cupo] , DATEADD( Calendario[IdFecha] , -1 , YEAR ) )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: c058e734-4061-4104-96da-c7b13f9a64ef
+
+	measure 'Avg Total Admitidos OF' = ```
+			
+			AVERAGEX( 
+			    SUMMARIZECOLUMNS( 
+			        Consolidado_Reportes_Oficiales[Cluster Final Rename] , 
+			        Consolidado_Reportes_Oficiales[Programas Educativos], 
+			        "@Total_admitidos", [Total Admitidos OF] ) , [@Total_admitidos] )
+			```
+		formatString: 0.0
+		lineageTag: 7a2ee4f9-3da5-41b3-8004-56ab8262ffd2
+
+	measure 'Avg Sustentantes OF' = ```
+			
+			AVERAGEX (
+			    ADDCOLUMNS (
+			        SUMMARIZECOLUMNS (
+			            Consolidado_Reportes_Oficiales[Cluster Final Rename],
+			            Consolidado_Reportes_Oficiales[Programas Educativos]
+			        ),
+			        "@sustentantes_of", [Sustentantes OF]
+			    ),
+			    [@sustentantes_of]
+			)
+			
+			```
+		formatString: 0.0
+		lineageTag: 19746d89-cff3-4c92-9fa5-6bcdaeec829d
+
+	measure 'Cantidad Licenciaturas' = DISTINCTCOUNT( Consolidado_Reportes_Oficiales[Programas Educativos] )
+		lineageTag: 7a2bacbc-3606-4a99-ae07-9b371b1d0e19
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Max Metric Years' = ```
+			
+			IF( NOT ISBLANK( [Metrics OF Dinámico] ), 
+			MAXX( 
+			    SUMMARIZE( ALLSELECTED( Consolidado_Reportes_Oficiales ) , 
+			    Calendario[Año] , "@Metric" , [Metrics OF Dinámico] ), [@Metric] ) )
+			```
+		lineageTag: 338360cb-873a-4b9d-b4a0-a2cad38d49e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Metrics OF Dinámico' = ```
+			
+			var _selector = SELECTEDVALUE( Metrics_OF[Value4])
+			RETURN 
+			SWITCH( TRUE() , 
+			    _selector = "Sustentantes" , [Sustentantes OF] , 
+			    _selector = "Admitidos", [Total Admitidos OF], 
+			    _selector = "Avg Punto de Corte" , [Avg Punto de Corte OF] , 
+			    _selector = "% Ingreso" , [% Ingreso OF],
+			     _selector = "% Admitidos Cupo" , [% Admitidos OF Cupo])
+			```
+		lineageTag: 24cdd1b0-f301-41e7-90a2-6d0dd0e1c6bf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Prog Educ. Licenciatura' = SELECTEDVALUE( Consolidado_Reportes_Oficiales[Programas Educativos])
+		lineageTag: c3760ad3-51d6-4115-8523-3eed3da10498
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Campus
+		dataType: string
+		lineageTag: 005b9b69-3889-4469-9c1c-46a538fd8389
+		summarizeBy: none
+		sourceColumn: Campus
+
+		annotation SummarizationSetBy = Automatic
+
+	column Facultad
+		dataType: string
+		lineageTag: 8991016b-a600-4626-8281-086b7c763818
+		summarizeBy: none
+		sourceColumn: Facultad
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Programas Educativos (clusters)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_2_División","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_3_División","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Programas Educativos'
+		dataType: string
+		lineageTag: 8c9a54d1-2e8a-451a-a39c-57b4e9d55769
+		summarizeBy: none
+		sourceColumn: Programas Educativos
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Programas Educativos (clusters)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_2_División","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_3_División","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column Sustentantes
+		dataType: int64
+		formatString: 0
+		lineageTag: a6aba41d-e8ab-4436-80be-94b96fcc8a14
+		summarizeBy: sum
+		sourceColumn: Sustentantes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Admitidos
+		dataType: int64
+		formatString: 0
+		lineageTag: 570cc90c-0c5b-4c6f-935d-a332b325a3e2
+		summarizeBy: sum
+		sourceColumn: Admitidos
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Admitidos'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2814271d-94b7-4ede-bdd4-36bfa3be554f
+		summarizeBy: sum
+		sourceColumn: Total Admitidos
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Punto de corte'
+		dataType: int64
+		formatString: 0
+		lineageTag: 20a32b07-924b-41d1-82ab-b3f35baf8ee1
+		summarizeBy: sum
+		sourceColumn: Punto de corte
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cupo General'
+		dataType: int64
+		formatString: 0
+		lineageTag: 649e7277-f3f7-4cc9-8432-0ec5a3c3333e
+		summarizeBy: sum
+		sourceColumn: Cupo General
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ciclo
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: f7572777-fec0-4072-b90c-bac573cb7804
+		summarizeBy: none
+		sourceColumn: Ciclo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Admitidos Proceso Adicional'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e2da202-d97a-4d84-b0fe-145b840ffe7f
+		summarizeBy: sum
+		sourceColumn: Admitidos Proceso Adicional
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Clusters for Programas Educativos
+	column 'Programas Educativos (clusters)' = ```
+			VAR __ClusterValue = 
+				LOOKUPVALUE(
+					'ClusterMappingTable 4'[ClusterId],
+					'ClusterMappingTable 4'[Programas_Educativos],
+					'Consolidado_Reportes_Oficiales'[Programas Educativos]
+				)
+			
+			RETURN
+				SWITCH(
+					__ClusterValue,
+					BLANK(),
+					BLANK(),
+					CONCATENATE("Cluster", __ClusterValue)
+				)
+			```
+		lineageTag: bf768c98-2a05-46f1-b1e9-3941f94dfbe2
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Consolidado_Reportes_Oficiales"
+				          }
+				        },
+				        "Property": "Programas Educativos"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"},{"Name":"c1","Entity":"Calendario"}],"Where":[{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"}}],"Values":[[{"Literal":{"Value":"'Derecho Virtual'"}}],[{"Literal":{"Value":"'Ingeniería de Software Virtual'"}}]]}}}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c1"}},"Property":"Año"}}],"Values":[[{"Literal":{"Value":"'2024'"}}]]}}},{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Facultad"}}],"Values":[[{"Literal":{"Value":"null"}}]]}}}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Consolidado_Reportes_Oficiales.Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"3L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Avg Punto de Corte OF"},"Name":"Consolidado_Reportes_Oficiales.Avg Punto de Corte OF"}},{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"% Ingreso OF"},"Name":"Consolidado_Reportes_Oficiales.% Ingreso OF"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Consolidado_Reportes_Oficiales.Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Consolidado_Reportes_Oficiales.Programas Educativos"],"PartitionIdColumn":"clusterId","Partitions":[{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable 4","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable 4"}},"Property":"Programas_Educativos"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Consolidado_Reportes_Oficiales"}},"Property":"Programas Educativos"}}}]]}}}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_2_División","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_3_División","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	/// Clusters for Programas Educativos
+	column Cluster_1_Division = ```
+			VAR __ClusterValue = 
+				LOOKUPVALUE(
+					'ClusterMappingTable 5'[ClusterId],
+					'ClusterMappingTable 5'[Programas_Educativos],
+					'Consolidado_Reportes_Oficiales'[Programas Educativos]
+				)
+			
+			RETURN
+				SWITCH(
+					__ClusterValue,
+					BLANK(),
+					BLANK(),
+					CONCATENATE("Cluster", __ClusterValue)
+				)
+			```
+		lineageTag: 02bcf3e9-7852-43c6-8dac-255962f78cf3
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Consolidado_Reportes_Oficiales"
+				          }
+				        },
+				        "Property": "Programas Educativos"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"},{"Name":"c1","Entity":"Calendario"}],"Where":[{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"}}],"Values":[[{"Literal":{"Value":"'Derecho Virtual'"}}],[{"Literal":{"Value":"'Ingeniería de Software Virtual'"}}]]}}}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c1"}},"Property":"Año"}}],"Values":[[{"Literal":{"Value":"'2024'"}}]]}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos (clusters)"}}],"Values":[[{"Literal":{"Value":"'Cluster1'"}}]]}}},{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Facultad"}}],"Values":[[{"Literal":{"Value":"null"}}]]}}}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Consolidado_Reportes_Oficiales.Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"2L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Avg Punto de Corte OF"},"Name":"Consolidado_Reportes_Oficiales.Avg Punto de Corte OF"}},{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"% Ingreso OF"},"Name":"Consolidado_Reportes_Oficiales.% Ingreso OF"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Consolidado_Reportes_Oficiales.Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Consolidado_Reportes_Oficiales.Programas Educativos"],"PartitionIdColumn":"clusterId","Partitions":[{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable 5","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable 5"}},"Property":"Programas_Educativos"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Consolidado_Reportes_Oficiales"}},"Property":"Programas Educativos"}}}]]}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Clusters for Programas Educativos
+	column Cluster_2_División = ```
+			VAR __ClusterValue = 
+				LOOKUPVALUE(
+					'ClusterMappingTable 6'[ClusterId],
+					'ClusterMappingTable 6'[Programas_Educativos],
+					'Consolidado_Reportes_Oficiales'[Programas Educativos]
+				)
+			
+			RETURN
+				SWITCH(
+					__ClusterValue,
+					BLANK(),
+					BLANK(),
+					CONCATENATE("Cluster", __ClusterValue)
+				)
+			```
+		lineageTag: 2f38ef17-79b7-4b1a-8c47-6b67c66276a1
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Consolidado_Reportes_Oficiales"
+				          }
+				        },
+				        "Property": "Programas Educativos"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"},{"Name":"c1","Entity":"Calendario"}],"Where":[{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"}}],"Values":[[{"Literal":{"Value":"'Derecho Virtual'"}}],[{"Literal":{"Value":"'Ingeniería de Software Virtual'"}}]]}}}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c1"}},"Property":"Año"}}],"Values":[[{"Literal":{"Value":"'2024'"}}]]}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos (clusters)"}}],"Values":[[{"Literal":{"Value":"'Cluster2'"}}]]}}},{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Facultad"}}],"Values":[[{"Literal":{"Value":"null"}}]]}}}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Consolidado_Reportes_Oficiales.Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"2L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Avg Punto de Corte OF"},"Name":"Consolidado_Reportes_Oficiales.Avg Punto de Corte OF"}},{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"% Ingreso OF"},"Name":"Consolidado_Reportes_Oficiales.% Ingreso OF"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Consolidado_Reportes_Oficiales.Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Consolidado_Reportes_Oficiales.Programas Educativos"],"PartitionIdColumn":"clusterId","Partitions":[{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable 6","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable 6"}},"Property":"Programas_Educativos"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Consolidado_Reportes_Oficiales"}},"Property":"Programas Educativos"}}}]]}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Clusters for Programas Educativos
+	column Cluster_3_División = ```
+			VAR __ClusterValue = 
+				LOOKUPVALUE(
+					'ClusterMappingTable 7'[ClusterId],
+					'ClusterMappingTable 7'[Programas_Educativos],
+					'Consolidado_Reportes_Oficiales'[Programas Educativos]
+				)
+			
+			RETURN
+				SWITCH(
+					__ClusterValue,
+					BLANK(),
+					BLANK(),
+					CONCATENATE("Cluster", __ClusterValue)
+				)
+			```
+		lineageTag: 207e6faa-d9e5-4e0d-aca4-d334c61aca43
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Consolidado_Reportes_Oficiales"
+				          }
+				        },
+				        "Property": "Programas Educativos"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"},{"Name":"c1","Entity":"Calendario"}],"Where":[{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"}}],"Values":[[{"Literal":{"Value":"'Derecho Virtual'"}}],[{"Literal":{"Value":"'Ingeniería de Software Virtual'"}}]]}}}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c1"}},"Property":"Año"}}],"Values":[[{"Literal":{"Value":"'2024'"}}]]}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos (clusters)"}}],"Values":[[{"Literal":{"Value":"'Cluster3'"}}]]}}},{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Facultad"}}],"Values":[[{"Literal":{"Value":"null"}}]]}}}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Consolidado_Reportes_Oficiales.Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"2L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Avg Punto de Corte OF"},"Name":"Consolidado_Reportes_Oficiales.Avg Punto de Corte OF"}},{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"% Ingreso OF"},"Name":"Consolidado_Reportes_Oficiales.% Ingreso OF"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Consolidado_Reportes_Oficiales.Programas Educativos"},"Name":"Consolidado_Reportes_Oficiales.Programas Educativos"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Consolidado_Reportes_Oficiales.Programas Educativos"],"PartitionIdColumn":"clusterId","Partitions":[{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable 7","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable 7"}},"Property":"Programas_Educativos"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Consolidado_Reportes_Oficiales"}},"Property":"Programas Educativos"}}}]]}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	column Subdivision_F = COALESCE( Consolidado_Reportes_Oficiales[Cluster_1_Division] , Consolidado_Reportes_Oficiales[Cluster_2_División] , Consolidado_Reportes_Oficiales[Cluster_3_División] )
+		lineageTag: ed1db86a-00bd-4979-b161-bffa7b5c386a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Clusters Final' = Consolidado_Reportes_Oficiales[Programas Educativos (clusters)] & "/" & Consolidado_Reportes_Oficiales[Subdivision_F]
+		lineageTag: 1099d604-d5d7-4606-9dee-0323d8a2fd9c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cluster Final Rename' = ```
+			
+			SWITCH( TRUE() ,
+			    Consolidado_Reportes_Oficiales[Clusters Final] = "Cluster1/Cluster2" , "Cluster 6" ,
+			    Consolidado_Reportes_Oficiales[Clusters Final] = "Cluster1/Cluster1" , "Cluster 5" , 
+			    Consolidado_Reportes_Oficiales[Clusters Final] = "Cluster2/Cluster1" , "Cluster 4" , 
+			    Consolidado_Reportes_Oficiales[Clusters Final] = "Cluster2/Cluster2" , "Cluster 3" , 
+			    Consolidado_Reportes_Oficiales[Clusters Final] = "Cluster3/Cluster2" , "Cluster 1" , 
+			    Consolidado_Reportes_Oficiales[Clusters Final] = "Cluster3/Cluster1" , "Cluster 2" )
+			```
+		lineageTag: dca744fa-2ac0-40e5-b7ac-54c8761e730a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column ABV
+		dataType: string
+		lineageTag: 6af0d709-e00f-426d-b140-abac51ed600f
+		summarizeBy: none
+		sourceColumn: ABV
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Consolidado_Reportes_Oficiales = m
+		mode: import
+		queryGroup: 'Reportes Oficiales PDF'
+		source =
+				let
+				    Source = Table.Combine({#"2024", #"2023", #"2022", #"2021", #"2020", #"2019"}),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Campus", type text}, {"Facultad", type text}, {"Programas Educativos", type text}, {"Sustentantes", Int64.Type}, {"Admitidos", Int64.Type}, {"Total Admitidos", Int64.Type}, {"Punto de corte", Int64.Type}, {"Cupo General", Int64.Type}, {"Ciclo", type date}}),
+				    #"Inserted Subtraction" = Table.AddColumn(#"Changed Type", "Admitidos Proceso Adicional", each [Total Admitidos] - [Admitidos], Int64.Type),
+				    #"Trimmed Text" = Table.TransformColumns(#"Inserted Subtraction",{{"Campus", Text.Trim, type text}}),
+				    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"Campus", Text.Clean, type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Cleaned Text","Ciencias exactas eingenierías","Ciencias exactas e ingenierías",Replacer.ReplaceValue,{"Campus"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Ciencias Sociales,EconómicoAdministrativas yHumanidades","Ciencias Sociales,EconómicoAdministrativas y Humanidades",Replacer.ReplaceText,{"Campus"}),
+				    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1","CienciasBiológicas yAgropecuarias","Ciencias Biológicas y Agropecuarias",Replacer.ReplaceText,{"Campus"}),
+				    #"Replaced Value3" = Table.ReplaceValue(#"Replaced Value2","#(lf)"," ",Replacer.ReplaceText,{"Facultad"}),
+				    #"Replaced Value4" = Table.ReplaceValue(#"Replaced Value3","#(cr)"," ",Replacer.ReplaceText,{"Facultad"}),
+				    #"Cleaned Text1" = Table.TransformColumns(#"Replaced Value4",{{"Facultad", Text.Clean, type text}}),
+				    #"Trimmed Text1" = Table.TransformColumns(#"Cleaned Text1",{{"Facultad", Text.Trim, type text}}),
+				    #"Replaced Value5" = Table.ReplaceValue(#"Trimmed Text1","  "," ",Replacer.ReplaceText,{"Facultad"}),
+				    #"Replaced Value6" = Table.ReplaceValue(#"Replaced Value5","Arquitectura, Artey Diseño","Arquitectura, Arte y Diseño",Replacer.ReplaceText,{"Campus"}),
+				    #"Replaced Value7" = Table.ReplaceValue(#"Replaced Value6","Ciencias Sociales,EconómicoAdministrativas y Humanidades","Ciencias Sociales, Económico Administrativas y Humanidades",Replacer.ReplaceText,{"Campus"}),
+				    #"Replaced Value8" = Table.ReplaceValue(#"Replaced Value7","Ciencias de laSalud","Ciencias de la Salud",Replacer.ReplaceText,{"Campus"}),
+				    #"Trimmed Text2" = Table.TransformColumns(#"Replaced Value8",{{"Programas Educativos", Text.Trim, type text}}),
+				    #"Cleaned Text2" = Table.TransformColumns(#"Trimmed Text2",{{"Programas Educativos", Text.Clean, type text}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Cleaned Text2", {"Programas Educativos"}, Cat_Licenciaturas_Abv, {"Programas Educativos"}, "Cat_Licenciaturas_Abv", JoinKind.LeftOuter),
+				    #"Expanded Cat_Licenciaturas_Abv" = Table.ExpandTableColumn(#"Merged Queries", "Cat_Licenciaturas_Abv", {"ABV"}, {"ABV"})
+				in
+				    #"Expanded Cat_Licenciaturas_Abv"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+

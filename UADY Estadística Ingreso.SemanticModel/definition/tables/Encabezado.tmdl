@@ -1,0 +1,349 @@
+table Encabezado
+	lineageTag: b058b295-063f-46cf-93a7-a6d49395153a
+
+	column Name
+		dataType: string
+		lineageTag: 21dafb1e-22ce-4ca6-a0d9-458dce749ad5
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Programa de licenciatura'
+		dataType: string
+		lineageTag: 3e8c2b4b-c0f5-434b-abbe-196e6369e34e
+		summarizeBy: none
+		sourceColumn: Programa de licenciatura
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Sensibilidad al Punto Corte","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Total de sustentantes'
+		dataType: int64
+		formatString: 0
+		lineageTag: 95a8c7a8-3e06-4bdc-a3e7-f8dc4984cc93
+		summarizeBy: sum
+		sourceColumn: Total de sustentantes
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sustentantes admitidos'
+		dataType: int64
+		formatString: 0
+		lineageTag: 024a9315-6f82-45ae-934e-bc65b38c881f
+		summarizeBy: sum
+		sourceColumn: Sustentantes admitidos
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Punto de corte'
+		dataType: int64
+		formatString: 0
+		lineageTag: dc9c84e9-3f31-4fda-a566-2535d07a9960
+		summarizeBy: sum
+		sourceColumn: Punto de corte
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Abv.1'
+		dataType: string
+		lineageTag: d87ff785-338e-4917-b6e2-2ebc9cc13349
+		summarizeBy: none
+		sourceColumn: Abv.1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column Ciclo
+		dataType: int64
+		formatString: 0
+		lineageTag: 22c90b98-5ecc-41c0-b9e5-9d385aa5a6c2
+		summarizeBy: sum
+		sourceColumn: Ciclo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a65b9877-ec51-4ac1-a4ee-6552acc613b3
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// (clusters punto de corte-Pct de Ingreso)
+	column '(clusters punto de corte-Pct de Ingreso)' = ```
+			VAR __ClusterValue = 
+				LOOKUPVALUE('ClusterMappingTable'[ClusterId], 'ClusterMappingTable'[Abv_1], 'Encabezado'[Abv.1])
+			
+			RETURN
+				SWITCH(
+					__ClusterValue,
+					BLANK(),
+					BLANK(),
+					CONCATENATE("Cluster", __ClusterValue)
+				)
+			```
+		lineageTag: 49c10035-6b55-4a57-9956-60e1ca499f96
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Encabezado"
+				          }
+				        },
+				        "Property": "Abv.1"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"e","Entity":"Encabezado"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Abv.1"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"e","Entity":"Encabezado"},{"Name":"m","Entity":"Metrics"},{"Name":"p","Entity":"Parameter"}],"Where":[{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Parameter Fields"}}],"Values":[[{"Literal":{"Value":"'''Metrics''[Avg. Índice Ceneval Admitivo]'"}}],[{"Literal":{"Value":"'''Metrics''[Avg. Pensamiento Mat. Admitido]'"}}]]}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Ciclo"}}],"Values":[[{"Literal":{"Value":"2023L"}}]]}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Encabezado.Abv.1"},"Name":"Encabezado.Abv.1"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"5L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Abv.1"},"Name":"Encabezado.Abv.1"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Pct Ingreso"},"Name":"Encabezado.Pct Ingreso"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Avg. punto de corte"},"Name":"Encabezado.Avg. punto de corte"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Encabezado.Abv.1"},"Name":"Encabezado.Abv.1"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Encabezado.Abv.1"],"PartitionIdColumn":"clusterId","Partitions":[{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable"}},"Property":"Abv_1"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Encabezado"}},"Property":"Abv.1"}}}]]}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Clústers 2024
+	column 'Clústers 2024' = ```
+			VAR __ClusterValue = 
+				LOOKUPVALUE(
+					'ClusterMappingTable 2'[ClusterId],
+					'ClusterMappingTable 2'[Abv_1],
+					'Encabezado'[Abv.1]
+				)
+			
+			RETURN
+				SWITCH(
+					__ClusterValue,
+					1,
+					"Cluster1",
+					2,
+					"Cluster4",
+					3,
+					"Cluster2",
+					4,
+					"Cluster3",
+					BLANK(),
+					BLANK(),
+					CONCATENATE("Cluster", __ClusterValue)
+				)
+			```
+		lineageTag: b5baba10-9296-4085-b9d4-c113ece9f446
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Encabezado"
+				          }
+				        },
+				        "Property": "Abv.1"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"e","Entity":"Encabezado"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Abv.1"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"e","Entity":"Encabezado"},{"Name":"m","Entity":"Metrics"},{"Name":"p","Entity":"Parameter"}],"Where":[{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Parameter Fields"}}],"Values":[[{"Literal":{"Value":"'''Metrics''[Avg. Índice Ceneval Admitivo]'"}}],[{"Literal":{"Value":"'''Metrics''[Avg. Pensamiento Mat. Admitido]'"}}],[{"Literal":{"Value":"'''Metrics''[Pct Ingreso]'"}}]]}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Ciclo"}}],"Values":[[{"Literal":{"Value":"2024L"}}]]}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Encabezado.Abv.1"},"Name":"Encabezado.Abv.1"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"4L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Abv.1"},"Name":"Encabezado.Abv.1"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Pct Ingreso"},"Name":"Encabezado.Pct Ingreso"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Avg. punto de corte"},"Name":"Encabezado.Avg. punto de corte"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Encabezado.Abv.1"},"Name":"Encabezado.Abv.1"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Encabezado.Abv.1"],"PartitionIdColumn":"clusterId","Partitions":[{"DisplayName":"Cluster1","PartitionIds":[{"Literal":{"Value":"1L"}}]},{"DisplayName":"Cluster4","PartitionIds":[{"Literal":{"Value":"2L"}}]},{"DisplayName":"Cluster2","PartitionIds":[{"Literal":{"Value":"3L"}}]},{"DisplayName":"Cluster3","PartitionIds":[{"Literal":{"Value":"4L"}}]},{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable 2","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable 2"}},"Property":"Abv_1"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Encabezado"}},"Property":"Abv.1"}}}]]}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	column Campus
+		dataType: string
+		lineageTag: 18005b57-1c7d-4ba7-a305-cf341225e8bf
+		summarizeBy: none
+		sourceColumn: Campus
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Sensibilidad al Punto Corte
+	column 'Sensibilidad al Punto Corte' = ```
+			VAR __ClusterValue = 
+				LOOKUPVALUE(
+					'ClusterMappingTable 3'[ClusterId],
+					'ClusterMappingTable 3'[Programa_de_licenciatura],
+					'Encabezado'[Programa de licenciatura]
+				)
+			
+			RETURN
+				SWITCH(
+					__ClusterValue,
+					BLANK(),
+					BLANK(),
+					CONCATENATE("Cluster", __ClusterValue)
+				)
+			```
+		lineageTag: 2ab30132-d6e7-4b47-8548-fadedc41d694
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Encabezado"
+				          }
+				        },
+				        "Property": "Programa de licenciatura"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"e","Entity":"Encabezado"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Programa de licenciatura"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"e","Entity":"Encabezado"},{"Name":"m","Entity":"Metrics"},{"Name":"c","Entity":"Calendario"}],"Where":[{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Año"}}],"Values":[[{"Literal":{"Value":"'2024'"}}]]}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Encabezado.Programa de licenciatura"},"Name":"Encabezado.Programa de licenciatura"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"5L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Programa de licenciatura"},"Name":"Encabezado.Programa de licenciatura"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Var % Punto de Corte"},"Name":"Metrics.Var % Punto de Corte"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Var % Admitidos"},"Name":"Metrics.Var % Admitidos"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Encabezado.Programa de licenciatura"},"Name":"Encabezado.Programa de licenciatura"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Encabezado.Programa de licenciatura"],"PartitionIdColumn":"clusterId","Partitions":[{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable 3","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable 3"}},"Property":"Programa_de_licenciatura"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Encabezado"}},"Property":"Programa de licenciatura"}}}]]}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Clusters for Abv.1
+	column Clusters_2025 = ```
+			VAR __ClusterValue = 
+				LOOKUPVALUE(
+					'ClusterMappingTable 8'[ClusterId],
+					'ClusterMappingTable 8'[Abv_1],
+					'Encabezado'[Abv.1]
+				)
+			
+			RETURN
+				SWITCH(
+					__ClusterValue,
+					1,
+					"Cluster1",
+					2,
+					"Cluster5",
+					3,
+					"Cluster2",
+					4,
+					"Cluster3",
+					5,
+					"Cluster4",
+					BLANK(),
+					BLANK(),
+					CONCATENATE("Cluster", __ClusterValue)
+				)
+			```
+		lineageTag: af38e3c3-b6dd-4c47-924c-7369e0386409
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Encabezado"
+				          }
+				        },
+				        "Property": "Abv.1"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"e","Entity":"Encabezado"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Abv.1"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"e","Entity":"Encabezado"},{"Name":"m","Entity":"Metrics"},{"Name":"p","Entity":"Parameter"},{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"}],"Where":[{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Parameter Fields"}}],"Values":[[{"Literal":{"Value":"'''Metrics''[Avg. punto de corte]'"}}],[{"Literal":{"Value":"'''Metrics''[Pct Ingreso]'"}}],[{"Literal":{"Value":"'''Metrics''[Sustentantes Total]'"}}],[{"Literal":{"Value":"'''Metrics''[Sustentantes Admitidos Total]'"}}]]}}},{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Ciclo"}}],"Values":[[{"Literal":{"Value":"2025L"}}]]}}},{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Cluster Final Rename"}}],"Values":[[{"Literal":{"Value":"null"}}]]}}}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Encabezado.Abv.1"},"Name":"Encabezado.Abv.1"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"5L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Abv.1"},"Name":"Encabezado.Abv.1"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Pct Ingreso"},"Name":"Encabezado.Pct Ingreso"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Avg. punto de corte"},"Name":"Encabezado.Avg. punto de corte"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Encabezado.Abv.1"},"Name":"Encabezado.Abv.1"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Encabezado.Abv.1"],"PartitionIdColumn":"clusterId","Partitions":[{"DisplayName":"Cluster1","PartitionIds":[{"Literal":{"Value":"1L"}}]},{"DisplayName":"Cluster5","PartitionIds":[{"Literal":{"Value":"2L"}}]},{"DisplayName":"Cluster2","PartitionIds":[{"Literal":{"Value":"3L"}}]},{"DisplayName":"Cluster3","PartitionIds":[{"Literal":{"Value":"4L"}}]},{"DisplayName":"Cluster4","PartitionIds":[{"Literal":{"Value":"5L"}}]},{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable 8","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable 8"}},"Property":"Abv_1"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Encabezado"}},"Property":"Abv.1"}}}]]}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Clusters for Abv.1
+	column Clusters_2026 = ```
+			VAR __ClusterValue = 
+				LOOKUPVALUE(
+					'ClusterMappingTable 9'[ClusterId],
+					'ClusterMappingTable 9'[Abv_1],
+					'Encabezado'[Abv.1]
+				)
+			
+			RETURN
+				SWITCH(
+					__ClusterValue,
+					1,
+					"Cluster1",
+					2,
+					"Cluster2",
+					3,
+					"Cluster5",
+					4,
+					"Cluster4",
+					5,
+					"Cluster3",
+					BLANK(),
+					BLANK(),
+					CONCATENATE("Cluster", __ClusterValue)
+				)
+			```
+		lineageTag: b16c665a-8432-4f84-ba33-66a8f0690c8e
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Encabezado"
+				          }
+				        },
+				        "Property": "Abv.1"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"e","Entity":"Encabezado"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Abv.1"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"e","Entity":"Encabezado"},{"Name":"m","Entity":"Metrics"},{"Name":"c","Entity":"Consolidado_Reportes_Oficiales"}],"Where":[{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Ciclo"}}],"Values":[[{"Literal":{"Value":"2026L"}}]]}}},{"Condition":{"Not":{"Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Cluster Final Rename"}}],"Values":[[{"Literal":{"Value":"null"}}]]}}}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Encabezado.Abv.1"},"Name":"Encabezado.Abv.1"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"5L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"e"}},"Property":"Abv.1"},"Name":"Encabezado.Abv.1"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Avg. punto de corte"},"Name":"Metrics.Avg. punto de corte"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Pct Ingreso"},"Name":"Metrics.Pct Ingreso"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Encabezado.Abv.1"},"Name":"Encabezado.Abv.1"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Encabezado.Abv.1"],"PartitionIdColumn":"clusterId","Partitions":[{"DisplayName":"Cluster1","PartitionIds":[{"Literal":{"Value":"1L"}}]},{"DisplayName":"Cluster2","PartitionIds":[{"Literal":{"Value":"2L"}}]},{"DisplayName":"Cluster5","PartitionIds":[{"Literal":{"Value":"3L"}}]},{"DisplayName":"Cluster4","PartitionIds":[{"Literal":{"Value":"4L"}}]},{"DisplayName":"Cluster3","PartitionIds":[{"Literal":{"Value":"5L"}}]},{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable 9","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable 9"}},"Property":"Abv_1"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Encabezado"}},"Property":"Abv.1"}}}]]}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Encabezado-71d93a7b-2be3-4741-9398-996028ce0b42 = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files("https://analiticaempresarial.sharepoint.com/sites/PurpuraSolutionsSite/", [ApiVersion = 15]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each ([Extension] = ".pdf")),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"Name", "Content"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Removed Other Columns", each ([Name] <> "INC.pdf")),
+				    #"Invoked Custom Function" = Table.AddColumn(#"Filtered Rows1", "Custom.1", each FnEncabezado([Content])),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Invoked Custom Function",{"Name", "Custom.1"}),
+				    #"Expanded Custom.1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Custom.1", {"Programa de licenciatura", "Total de sustentantes", "Sustentantes admitidos", "Punto de corte"}, {"Programa de licenciatura", "Total de sustentantes", "Sustentantes admitidos", "Punto de corte"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Custom.1",{{"Name", type text}, {"Programa de licenciatura", type text}, {"Total de sustentantes", Int64.Type}, {"Sustentantes admitidos", Int64.Type}, {"Punto de corte", Int64.Type}}),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Changed Type", "Name", "Name2"),
+				    #"Replaced Value" = Table.ReplaceValue(#"Duplicated Column",".pdf","",Replacer.ReplaceText,{"Name2"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Replaced Value",{{"Name2", "Abv"}}),
+				    #"Split Column by Delimiter" = Table.SplitColumn(#"Renamed Columns", "Abv", Splitter.SplitTextByEachDelimiter({"_"}, QuoteStyle.Csv, false), {"Abv.1", "Abv.2"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Split Column by Delimiter",null,"2022",Replacer.ReplaceValue,{"Abv.2"}),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Replaced Value1",{{"Abv.2", "Ciclo"}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns1",{{"Ciclo", Int64.Type}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type1", "Date", each "15" & "/" & "01" & "/" & Text.From ( [Ciclo] )),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Added Custom",{{"Date", type date}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type2", {"Abv.1"}, Licenciaturas_Campus, {"Abv.1"}, "Licenciaturas_Campus", JoinKind.LeftOuter),
+				    #"Expanded Licenciaturas_Campus" = Table.ExpandTableColumn(#"Merged Queries", "Licenciaturas_Campus", {"Campus"}, {"Campus"})
+				in
+				    #"Expanded Licenciaturas_Campus"
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

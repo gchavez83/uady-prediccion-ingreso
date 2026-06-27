@@ -1,0 +1,81 @@
+table 'ClusterMappingTable 8'
+	isHidden
+	isPrivate
+	lineageTag: 52f57f95-b251-4ca5-a7f2-0eb13341a683
+
+	column Abv_1
+		lineageTag: 5243967e-9e23-4fae-8dbe-866abd57f1fa
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Abv_1]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column ClusterId
+		formatString: 0
+		lineageTag: 400d3a5d-7090-4041-8f4d-fe183f6345e9
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [ClusterId]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	partition 'ClusterMappingTable 8' = calculated
+		mode: import
+		source = ```
+				VAR __DS0FilterTable = 
+					TREATAS(
+						{"'Metrics'[Avg. punto de corte]",
+							"'Metrics'[Pct Ingreso]",
+							"'Metrics'[Sustentantes Total]",
+							"'Metrics'[Sustentantes Admitidos Total]"},
+						'Parameter'[Parameter Fields]
+					)
+				
+				VAR __DS0FilterTable2 = 
+					TREATAS({2025}, 'Encabezado'[Ciclo])
+				
+				VAR __DS0FilterTable3 = 
+					FILTER(
+						KEEPFILTERS(VALUES('Consolidado_Reportes_Oficiales'[Cluster Final Rename])),
+						NOT('Consolidado_Reportes_Oficiales'[Cluster Final Rename] IN {BLANK()})
+					)
+				
+				VAR __DS0Core = 
+					SUMMARIZECOLUMNS(
+						'Encabezado'[Abv.1],
+						__DS0FilterTable,
+						__DS0FilterTable2,
+						__DS0FilterTable3,
+						"Pct_Ingreso", 'Metrics'[Pct Ingreso],
+						"Avg__punto_de_corte", 'Metrics'[Avg. punto de corte]
+					)
+				
+				VAR __DataTransformT0 = 
+					KMeansClustering(
+						SELECTCOLUMNS(
+							__DS0Core,
+							"Abv_1", 'Encabezado'[Abv.1],
+							"Pct_Ingreso", [Pct_Ingreso],
+							"Avg__punto_de_corte", [Avg__punto_de_corte]
+						),
+						{("[Abv_1]", "Item"),
+							("[Pct_Ingreso]", "Attribute"),
+							("[Avg__punto_de_corte]", "Attribute")},
+						{("[Abv_1]", BLANK()),
+							("ClusterId", "ClusterId")},
+						5
+					)
+				
+				RETURN __DataTransformT0
+				```
+			retainDataTillForceCalculate
+
+	annotation ClusterMappingTable = true
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"}]
+

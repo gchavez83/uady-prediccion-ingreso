@@ -1,0 +1,255 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 329,
+        "y": 92
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 266,
+            "y": 84.375
+          },
+          "nodeIndex": "Contenido",
+          "nodeLineageTag": "ea5eab59-54e5-41f7-8cb5-c9765dc29bb0",
+          "size": {
+            "height": 475,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 476.375
+          },
+          "nodeIndex": "Encabezado",
+          "nodeLineageTag": "b058b295-063f-46cf-93a7-a6d49395153a",
+          "size": {
+            "height": 373,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 1133,
+            "y": 253.375
+          },
+          "nodeIndex": "Desconectada",
+          "nodeLineageTag": "cf108ddf-0363-4c14-b52e-156f0726ab42",
+          "size": {
+            "height": 232,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 841.4,
+            "y": 84.375
+          },
+          "nodeIndex": "Parameter",
+          "nodeLineageTag": "1951f198-7101-4b80-a86f-b1baa3c1a9ce",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 404.828125,
+            "y": 626.375
+          },
+          "nodeIndex": "Calendario",
+          "nodeLineageTag": "20ebb1c7-c496-4256-8cf6-9442f6ed6086",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1421.6,
+            "y": 84.375
+          },
+          "nodeIndex": "Time Intelligence",
+          "nodeLineageTag": "e3b4650c-729a-464d-a0bd-ddcc20404633",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 557.34375,
+            "y": 85.375
+          },
+          "nodeIndex": "Relevant Metrics",
+          "nodeLineageTag": "e087280e-f9e6-4e56-83e1-deec47f51974",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 842,
+            "y": 252.375
+          },
+          "nodeIndex": "Licenciatura_Desconectada",
+          "nodeLineageTag": "8ab6e209-5460-419d-9f70-be77dc795c03",
+          "size": {
+            "height": 244,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 1126.8,
+            "y": 84.375
+          },
+          "nodeIndex": "métrica a incluir",
+          "nodeLineageTag": "68d43c6c-6eb5-4d77-bf40-a63999c70c65",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1425.6999999999998,
+            "y": 236.375
+          },
+          "nodeIndex": "Simulación Indice Ceneval",
+          "nodeLineageTag": "b81c4704-44d4-45db-970c-03bb262d4f01",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1428.4,
+            "y": 485.375
+          },
+          "nodeIndex": "Simulación Indice Pensamiento Mat.",
+          "nodeLineageTag": "cd24eb7d-b01f-4a02-b6b4-98e4f9d5d5e3",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 556.33750000000009,
+            "y": 256.375
+          },
+          "nodeIndex": "Metrics",
+          "nodeLineageTag": "58c2a8e1-d33a-4d1e-8fe9-333b908b0b08",
+          "size": {
+            "height": 223,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 1712.4,
+            "y": 428.375
+          },
+          "nodeIndex": "LY_Only",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 1248.4,
+            "y": 1047.375
+          },
+          "nodeIndex": "Licenciaturas_Campus",
+          "nodeLineageTag": "4f423cd7-e494-4d0b-8766-49a1eebf1cc6",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 794.40000000000009,
+            "y": 617.375
+          },
+          "nodeIndex": "Consolidado_Reportes_Oficiales",
+          "nodeLineageTag": "7192562a-e027-4515-b81e-381ca21e7fd1",
+          "size": {
+            "height": 300,
+            "width": 510
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 1703.4,
+            "y": 246.875
+          },
+          "nodeIndex": "Metrics_OF",
+          "nodeLineageTag": "b992130c-ba54-4bb4-8349-318309bab4f7",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1739.4,
+            "y": 606.375
+          },
+          "nodeIndex": "Comparativo",
+          "nodeLineageTag": "57eee8f1-7945-4de9-bfe7-29771fd005e8",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 492.40000000000009,
+            "y": 1058.625
+          },
+          "nodeIndex": "Cat_Licenciaturas_Abv",
+          "nodeLineageTag": "76ad8b11-27dc-45a7-bd5c-fb1a8a47e2a8",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

@@ -1,0 +1,189 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "2f40da65f00f73d454f5",
+  "position": {
+    "x": 9.8613929492691312,
+    "y": 61.985898538263115,
+    "z": 0,
+    "height": 594.50111779879626,
+    "width": 772.00619088564054,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contenido"
+                    }
+                  },
+                  "Property": "FOLIO CENEVAL"
+                }
+              },
+              "queryRef": "Contenido.FOLIO CENEVAL",
+              "nativeQueryRef": "FOLIO CENEVAL"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contenido"
+                    }
+                  },
+                  "Property": "ESTATUS"
+                }
+              },
+              "queryRef": "Contenido.ESTATUS",
+              "nativeQueryRef": "ESTATUS"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Avg. Índice Ceneval"
+                }
+              },
+              "queryRef": "Contenido.Avg. Índice Ceneval",
+              "nativeQueryRef": "Avg. Índice Ceneval"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Avg. Índice Pensamiento Matemático"
+                }
+              },
+              "queryRef": "Contenido.Avg. Índice Pensamiento Matemático",
+              "nativeQueryRef": "Avg. Índice Pensamiento Matemático"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Encabezado"
+                    }
+                  },
+                  "Property": "Abv.1"
+                }
+              },
+              "queryRef": "Encabezado.Abv.1",
+              "nativeQueryRef": "Abv.1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Encabezado"
+                    }
+                  },
+                  "Property": "Ciclo"
+                }
+              },
+              "queryRef": "Encabezado.Ciclo",
+              "nativeQueryRef": "Ciclo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contenido"
+                    }
+                  },
+                  "Property": "POSICIÓN"
+                }
+              },
+              "queryRef": "Contenido.POSICIÓN",
+              "nativeQueryRef": "POSICIÓN"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Encabezado"
+                  }
+                },
+                "Property": "Ciclo"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "114.77735830277679D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Contenido.Avg. Índice Pensamiento Matemático"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "50.06634815847991D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Encabezado.Abv.1"
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,72 @@
+table 'métrica a incluir'
+	lineageTag: 68d43c6c-6eb5-4d77-bf40-a63999c70c65
+
+	measure 'Metric LY' = ```
+			
+			VAR _selectedvalueParameterSustentantes =
+			    SELECTCOLUMNS (
+			        SUMMARIZE (
+			            'métrica a incluir',
+			            'métrica a incluir'[métrica para las barras],
+			            'métrica a incluir'[Seleccione la métrica para las barras Fields]
+			        ),
+			        'métrica a incluir'[métrica para las barras]
+			    )
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        _selectedvalueParameterSustentantes = "Total de Sustentantes", [Sustentantes Total LY],
+			        _selectedvalueParameterSustentantes = "Sustentantes Admitidos", [Sustentantes Admitidos Total LY]
+			    )
+			
+			```
+		formatString: 0
+		lineageTag: 45d953ef-550a-456c-a8bd-b51327da6cb6
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'métrica para las barras'
+		lineageTag: 3972f1ce-3e91-4bd8-82b6-9a544da65551
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Seleccione la métrica para las barras Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Seleccione la métrica para las barras Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Seleccione la métrica para las barras Fields'
+		isHidden
+		lineageTag: 7620f361-4261-41cd-ac12-b51923db9021
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Seleccione la métrica para las barras Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Seleccione la métrica para las barras Order'
+		isHidden
+		formatString: 0
+		lineageTag: bd558e83-5099-4dfd-8cf5-32c3cd7770b8
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'métrica a incluir-9a8634ed-a4d9-40b5-a32e-72bc233c7408' = calculated
+		mode: import
+		source =
+				{
+				    ("Total de Sustentantes", NAMEOF([Sustentantes Total]), 0),
+				    ("Sustentantes Admitidos", NAMEOF([Sustentantes Admitidos Total]), 1)
+				}
+
+	annotation PBI_Id = 0e4e35d0d2984814a3ac602100dbc925
+

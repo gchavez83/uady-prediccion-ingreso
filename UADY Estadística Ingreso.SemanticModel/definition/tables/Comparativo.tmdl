@@ -1,0 +1,48 @@
+table Comparativo
+	lineageTag: 57eee8f1-7945-4de9-bfe7-29771fd005e8
+
+	column Comparativo
+		lineageTag: 0a123027-784a-4c65-a32b-7e478916d7c7
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Comparativo Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Comparativo Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Comparativo Fields'
+		isHidden
+		lineageTag: f456a00b-c786-401b-bf2e-9fc43bd4e974
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Comparativo Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Comparativo Order'
+		isHidden
+		formatString: 0
+		lineageTag: 8e039622-926e-4fab-b65e-a669dd479071
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Comparativo = calculated
+		mode: import
+		source =
+				{
+				    ("Año Anterior", NAMEOF('Consolidado_Reportes_Oficiales'[Metrics OF LY Dinámico]), 0),
+				    ("Mejor Año", NAMEOF('Consolidado_Reportes_Oficiales'[Max Metric Years]), 1)
+				}
+
+	annotation PBI_Id = 38872783fab84ab384b473e9b79f94aa
+

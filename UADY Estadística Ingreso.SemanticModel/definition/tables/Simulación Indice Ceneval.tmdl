@@ -1,0 +1,26 @@
+table 'Simulación Indice Ceneval'
+	lineageTag: b81c4704-44d4-45db-970c-03bb262d4f01
+
+	measure 'Simulación Indice Ceneval Value' = SELECTEDVALUE('Simulación Indice Ceneval'[Simulación Indice Ceneval], 1000)
+		formatString: 0
+		lineageTag: 9fb163c0-a5f3-455c-89d9-7ec3a0cb0999
+
+	column 'Simulación Indice Ceneval'
+		formatString: 0
+		lineageTag: edeb1dd9-c4f1-49fb-95b6-6d39431b47c1
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition 'Simulación Indice Ceneval-aafe981e-3259-4b72-a0d2-1f40f87dab17' = calculated
+		mode: import
+		source = GENERATESERIES(700, 1300, 1)
+
+	annotation PBI_Id = cadfea75326a46ce82aaf13c2f100dc4
+

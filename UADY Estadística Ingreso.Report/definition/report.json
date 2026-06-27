@@ -1,0 +1,246 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.3.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY22SU03",
+      "reportVersionAtImport": {
+        "visual": "1.8.69",
+        "report": "2.0.69",
+        "page": "1.3.69"
+      },
+      "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Custom6060597757721033.json",
+      "reportVersionAtImport": {
+        "visual": "1.8.81",
+        "report": "2.0.81",
+        "page": "1.3.81"
+      },
+      "type": "RegisteredResources"
+    }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "28c711787b6c6d7ae251",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Consolidado_Reportes_Oficiales"
+              }
+            },
+            "Property": "Facultad"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "6c03d042cd643965a13b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Consolidado_Reportes_Oficiales"
+              }
+            },
+            "Property": "Cluster Final Rename"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "Consolidado_Reportes_Oficiales",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "c"
+                              }
+                            },
+                            "Property": "Cluster Final Rename"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicCustomVisuals": [
+    "annotatedBarByQueryOn10945130E24B4D6AAD5741C12ECB533D",
+    "Tachometer1474636471549",
+    "dg5AAA90EFEFE747CB9357C4FC19B85A58",
+    "Tachometer5514746364715412990001",
+    "PBI_CV_9272D058_BEA0_476A_B090_A712545F92FA",
+    "ZebraBITablesBAE31B370F254F808553548EFB35BFA5",
+    "waterfall6C9ED82ABD1F44C4A0D590CE01EB5EE7",
+    "zebraBiCards2C860CFAA9944091B75F0DBD117F20FA"
+  ],
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "CY22SU03",
+          "path": "BaseThemes/CY22SU03.json",
+          "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "Custom6060597757721033.json",
+          "path": "Custom6060597757721033.json",
+          "type": "CustomTheme"
+        },
+        {
+          "name": "Descripci_n_de_Medidas_UADY45547702592242634.png",
+          "path": "Descripci_n_de_Medidas_UADY45547702592242634.png",
+          "type": "Image"
+        },
+        {
+          "name": "grafica5188386171055177.png",
+          "path": "grafica5188386171055177.png",
+          "type": "Image"
+        },
+        {
+          "name": "logo_purpura_20238705137027045038.png",
+          "path": "logo_purpura_20238705137027045038.png",
+          "type": "Image"
+        },
+        {
+          "name": "numero-cuadrantes018267857691824485.png",
+          "path": "numero-cuadrantes018267857691824485.png",
+          "type": "Image"
+        },
+        {
+          "name": "scatter_plot37117131189514385.png",
+          "path": "scatter_plot37117131189514385.png",
+          "type": "Image"
+        },
+        {
+          "name": "tabla__402751462549803.png",
+          "path": "tabla__402751462549803.png",
+          "type": "Image"
+        },
+        {
+          "name": "uady_25437702247455616.png",
+          "path": "uady_25437702247455616.png",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "allowInlineExploration": true,
+    "useEnhancedTooltips": true,
+    "useScaledTooltips": true,
+    "queryLimitOption": "None",
+    "customMemoryLimit": "1048576",
+    "customTimeoutLimit": "225"
+  },
+  "slowDataSourceSettings": {
+    "isCrossHighlightingDisabled": false,
+    "isSlicerSelectionsButtonEnabled": false,
+    "isFilterSelectionsButtonEnabled": false,
+    "isFieldWellButtonEnabled": false,
+    "isApplyAllButtonEnabled": false
+  }
+}

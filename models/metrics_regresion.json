@@ -1,0 +1,252 @@
+{
+  "target": "POSICION",
+  "n_rows": 67094,
+  "leaderboard": [
+    {
+      "index": "catboost",
+      "Model": "CatBoost Regressor",
+      "MAE": 94.6431,
+      "MSE": 32134.3872,
+      "RMSE": 179.2047,
+      "R2": 0.9585,
+      "RMSLE": 0.421,
+      "MAPE": 0.4484,
+      "TT (Sec)": 2.083
+    },
+    {
+      "index": "xgboost",
+      "Model": "Extreme Gradient Boosting",
+      "MAE": 95.2651,
+      "MSE": 32787.0295,
+      "RMSE": 181.02,
+      "R2": 0.9577,
+      "RMSLE": 0.3794,
+      "MAPE": 0.3665,
+      "TT (Sec)": 0.163
+    },
+    {
+      "index": "lightgbm",
+      "Model": "Light Gradient Boosting Machine",
+      "MAE": 98.7534,
+      "MSE": 34178.7272,
+      "RMSE": 184.826,
+      "R2": 0.9559,
+      "RMSLE": 0.4091,
+      "MAPE": 0.4218,
+      "TT (Sec)": 0.185
+    },
+    {
+      "index": "rf",
+      "Model": "Random Forest Regressor",
+      "MAE": 94.9918,
+      "MSE": 35214.9748,
+      "RMSE": 187.6022,
+      "R2": 0.9546,
+      "RMSLE": 0.3395,
+      "MAPE": 0.2884,
+      "TT (Sec)": 0.939
+    },
+    {
+      "index": "et",
+      "Model": "Extra Trees Regressor",
+      "MAE": 96.2853,
+      "MSE": 36041.0673,
+      "RMSE": 189.7868,
+      "R2": 0.9535,
+      "RMSLE": 0.3558,
+      "MAPE": 0.293,
+      "TT (Sec)": 1.081
+    },
+    {
+      "index": "dt",
+      "Model": "Decision Tree Regressor",
+      "MAE": 96.5981,
+      "MSE": 36321.0385,
+      "RMSE": 190.5316,
+      "R2": 0.9531,
+      "RMSLE": 0.3743,
+      "MAPE": 0.3012,
+      "TT (Sec)": 0.062
+    },
+    {
+      "index": "gbr",
+      "Model": "Gradient Boosting Regressor",
+      "MAE": 122.1166,
+      "MSE": 39778.4263,
+      "RMSE": 199.4013,
+      "R2": 0.9487,
+      "RMSLE": 0.6746,
+      "MAPE": 0.9351,
+      "TT (Sec)": 0.37
+    },
+    {
+      "index": "ada",
+      "Model": "AdaBoost Regressor",
+      "MAE": 188.4775,
+      "MSE": 61338.3236,
+      "RMSE": 247.6465,
+      "R2": 0.9208,
+      "RMSLE": 1.0316,
+      "MAPE": 2.527,
+      "TT (Sec)": 0.467
+    },
+    {
+      "index": "ridge",
+      "Model": "Ridge Regression",
+      "MAE": 284.1628,
+      "MSE": 154556.4323,
+      "RMSE": 393.0938,
+      "R2": 0.8006,
+      "RMSLE": 1.3633,
+      "MAPE": 8.5914,
+      "TT (Sec)": 0.046
+    },
+    {
+      "index": "lr",
+      "Model": "Linear Regression",
+      "MAE": 284.1926,
+      "MSE": 154558.8363,
+      "RMSE": 393.0969,
+      "R2": 0.8006,
+      "RMSLE": 1.3635,
+      "MAPE": 8.6015,
+      "TT (Sec)": 0.634
+    },
+    {
+      "index": "br",
+      "Model": "Bayesian Ridge",
+      "MAE": 284.1477,
+      "MSE": 154555.5704,
+      "RMSE": 393.0926,
+      "R2": 0.8006,
+      "RMSLE": 1.3634,
+      "MAPE": 8.5862,
+      "TT (Sec)": 0.1
+    },
+    {
+      "index": "llar",
+      "Model": "Lasso Least Angle Regression",
+      "MAE": 285.1942,
+      "MSE": 157289.4234,
+      "RMSE": 396.5513,
+      "R2": 0.7971,
+      "RMSLE": 1.369,
+      "MAPE": 8.0445,
+      "TT (Sec)": 0.05
+    },
+    {
+      "index": "lasso",
+      "Model": "Lasso Regression",
+      "MAE": 285.1942,
+      "MSE": 157289.4259,
+      "RMSE": 396.5513,
+      "R2": 0.7971,
+      "RMSLE": 1.369,
+      "MAPE": 8.0445,
+      "TT (Sec)": 0.417
+    },
+    {
+      "index": "omp",
+      "Model": "Orthogonal Matching Pursuit",
+      "MAE": 306.5359,
+      "MSE": 169444.0246,
+      "RMSE": 411.5947,
+      "R2": 0.7814,
+      "RMSLE": 1.4133,
+      "MAPE": 7.4728,
+      "TT (Sec)": 0.047
+    },
+    {
+      "index": "huber",
+      "Model": "Huber Regressor",
+      "MAE": 297.4665,
+      "MSE": 250137.7704,
+      "RMSE": 499.5786,
+      "R2": 0.6773,
+      "RMSLE": 1.1081,
+      "MAPE": 3.4506,
+      "TT (Sec)": 0.571
+    },
+    {
+      "index": "knn",
+      "Model": "K Neighbors Regressor",
+      "MAE": 361.6473,
+      "MSE": 290147.0958,
+      "RMSE": 538.4579,
+      "R2": 0.6258,
+      "RMSLE": 1.4621,
+      "MAPE": 6.4784,
+      "TT (Sec)": 0.145
+    },
+    {
+      "index": "en",
+      "Model": "Elastic Net",
+      "MAE": 485.7007,
+      "MSE": 472114.6568,
+      "RMSE": 686.9599,
+      "R2": 0.3916,
+      "RMSLE": 1.4637,
+      "MAPE": 5.1683,
+      "TT (Sec)": 0.06
+    },
+    {
+      "index": "dummy",
+      "Model": "Dummy Regressor",
+      "MAE": 637.3576,
+      "MSE": 776151.018,
+      "RMSE": 880.8243,
+      "R2": -0.0003,
+      "RMSLE": 1.8424,
+      "MAPE": 12.1005,
+      "TT (Sec)": 0.042
+    },
+    {
+      "index": "par",
+      "Model": "Passive Aggressive Regressor",
+      "MAE": 637.1949,
+      "MSE": 925126.5784,
+      "RMSE": 955.2451,
+      "R2": -0.1927,
+      "RMSLE": 1.8343,
+      "MAPE": 7.0804,
+      "TT (Sec)": 0.126
+    },
+    {
+      "index": "lar",
+      "Model": "Least Angle Regression",
+      "MAE": 11063.1173,
+      "MSE": 1564656644.2444,
+      "RMSE": 19418.8914,
+      "R2": -2079.2384,
+      "RMSLE": 2.4385,
+      "MAPE": 263.0289,
+      "TT (Sec)": 0.052
+    }
+  ],
+  "lightgbm_cv_mean": {
+    "MAE": 98.7534,
+    "MSE": 34178.7272,
+    "RMSE": 184.826,
+    "R2": 0.9559,
+    "RMSLE": 0.4091,
+    "MAPE": 0.4218
+  },
+  "holdout_aleatorio": {
+    "Model": "Light Gradient Boosting Machine",
+    "MAE": 98.8764,
+    "MSE": 33680.0384,
+    "RMSE": 183.5212,
+    "R2": 0.9571,
+    "RMSLE": 0.4136,
+    "MAPE": 0.4344
+  },
+  "validacion_temporal_2026": {
+    "Model": "Light Gradient Boosting Machine",
+    "MAE": 152.8758,
+    "MSE": 64541.0509,
+    "RMSE": 254.0493,
+    "R2": 0.9324,
+    "RMSLE": 0.4021,
+    "MAPE": 0.3597
+  }
+}

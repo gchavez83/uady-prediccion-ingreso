@@ -1,0 +1,543 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Vista Grafica",
+  "name": "Bookmark825e0e3780a1ee14a147",
+  "options": {
+    "targetVisualNames": [],
+    "suppressData": true
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "ReportSection4ae6e281ba03a953a40b",
+    "sections": {
+      "ReportSection4ae6e281ba03a953a40b": {
+        "visualContainers": {
+          "337a40ef54afc9f97a16": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "5631fb37276bcbd0057d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Sustentantes Total"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e0b59ea3a86ca7a215c1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Sustentantes Admitidos Total"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d59ba3ca813a741440cd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Pct Ingreso"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a4370d758d122b6985bf",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. punto de corte"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1e7d6f1e8b2e78d9522d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. Índice Ceneval Admitivo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "20f4bf9893e8eb3947af",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. Pensamiento Mat. Admitido"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Sustentantes Total"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "23d36f8945f7d3327127": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "513199be2674bfbf85f9",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Encabezado"
+                        }
+                      },
+                      "Property": "Abv.1"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "316cce32a305d99ac92f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Sustentantes Admitidos Total"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "10d5e04fbb8379d2d97d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Encabezado"
+                            }
+                          },
+                          "Property": "Programa de licenciatura"
+                        }
+                      },
+                      "Function": 3
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "fbc282c7eb381b320737",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Pct Ingreso"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e1fec46ca58ce084f912",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Sustentantes Total"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "da31ff35f38a0d8f0a18",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. punto de corte"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1a5cafdc74aead220faa",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. Índice Ceneval Admitivo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "505ad01c91dc6be98019",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. Pensamiento Mat. Admitido"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "lineClusteredColumnComboChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Pct Ingreso"
+                    }
+                  }
+                },
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Pct Ingreso"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Encabezado"
+                        }
+                      },
+                      "Property": "Abv.1"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "748e525cb14ba60e1e2c": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "fad56cc2630aebe2791c": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "90d377d3d38c9551c41a": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "a0edf2bce23cedce4a15",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Sustentantes Admitidos Total"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ef19d71a465668461059",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Sustentantes Total"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2e228dd92cdd99cd2694",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Pct Ingreso"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e0bad3af87a3273cacd8",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. punto de corte"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "00e1aa08c0caee967ff0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. Índice Ceneval Admitivo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "276466e9be5facdfa777",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. Pensamiento Mat. Admitido"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "9ca3501ba1e31e8b00e6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Encabezado"
+                        }
+                      },
+                      "Property": "Programa de licenciatura"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "5ad148fca4a7bcfbca0d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Ranking Avg. Índice Ceneval Admitido"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a0a17868df88e200bd61",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Ranking Avg. Índice Pensamiento Mat. Admitido"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1180ac4b55f8654267e0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Ranking Pct Ingreso"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Pct Ingreso"
+                    }
+                  }
+                },
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Pct Ingreso"
+                    }
+                  }
+                }
+              ],
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "65eb158130b67e91a1ee": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "e758f41de8bd911a0729": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

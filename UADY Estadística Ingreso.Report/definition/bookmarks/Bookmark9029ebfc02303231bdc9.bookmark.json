@@ -1,0 +1,860 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Alternativas",
+  "name": "Bookmark9029ebfc02303231bdc9",
+  "options": {
+    "targetVisualNames": [],
+    "suppressData": true
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "ReportSectionc4a3c5635fd49cd3e94a",
+    "sections": {
+      "ReportSectionc4a3c5635fd49cd3e94a": {
+        "filters": {
+          "byExpr": [
+            {
+              "name": "Filter0f0c58cd111967bb76bb",
+              "type": "Categorical",
+              "expression": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Encabezado"
+                    }
+                  },
+                  "Property": "Ciclo"
+                }
+              },
+              "howCreated": 1
+            },
+            {
+              "name": "Filter00268672b415d993cb8b",
+              "type": "Categorical",
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "d",
+                    "Entity": "Desconectada",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "d"
+                                }
+                              },
+                              "Property": "Name.2"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "2023L"
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "expression": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Desconectada"
+                    }
+                  },
+                  "Property": "Name.2"
+                }
+              },
+              "howCreated": 1
+            }
+          ]
+        },
+        "visualContainers": {
+          "7bd10c195002394e7d9b": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "95baa6cfac549bc12402": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "fa392a4f295225476221": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "86567b823463ed5613c2",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "FOLIO CENEVAL"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "d",
+                                "Entity": "Desconectada",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "d"
+                                            }
+                                          },
+                                          "Property": "FOLIO CENEVAL"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'714792639'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "FOLIO CENEVAL"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "b7b827eb4e6be0bd3d3a": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "1d633492b8c16df76f09",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Nombre Licenciatura folio"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "778a115b8d77d1420ea0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Estatus"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "894dadcc4ac2aadea137",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Posición"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c07340c62a1e078ff6f0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Índice Ceneval folio"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d86a2a7fc06e6647bf73",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Índice Pensamiento Mat. folio"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Nombre Licenciatura folio"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "672acaf792e1c095c509": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "Filter386ebb3a43973fc52c86",
+                  "type": "Advanced",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "c",
+                        "Entity": "Contenido",
+                        "Type": 0
+                      },
+                      {
+                        "Name": "m",
+                        "Entity": "Metrics",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 1,
+                            "Left": {
+                              "Measure": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "m"
+                                  }
+                                },
+                                "Property": "Filtro Scatter"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "0L"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Filtro Scatter"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "f8438e26f5882bafd158",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Contenido"
+                        }
+                      },
+                      "Property": "FOLIO CENEVAL"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "3c2d91e15af45a6f43de",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Contenido"
+                            }
+                          },
+                          "Property": "INDICE CENEVAL"
+                        }
+                      },
+                      "Function": 0
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e24b851c5cb3ea552424",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Contenido"
+                            }
+                          },
+                          "Property": "INDICE PENSAMIENTOMATEMATICO"
+                        }
+                      },
+                      "Function": 0
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "scatterChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Contenido"
+                        }
+                      },
+                      "Property": "FOLIO CENEVAL"
+                    }
+                  }
+                ],
+                "X": [
+                  {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Contenido"
+                            }
+                          },
+                          "Property": "INDICE CENEVAL"
+                        }
+                      },
+                      "Function": 0
+                    }
+                  }
+                ]
+              },
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "9bd898c662124961e83f": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "81ed9828af4dc9c83357",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Índice Ceneval folio"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "17113f708d5bb57fb020",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Punto de Corte Licenciatura"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "PBI_CV_9272D058_BEA0_476A_B090_A712545F92FA",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Índice Ceneval folio"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "192c8d0e27905615be61": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "04f55c892d72faa2b945",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Max Posición Corte"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "02e539226d11e947d6d3",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Distancia sobre la posicion de corte ABS"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Max Posición Corte"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "219d16d7b3d29ae4e0e8": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "cb972b47e0f8c0756b98",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Punto de Corte Licenciatura"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ffd0065443e1f72ca703",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Puntos Faltantes I. Ceneval ABS"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Punto de Corte Licenciatura"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "a30d2890a77e51125758": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7294870117ab55595d47",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Min Pensamiento Mat Admitido Desc"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d2c729b646bfb1f51867",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Puntos Faltantes P. Mat. Min Admitido ABS"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Desconectada"
+                        }
+                      },
+                      "Property": "Min Pensamiento Mat Admitido Desc"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "f54625ef291363aad09c": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "da854eb11824fb85a292": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "33934da26883fe8eb9b2": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "f1863d224c9f404ad29b": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "5f8d360ba6567709428d",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Encabezado"
+                        }
+                      },
+                      "Property": "Programa de licenciatura"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "9d8d653db49b6a80e729",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Min Pensamiento Mat Admitido"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "cbe2de335b16317f711b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. punto de corte"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "4fb22b439e815dcd9455",
+                  "type": "Advanced",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "e",
+                        "Entity": "Encabezado",
+                        "Type": 0
+                      },
+                      {
+                        "Name": "m",
+                        "Entity": "Metrics",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 1,
+                            "Left": {
+                              "Measure": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "m"
+                                  }
+                                },
+                                "Property": "Alternativas Licenciaturas"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "0L"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Alternativas Licenciaturas"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Metrics"
+                        }
+                      },
+                      "Property": "Avg. punto de corte"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "192bbb0a44aae7784f65": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

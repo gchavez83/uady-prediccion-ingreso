@@ -1,0 +1,62 @@
+table 'Relevant Metrics'
+	lineageTag: e087280e-f9e6-4e56-83e1-deec47f51974
+
+	column 'Relevant Metrics'
+		lineageTag: 153a6406-6683-4f55-806c-2023bef084a4
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Relevant Metrics Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Relevant Metrics Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Relevant Metrics Fields'
+		isHidden
+		lineageTag: e7624927-e35b-4fe4-b017-abc01844b79c
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Relevant Metrics Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Relevant Metrics Order'
+		isHidden
+		formatString: 0
+		lineageTag: 06eec4d3-b38d-4f6a-b572-fb738c946c5f
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Metric_Name = 'Relevant Metrics'[Relevant Metrics]
+		lineageTag: d33b4c40-d16c-41ad-821f-d21cfb3f7c9c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Relevant Metrics-54b61329-6584-4c3f-9112-308f3b2e3076' = calculated
+		mode: import
+		source = ```
+				
+				{
+				    ( "Total de Sustentantes", NAMEOF ( [Sustentantes Total] ), 0 ),
+				    ( "Total de Sustentantes Admitidos", NAMEOF ( [Sustentantes Admitidos Total] ), 1 ),
+				    ( "Pct Ingreso", NAMEOF ( [Pct Ingreso] ), 2 ),
+				    ( "Punto de corte Ceneval", NAMEOF ( [Avg. punto de corte] ), 3 ),
+				    ( "Avg. Índice Ceneval Admitido", NAMEOF ( [Avg. Índice Ceneval Admitivo] ), 5 ),
+				    ( "Avg. Pensamiento Mat. Admitido", NAMEOF ( [Avg. Pensamiento Mat. Admitido] ), 6 ),
+				    ( "Mín. Pensamiento Mat. Admitido", NAMEOF ( [Min Pensamiento Mat Admitido] ), 4 )
+				}
+				
+				```
+
+	annotation PBI_Id = c75c281c43e0437f8c80ed6d022b41ff
+

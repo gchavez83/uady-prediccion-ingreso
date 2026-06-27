@@ -1,0 +1,73 @@
+table 'ClusterMappingTable 2'
+	isHidden
+	isPrivate
+	lineageTag: e792488a-41f1-4d0c-b741-71b7a6445a6f
+
+	column Abv_1
+		lineageTag: ca02a1a5-19bb-4a28-9512-7032affee122
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Abv_1]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column ClusterId
+		formatString: 0
+		lineageTag: 9557d8b9-4c6f-4a82-a6e2-0b0b40721bff
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [ClusterId]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	partition 'ClusterMappingTable 2' = calculated
+		mode: import
+		source = ```
+				VAR __DS0FilterTable = 
+					TREATAS(
+						{"'Metrics'[Avg. Índice Ceneval Admitivo]",
+							"'Metrics'[Avg. Pensamiento Mat. Admitido]",
+							"'Metrics'[Pct Ingreso]"},
+						'Parameter'[Parameter Fields]
+					)
+				
+				VAR __DS0FilterTable2 = 
+					TREATAS({2024}, 'Encabezado'[Ciclo])
+				
+				VAR __DS0Core = 
+					SUMMARIZECOLUMNS(
+						'Encabezado'[Abv.1],
+						__DS0FilterTable,
+						__DS0FilterTable2,
+						"Pct_Ingreso", 'Metrics'[Pct Ingreso],
+						"Avg__punto_de_corte", 'Metrics'[Avg. punto de corte]
+					)
+				
+				VAR __DataTransformT0 = 
+					KMeansClustering(
+						SELECTCOLUMNS(
+							__DS0Core,
+							"Abv_1", 'Encabezado'[Abv.1],
+							"Pct_Ingreso", [Pct_Ingreso],
+							"Avg__punto_de_corte", [Avg__punto_de_corte]
+						),
+						{("[Abv_1]", "Item"),
+							("[Pct_Ingreso]", "Attribute"),
+							("[Avg__punto_de_corte]", "Attribute")},
+						{("[Abv_1]", BLANK()),
+							("ClusterId", "ClusterId")},
+						4
+					)
+				
+				RETURN __DataTransformT0
+				```
+			retainDataTillForceCalculate
+
+	annotation ClusterMappingTable = true
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"}]
+

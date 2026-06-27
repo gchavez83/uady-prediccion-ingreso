@@ -1,0 +1,8 @@
+# Entorno de PRODUCCIÓN (Streamlit Cloud) — ligero, SIN PyCaret.
+# Solo lo necesario para cargar el pipeline .pkl y servir la app.
+streamlit==1.45.1
+pandas==2.1.4
+numpy==1.26.4
+scikit-learn==1.4.2
+lightgbm==4.6.0
+category-encoders>=2.7.0

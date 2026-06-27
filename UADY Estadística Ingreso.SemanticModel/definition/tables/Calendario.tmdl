@@ -1,0 +1,171 @@
+table Calendario
+	lineageTag: 20ebb1c7-c496-4256-8cf6-9442f6ed6086
+	dataCategory: Time
+
+	column IdFecha
+		dataType: dateTime
+		isKey
+		formatString: Short Date
+		lineageTag: c0f0d611-5913-408d-96ba-4b532cb0b56b
+		summarizeBy: none
+		sourceColumn: IdFecha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Año
+		dataType: string
+		lineageTag: a1b01c6a-fa46-4be7-8404-aa7b84406122
+		summarizeBy: none
+		sourceColumn: Año
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Sensibilidad al Punto Corte","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Programas Educativos (clusters)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_2_División","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_3_División","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column TrimestreAño
+		dataType: int64
+		formatString: 0
+		lineageTag: 0957f624-b143-4416-a5f0-cc893a7f1979
+		summarizeBy: sum
+		sourceColumn: TrimestreAño
+
+		annotation SummarizationSetBy = Automatic
+
+	column MesAño
+		dataType: int64
+		formatString: 0
+		lineageTag: df1fa90c-1877-4fe8-b9e7-0a23193d17ce
+		summarizeBy: sum
+		sourceColumn: MesAño
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiaMes
+		dataType: int64
+		formatString: 0
+		lineageTag: 835170c4-e819-4711-8c2d-8220f66da51c
+		summarizeBy: sum
+		sourceColumn: DiaMes
+
+		annotation SummarizationSetBy = Automatic
+
+	column FechaEntera
+		dataType: int64
+		formatString: 0
+		lineageTag: e9e3e90f-61f9-4a3b-b683-203a3c56cc25
+		summarizeBy: sum
+		sourceColumn: FechaEntera
+
+		annotation SummarizationSetBy = Automatic
+
+	column NombreMes
+		dataType: string
+		lineageTag: a8f8cfaa-7b71-4836-a17b-9bfd5f3b6128
+		summarizeBy: none
+		sourceColumn: NombreMes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes&Año
+		dataType: string
+		lineageTag: 0b7d8184-c5e6-4721-a1bc-706387f5c586
+		summarizeBy: none
+		sourceColumn: Mes&Año
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trim&Año
+		dataType: string
+		lineageTag: d597a640-266f-4d4e-96e9-2d8378062f50
+		summarizeBy: none
+		sourceColumn: Trim&Año
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiaNumeroSemana
+		dataType: int64
+		formatString: 0
+		lineageTag: 46b23f0f-4699-485f-8b66-34e69550b4ed
+		summarizeBy: sum
+		sourceColumn: DiaNumeroSemana
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiaNombreSemana
+		dataType: string
+		lineageTag: 3ea5a7a1-bf81-4c4a-8014-aa7d6419f174
+		summarizeBy: none
+		sourceColumn: DiaNombreSemana
+
+		annotation SummarizationSetBy = Automatic
+
+	column FinSemana
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 53c89026-d76c-4ba7-99c9-da1282be2ada
+		summarizeBy: none
+		sourceColumn: FinSemana
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column NumeroSemana
+		dataType: int64
+		formatString: 0
+		lineageTag: c8785f52-6392-49c4-b7d6-0fca0b550841
+		summarizeBy: sum
+		sourceColumn: NumeroSemana
+
+		annotation SummarizationSetBy = Automatic
+
+	column Año&Mes
+		dataType: int64
+		formatString: 0
+		lineageTag: 4370c452-e5bd-44bc-9cf8-815983b40fdb
+		summarizeBy: sum
+		sourceColumn: Año&Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Año&Trim
+		dataType: int64
+		formatString: 0
+		lineageTag: a23d470e-f91e-4f5a-8fc1-f8f0d607beb6
+		summarizeBy: sum
+		sourceColumn: Año&Trim
+
+		annotation SummarizationSetBy = Automatic
+
+	column AñoCorto
+		dataType: string
+		lineageTag: 7cf8716f-60e3-465c-a451-97f5f748cc32
+		summarizeBy: none
+		sourceColumn: AñoCorto
+
+		annotation SummarizationSetBy = Automatic
+
+	column FY
+		dataType: string
+		lineageTag: ba428022-611d-4f1c-991a-f8b114b59872
+		summarizeBy: none
+		sourceColumn: FY
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendario-5fb6e36b-6567-40c9-80fe-c568956deae2 = m
+		mode: import
+		source =
+				let
+				    Source = FxCalendar(#date(2019, 1, 1), #date(2027, 1, 1), 12)
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Sensibilidad al Punto Corte","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Programas Educativos (clusters)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_1_Division","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_2_División","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Consolidado_Reportes_Oficiales","TableItemName":"Cluster_3_División","ObjectType":4},"LinkType":"UsedInGroup"}]
+

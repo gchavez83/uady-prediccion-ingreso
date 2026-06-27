@@ -1,0 +1,352 @@
+expression FnContenido =
+		(bin as binary) =>
+		let
+		    Source = Pdf.Tables(bin, [Implementation="1.3"]),
+		    Table001 = Source{[Id="Table001"]}[Data],
+		    #"Filtered Rows" = Table.SelectRows(Table001, each not Text.Contains([Column1], "/")),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Filtered Rows", [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"POSICIÓN", Int64.Type}, {"FOLIO CENEVAL", type text}, {"INDICE CENEVAL", Int64.Type}, {"INDICE PENSAMIENTO#(lf)MATEMATICO", Int64.Type}, {"ESTATUS", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 11911f0a-9a8e-469d-8c7e-e5286c9a422a
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression FnEncabezado =
+		(bin as binary)=>
+		//Source = Pdf.Tables(File.Contents("C:\Users\Guillermo\OneDrive - CONSULTORIA ESPECIALIZADA TBL SCP\UADY Descargas\ACT.pdf"), [Implementation="1.3"]),
+		let
+		    Source = Pdf.Tables(bin, [Implementation="1.3"]),
+		    Page1 = Source{[Id="Page001"]}[Data],
+		    #"Removed Other Columns" = Table.SelectColumns(Page1,{"Column1"}),
+		    #"Added Conditional Column" = Table.AddColumn(#"Removed Other Columns", "Custom", each if [Column1] = "Programa de licenciatura" then [Column1] else if [Column1] = "Total de sustentantes" then [Column1] else if [Column1] = "Sustentantes admitidos" then [Column1] else if [Column1] = "Punto de corte" then [Column1] else if [Column1] = "POSICIÓN" then [Column1] else null),
+		    #"Filled Down" = Table.FillDown(#"Added Conditional Column",{"Custom"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Filled Down", each ([Custom] <> null and [Custom] <> "POSICIÓN")),
+		    #"Added Custom" = Table.AddColumn(#"Filtered Rows", "Custom.1", each if [Column1] = [Custom] then 1 else 0),
+		    #"Filtered Rows1" = Table.SelectRows(#"Added Custom", each ([Custom.1] = 0)),
+		    #"Removed Other Columns1" = Table.SelectColumns(#"Filtered Rows1",{"Column1", "Custom"}),
+		    #"Transposed Table" = Table.Transpose(#"Removed Other Columns1"),
+		    #"Reversed Rows" = Table.ReverseRows(#"Transposed Table"),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Reversed Rows", [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+	lineageTag: e8624b82-6592-4db4-8bcd-bccb8a4a4ed2
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression FxCalendar = ```
+		let fnDateTable = (FechaInicio as date, FechaFinal as date, FYStartMonth as number) as table =>
+		  let
+		    DayCount = Duration.Days(Duration.From(FechaFinal - FechaInicio)),
+		    Source = List.Dates(FechaInicio,DayCount,#duration(1,0,0,0)),
+		    TableFromList = Table.FromList(Source, Splitter.SplitByNothing()),   
+		    ChangedType = Table.TransformColumnTypes(TableFromList,{{"Column1", type date}}),
+		    RenamedColumns = Table.RenameColumns(ChangedType,{{"Column1", "IdFecha"}}),
+		    InsertYear = Table.AddColumn(RenamedColumns, "Año", each Date.Year([IdFecha]),type text),
+		    InsertYearNumber = Table.AddColumn(RenamedColumns, "NumeroAño", each Date.Year([IdFecha])),
+		    InsertQuarter = Table.AddColumn(InsertYear, "TrimestreAño", each Date.QuarterOfYear([IdFecha])),
+		    InsertMonth = Table.AddColumn(InsertQuarter, "MesAño", each Date.Month([IdFecha]), type text),
+		    InsertDay = Table.AddColumn(InsertMonth, "DiaMes", each Date.Day([IdFecha])),
+		    InsertDayInt = Table.AddColumn(InsertDay, "FechaEntera", each [Año] * 10000 + [MesAño] * 100 + [DiaMes]),
+		    InsertMonthName = Table.AddColumn(InsertDayInt, "NombreMes", each Date.ToText([IdFecha], "MMMM"), type text),
+		    InsertCalendarMonth = Table.AddColumn(InsertMonthName, "Mes&Año", each (try(Text.Range([NombreMes],0,3)) otherwise [NombreMes]) & " " & Number.ToText([Año])),
+		    InsertCalendarQtr = Table.AddColumn(InsertCalendarMonth, "Trim&Año", each "Q" & Number.ToText([TrimestreAño]) & " " & Number.ToText([Año])),
+		    InsertDayWeek = Table.AddColumn(InsertCalendarQtr, "DiaNumeroSemana", each Date.DayOfWeek([IdFecha])),
+		    InsertDayName = Table.AddColumn(InsertDayWeek, "DiaNombreSemana", each Date.ToText([IdFecha], "dddd"), type text),
+		    InsertWeekEnding = Table.AddColumn(InsertDayName, "FinSemana", each Date.EndOfWeek([IdFecha]), type date),
+		    InsertWeekNumber= Table.AddColumn(InsertWeekEnding, "NumeroSemana", each Date.WeekOfYear([IdFecha])),
+		    InsertMonthnYear = Table.AddColumn(InsertWeekNumber,"Año&Mes", each [Año] * 10000 + [MesAño] * 100),
+		    InsertQuarternYear = Table.AddColumn(InsertMonthnYear,"Año&Trim", each [Año] * 10000 + [TrimestreAño] * 100),
+		    ChangedType1 = Table.TransformColumnTypes(InsertQuarternYear,{{"Año&Trim", Int64.Type},{"NumeroSemana", Int64.Type},{"Año", type text},{"Año&Mes", Int64.Type}, {"FechaEntera", Int64.Type}, {"DiaMes", Int64.Type}, {"MesAño", Int64.Type}, {"TrimestreAño", Int64.Type}, {"Mes&Año", type text}, {"Trim&Año", type text}, {"DiaNumeroSemana", Int64.Type}}),
+		    InsertShortYear = Table.AddColumn(ChangedType1, "AñoCorto", each Text.End(Text.From([Año]), 2), type text),
+		    AddFY = Table.AddColumn(InsertShortYear, "FY", each "FY"&(if [MesAño]>=FYStartMonth then Text.From(Number.From([AñoCorto])+1) else [AñoCorto]))
+		in
+		    AddFY
+		in
+		    fnDateTable
+		```
+	lineageTag: 1fa255ab-dce8-4030-bd2f-1775534d629e
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression 'Table023 (Page 17)' =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2024.pdf"), [Implementation="1.3"]),
+		    Table023 = Source{[Id="Table023"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Table023, [PromoteAllScalars=true]),
+		    #"Replaced Value" = Table.ReplaceValue(#"Promoted Headers","",null,Replacer.ReplaceValue,{"Facultad"}),
+		    #"Filled Down" = Table.FillDown(#"Replaced Value",{"Campus", "Facultad"}),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Filled Down",{"Campus", "Facultad", "Programas Educativos", "Sustentantes", "Admitidos#(lf)total#(lf)(etapa 4)", "TOTAL#(lf)ADMITIDOS", "Punto de#(lf)corte"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"Admitidos#(lf)total#(lf)(etapa 4)", "Admitidos"}, {"TOTAL#(lf)ADMITIDOS", "Total Admitidos"}}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Campus", type text}, {"Facultad", type text}, {"Programas Educativos", type text}, {"Sustentantes", Int64.Type}, {"Admitidos", Int64.Type}, {"Total Admitidos", Int64.Type}, {"Punto de#(lf)corte", Int64.Type}}),
+		    #"Replaced Errors" = Table.ReplaceErrorValues(#"Changed Type", {{"Punto de#(lf)corte", null}}),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Replaced Errors",{{"Punto de#(lf)corte", "Punto de corte"}})
+		in
+		    #"Renamed Columns1"
+	lineageTag: 7cb9b28a-6fff-4515-b83b-ab4f1f2a9a09
+	queryGroup: 'Reportes Oficiales PDF\2024'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Table024 (Page 18)' =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2024.pdf"), [Implementation="1.3"]),
+		    Table024 = Source{[Id="Table024"]}[Data],
+		    #"Renamed Columns" = Table.RenameColumns(Table024,{{"Column1", "Facultad"}, {"Column2", "Programas Educativos"}, {"Column3", "Sustentantes"}, {"Column4", "Admitidos"}, {"Column7", "Total Admitidos"}, {"Column8", "Punto de corte"}}),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns",{"Facultad", "Programas Educativos", "Sustentantes", "Admitidos", "Total Admitidos", "Punto de corte"}),
+		    #"Removed Bottom Rows" = Table.RemoveLastN(#"Removed Other Columns",1),
+		    #"Filled Down" = Table.FillDown(#"Removed Bottom Rows",{"Facultad"}),
+		    #"Added Conditional Column" = Table.AddColumn(#"Filled Down", "Campus", each if [Facultad] = "Unidad Multidisciplinaria Tizimín" then "Unidad Multidisciplinaria Tizimín" else "Ciencias Exactas e ingenierías"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Added Conditional Column",{{"Campus", type text}, {"Facultad", type text}, {"Programas Educativos", type text}, {"Sustentantes", Int64.Type}, {"Admitidos", Int64.Type}, {"Total Admitidos", Int64.Type}, {"Punto de corte", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 87f1d4a4-1e09-4385-bd97-aa9bb56837e9
+	queryGroup: 'Reportes Oficiales PDF\2024'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 2024 =
+		let
+		    Source = Table.Combine({#"Table023 (Page 17)", #"Table024 (Page 18)"}),
+		    #"Replaced Value" = Table.ReplaceValue(Source,"Admón. Tecnologías de Infomación","Admón. Tecnologías de Información",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Mercadotecnia y Negocios Internac","Mercadotecnia y Negocios Internacionales",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Merged Queries" = Table.NestedJoin(#"Replaced Value1", {"Programas Educativos"}, Catalogo_Licenciaturas, {"Programas Educativos"}, "Catalogo_Licenciaturas", JoinKind.LeftOuter),
+		    #"Expanded Catalogo_Licenciaturas" = Table.ExpandTableColumn(#"Merged Queries", "Catalogo_Licenciaturas", {"Cupo#(cr)#(lf)General"}, {"Cupo#(cr)#(lf)General"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Catalogo_Licenciaturas",{{"Cupo#(cr)#(lf)General", Int64.Type}}),
+		    #"Added Custom" = Table.AddColumn(#"Changed Type", "Ciclo", each "01/01/2024"),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Ciclo", type date}}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Changed Type1",{{"Cupo#(cr)#(lf)General", "Cupo General"}}),
+		    #"Filtered Rows" = Table.SelectRows(#"Renamed Columns", each true)
+		in
+		    #"Filtered Rows"
+	lineageTag: 99eb921d-42a8-4d3e-ae55-afcb36ad1af0
+	queryGroup: 'Reportes Oficiales PDF\2024'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Table049 (Page 27)' =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2023.pdf"), [Implementation="1.3"]),
+		    Table049 = Source{[Id="Table049"]}[Data]
+		in
+		    Table049
+	lineageTag: 272caea3-eef4-4144-bfd6-e14cc5b05d2f
+	queryGroup: 'Reportes Oficiales PDF\2023'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Table050 (Page 28)' =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2023.pdf"), [Implementation="1.3"]),
+		    Table050 = Source{[Id="Table050"]}[Data],
+		    #"Filtered Rows" = Table.SelectRows(Table050, each ([Column1] <> ""))
+		in
+		    #"Filtered Rows"
+	lineageTag: 90b16798-1f21-49a5-b641-75ea9f68c373
+	queryGroup: 'Reportes Oficiales PDF\2023'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 2023 =
+		let
+		    Source = Table.Combine({#"Table049 (Page 27)", #"Table050 (Page 28)"}),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Renamed Columns" = Table.RenameColumns(#"Promoted Headers",{{"Programas Educativos/ Escuelas", "Programas Educativos"}}),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns",{"Programas Educativos", "Cupo#(lf)General", "Demanda#(lf)Final#(lf)(examen)", "TOTAL#(lf)Admitidos#(lf)(como#(lf)resultado#(lf)del#(lf)examen)", "TOTAL#(lf)Admitidos#(lf)(incluyendo#(lf)etapa de#(lf)llenado de#(lf)cupos)", "Puntos#(lf)de corte#(lf)1a.#(lf)Selección"}),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Removed Other Columns",{{"Demanda#(lf)Final#(lf)(examen)", "Sustentantes"}, {"TOTAL#(lf)Admitidos#(lf)(como#(lf)resultado#(lf)del#(lf)examen)", "Admitidos"}, {"TOTAL#(lf)Admitidos#(lf)(incluyendo#(lf)etapa de#(lf)llenado de#(lf)cupos)", "Total Admitidos"}, {"Puntos#(lf)de corte#(lf)1a.#(lf)Selección", "Punto de corte"}}),
+		    #"Replaced Value" = Table.ReplaceValue(#"Renamed Columns1","Admón. Tecnologías de Infor.","Admón. Tecnologías de Información",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Mercadotecnia y Negocios Intern.","Mercadotecnia y Negocios Internacionales",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Merged Queries" = Table.NestedJoin(#"Replaced Value1", {"Programas Educativos"}, Catalogo_Licenciaturas, {"Programas Educativos"}, "Catalogo_Licenciaturas", JoinKind.LeftOuter),
+		    #"Expanded Catalogo_Licenciaturas" = Table.ExpandTableColumn(#"Merged Queries", "Catalogo_Licenciaturas", {"Campus", "Facultad"}, {"Campus", "Facultad"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Catalogo_Licenciaturas",{{"Programas Educativos", type text}, {"Cupo#(lf)General", Int64.Type}, {"Sustentantes", Int64.Type}, {"Admitidos", Int64.Type}, {"Total Admitidos", Int64.Type}, {"Punto de corte", Int64.Type}, {"Campus", type text}, {"Facultad", type text}}),
+		    #"Added Custom" = Table.AddColumn(#"Changed Type", "Ciclo", each "01/01/2023"),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Ciclo", type date}}),
+		    #"Renamed Columns2" = Table.RenameColumns(#"Changed Type1",{{"Cupo#(lf)General", "Cupo General"}})
+		in
+		    #"Renamed Columns2"
+	lineageTag: 05010899-4111-4092-9470-88ab27c4221d
+	queryGroup: 'Reportes Oficiales PDF\2023'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Table046 (Page 29)' =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2022.pdf"), [Implementation="1.3"]),
+		    Table046 = Source{[Id="Table046"]}[Data]
+		in
+		    Table046
+	lineageTag: 531be5da-bf1b-40da-8f0d-e1492cb36f22
+	queryGroup: 'Reportes Oficiales PDF\2022'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Table047 (Page 30)' =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2022.pdf"), [Implementation="1.3"]),
+		    Table047 = Source{[Id="Table047"]}[Data]
+		in
+		    Table047
+	lineageTag: 29e5bc2f-0544-4535-a19a-06b5c61f96b8
+	queryGroup: 'Reportes Oficiales PDF\2022'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 2022 =
+		let
+		    Source = Table.Combine({#"Table046 (Page 29)", #"Table047 (Page 30)"}),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Promoted Headers",{"Programas Educativos/ Escuelas", "Cupo#(lf)General", "Demanda#(lf)Final#(lf)(examen)", "TOTAL#(lf)Admitidos#(lf)(como#(lf)resultado#(lf)del#(lf)examen)", "TOTAL#(lf)Admitidos#(lf)(incluyendo#(lf)etapa de#(lf)llenado de#(lf)cupos)", "Punto de#(lf)corte"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"Programas Educativos/ Escuelas", "Programas Educativos"}, {"Demanda#(lf)Final#(lf)(examen)", "Sustentantes"}, {"TOTAL#(lf)Admitidos#(lf)(como#(lf)resultado#(lf)del#(lf)examen)", "Admitidos"}, {"TOTAL#(lf)Admitidos#(lf)(incluyendo#(lf)etapa de#(lf)llenado de#(lf)cupos)", "Total Admitidos"}, {"Punto de#(lf)corte", "Punto de corte"}}),
+		    #"Replaced Value" = Table.ReplaceValue(#"Renamed Columns","Admón. Tecnologías de#(lf)Información.","Admón. Tecnologías de Información",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Mercadotecnia y Negocios#(lf)Internacionales","Mercadotecnia y Negocios Internacionales",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Merged Queries" = Table.NestedJoin(#"Replaced Value1", {"Programas Educativos"}, Catalogo_Licenciaturas, {"Programas Educativos"}, "Catalogo_Licenciaturas", JoinKind.LeftOuter),
+		    #"Expanded Catalogo_Licenciaturas" = Table.ExpandTableColumn(#"Merged Queries", "Catalogo_Licenciaturas", {"Campus", "Facultad"}, {"Campus", "Facultad"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Expanded Catalogo_Licenciaturas", each ([Programas Educativos] <> "TOTAL")),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{{"Programas Educativos", type text}, {"Cupo#(lf)General", Int64.Type}, {"Sustentantes", Int64.Type}, {"Admitidos", Int64.Type}, {"Total Admitidos", Int64.Type}, {"Punto de corte", Int64.Type}, {"Campus", type text}, {"Facultad", type text}}),
+		    #"Added Custom" = Table.AddColumn(#"Changed Type", "Ciclo", each "01/01/2022"),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Ciclo", type date}}),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Changed Type1",{{"Cupo#(lf)General", "Cupo General"}})
+		in
+		    #"Renamed Columns1"
+	lineageTag: e6689a15-498f-4739-9eea-4679be2f6165
+	queryGroup: 'Reportes Oficiales PDF\2022'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 2021 =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2021.pdf"), [Implementation="1.3"]),
+		    Table038 = Source{[Id="Table038"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Table038, [PromoteAllScalars=true]),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Promoted Headers",{"Campus", "Facultad", "Programas Educativos/ Escuelas", "Cupo", "Demanda#(lf)Final#(lf)(examen)", "Admitidos", "TOTAL#(lf)Admitidos", "Puntos de#(lf)corte 1a.#(lf)Selección"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"Programas Educativos/ Escuelas", "Programas Educativos"}}),
+		    #"Filled Down" = Table.FillDown(#"Renamed Columns",{"Facultad", "Campus"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Filled Down", each ([Programas Educativos] <> "TOTAL")),
+		    #"Replaced Value" = Table.ReplaceValue(#"Filtered Rows","Químico Farmacéutico Biológo","Químico Farmacéutico Biólogo",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Mercadotecnia y Negocios Intern.","Mercadotecnia y Negocios Internacionales",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1","Admón. Tecnologías de Infor.","Admón. Tecnologías de Información",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Replaced Value2",{"Campus", "Facultad"}),
+		    #"Merged Queries" = Table.NestedJoin(#"Removed Columns", {"Programas Educativos"}, Catalogo_Licenciaturas, {"Programas Educativos"}, "Catalogo_Licenciaturas", JoinKind.LeftOuter),
+		    #"Expanded Catalogo_Licenciaturas" = Table.ExpandTableColumn(#"Merged Queries", "Catalogo_Licenciaturas", {"Campus", "Facultad"}, {"Campus", "Facultad"}),
+		    #"Added Custom" = Table.AddColumn(#"Expanded Catalogo_Licenciaturas", "Ciclo", each "01/01/2021"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"Ciclo", type date}}),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Changed Type",{{"Cupo", "Cupo General"}, {"Demanda#(lf)Final#(lf)(examen)", "Sustentantes"}, {"TOTAL#(lf)Admitidos", "Total Admitidos"}, {"Puntos de#(lf)corte 1a.#(lf)Selección", "Punto de corte"}})
+		in
+		    #"Renamed Columns1"
+	lineageTag: 8b12579c-b670-4d4d-8353-351cf0bc63bb
+	queryGroup: 'Reportes Oficiales PDF\2021'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 2020 =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2020.pdf"), [Implementation="1.3"]),
+		    Table033 = Source{[Id="Table033"]}[Data],
+		    #"Filtered Rows" = Table.SelectRows(Table033, each ([Column3] <> "")),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Filtered Rows", [PromoteAllScalars=true]),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Promoted Headers",{"Programas Educativos/ Escuelas", "Cupo", "Demanda#(lf)Final#(lf)(examen)", "Admitidos", "TOTAL#(lf)Admitidos", "Puntos#(lf)de corte#(lf)1a.#(lf)Selección"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"Demanda#(lf)Final#(lf)(examen)", "Sustentantes"}, {"TOTAL#(lf)Admitidos", "Total Admitidos"}, {"Puntos#(lf)de corte#(lf)1a.#(lf)Selección", "Punto de corte"}, {"Programas Educativos/ Escuelas", "Programas Educativos"}}),
+		    #"Replaced Value" = Table.ReplaceValue(#"Renamed Columns","Mercadotecnia y Negocios Intern.","Mercadotecnia y Negocios Internacionales",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Admón. Tecnologías de Infor.","Admón. Tecnologías de Información",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1","Enseñanza del Inglés","Enseñanza del Idioma Inglés",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Merged Queries" = Table.NestedJoin(#"Replaced Value2", {"Programas Educativos"}, Catalogo_Licenciaturas, {"Programas Educativos"}, "Catalogo_Licenciaturas", JoinKind.LeftOuter),
+		    #"Expanded Catalogo_Licenciaturas" = Table.ExpandTableColumn(#"Merged Queries", "Catalogo_Licenciaturas", {"Campus", "Facultad"}, {"Campus", "Facultad"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Catalogo_Licenciaturas",{{"Programas Educativos", type text}, {"Cupo", Int64.Type}, {"Sustentantes", Int64.Type}, {"Admitidos", Int64.Type}, {"Total Admitidos", Int64.Type}, {"Punto de corte", type number}, {"Campus", type text}, {"Facultad", type text}}),
+		    #"Added Custom" = Table.AddColumn(#"Changed Type", "Ciclo", each "01/01/2020"),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Ciclo", type date}}),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Changed Type1",{{"Cupo", "Cupo General"}})
+		in
+		    #"Renamed Columns1"
+	lineageTag: 1d17ee44-8d83-4fd1-b189-00ab47f3d9c5
+	queryGroup: 'Reportes Oficiales PDF\2020'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Table023 (Page 21)' =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2019.pdf"), [Implementation="1.3"]),
+		    Table023 = Source{[Id="Table023"]}[Data]
+		in
+		    Table023
+	lineageTag: 40b24443-0b47-44f5-9864-bee8ddf23177
+	queryGroup: 'Reportes Oficiales PDF\2019'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Table024 (Page 22)' =
+		let
+		    Source = Pdf.Tables(File.Contents("C:\Users\gchav\OneDrive\Documentos\Reportes Oficiales UADY\reporte2019.pdf"), [Implementation="1.3"]),
+		    Table024 = Source{[Id="Table024"]}[Data],
+		    #"Filtered Rows" = Table.SelectRows(Table024, each ([Column2] <> ""))
+		in
+		    #"Filtered Rows"
+	lineageTag: 7a897e68-4364-42c0-afcc-07ff63263a08
+	queryGroup: 'Reportes Oficiales PDF\2019'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 2019 =
+		let
+		    Source = Table.Combine({#"Table023 (Page 21)", #"Table024 (Page 22)"}),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Promoted Headers",{"Programas Educativos/ Escuelas", "Cupo", "Demanda#(lf)Final#(lf)(examen)", "Admitidos", "TOTAL#(lf)Admitidos", "Puntos#(lf)de corte#(lf)1a.#(lf)Selección"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"Programas Educativos/ Escuelas", "Programas Educativos"}, {"Demanda#(lf)Final#(lf)(examen)", "Sustentantes"}, {"TOTAL#(lf)Admitidos", "Total Admitidos"}, {"Puntos#(lf)de corte#(lf)1a.#(lf)Selección", "Punto de corte"}}),
+		    #"Replaced Value" = Table.ReplaceValue(#"Renamed Columns","Químico Farmacéutico Biológo","Químico Farmacéutico Biólogo",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Admón. Tecnologías de Infor.","Admón. Tecnologías de Información",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1","Mercadotecnia y Negocios Intern.","Mercadotecnia y Negocios Internacionales",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Replaced Value3" = Table.ReplaceValue(#"Replaced Value2","Enseñanza del Inglés","Enseñanza del Idioma Inglés",Replacer.ReplaceText,{"Programas Educativos"}),
+		    #"Merged Queries" = Table.NestedJoin(#"Replaced Value3", {"Programas Educativos"}, Catalogo_Licenciaturas, {"Programas Educativos"}, "Catalogo_Licenciaturas", JoinKind.LeftOuter),
+		    #"Expanded Catalogo_Licenciaturas" = Table.ExpandTableColumn(#"Merged Queries", "Catalogo_Licenciaturas", {"Campus", "Facultad"}, {"Campus", "Facultad"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Catalogo_Licenciaturas",{{"Programas Educativos", type text}, {"Cupo", Int64.Type}, {"Sustentantes", Int64.Type}, {"Admitidos", Int64.Type}, {"Total Admitidos", Int64.Type}, {"Punto de corte", type number}, {"Campus", type text}, {"Facultad", type text}}),
+		    #"Added Custom" = Table.AddColumn(#"Changed Type", "Ciclo", each "01/01/2019"),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Ciclo", type date}}),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Changed Type1",{{"Cupo", "Cupo General"}})
+		in
+		    #"Renamed Columns1"
+	lineageTag: 6e5d0919-183a-4fe9-8046-12173bf93b05
+	queryGroup: 'Reportes Oficiales PDF\2019'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression Catalogo_Licenciaturas =
+		let
+		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("xVjNcts2EH4VjM+eDsF/HhXbGXvGStPE9aFJDjAJK8hQgEuCbp23ydEHHzq+9coX62JBiBSlNK5MqwetCBLE7n7Y/XbBDx8OZtXvjdA8103FDsms0vxj9VHekWNR8/YvdXC4NmNzmEQJSJoFIH3PSEqDyPzF6cGnw50UaF6TS1E3rOQ1LkhBxihSM/ZCoyf2dlu/e0AKXpLT9tuV0EzD7cBzIopBZKFRFfuo40hwmQtWk/cK/sCqQ6PjJFeyfVyKXJnRrFgKKWpdMS1uYeqduXnaLJkUBSvQEbcMTpe6UjeqbB8XImfmqbujFu0D6zQZb1MnQmNc5hvrAOGhXWbBV2K1mNU9W8ByPG9YJXD9OS9ELiQzzy655hVcwyM7+TelACEpcAPgRZ53hphtjZxAZNLMyCjaIzKwgXxgT+JEGBpEaPLSiJiVnHbq+yOZYdQk8f4AOVLLRsJ1LtpH2YdKEqxEsgqVyNsHMGTOzCSkAgxYanTTAAnBC7I9A3QKL6sKTfQDJwIEJQ1eOlrm7T3MVKSfpIh7XmszI00NIDRCGYeW45BHabg/kM6BFOFlYEVyDmtIxZZgb85wG/3UidAQbxb5m7ABhZIS8XjPyqaACSfymlewik2VwYgAKBXYZdZLMV2M1+mgXiTe/jy/aCpRL01tQC5LkNYwoT3P28yZH/l5UbEr9kX1iehnTmACpHG0BbxnOqikZkWD2N6tv4OsYGhz444fucps8tRDh5EkwO8feOyifxDfR6JqvjBpYAxCLMkU49r3KHJjd+t/cBsufiIXkG8dO6E/Z/JaVcvVtDB2AuGwAT6uav8Gw5tGQ7asIZtRF1LUS5P/uN47/pldiRLakdWiNHSEniKkXpI+ZdGfC0Cpr1hun8gxl7pjoNhaSW0Vo5ax6ZMi4ZemfYAdY/2lIq+ZQba9b7QZvQL7QbvCJEB2izEUEhtxYbqN6fifLNfm3+gScsGlwPwyu37WD9dHEIO3wmRcgHlLY5RY/Zwe35tCz+v2obY+p5ELmcQyRriloOyohUtyInllQ/Ydl+qWXdkeuGeU0Abalp5nd6VznjNdQdBZF330kVIE0/IDuGk8nkrhrBRLCEZVI3c4gUhmuJPhvlnDTlEVedv+fVWaKO4rVuwZPELsNkMb0F7Xhu/bzDmvcjDT9hrkjrzhC1CpamA3KOYS5inZHZvCCJMuw8ix7aolJRpMWmqPecXzz2rtKsEICrBJD0KLmG28xvTyPN0nRZOvsOkHg72jnvE/s+5jt76VmKc0Q5rzJZNfGR4xzwqhlgz2Z1G292Yydj5IiHHctxz+tAbBC2rZ0b+CRgXiYj1EUDMeFTInAB8D0LSN2NCS4TX6jgLjwh63p1X9Fhi7r4Lro9iznQoebW2hsMWVhi+bHORSVLpB/L3uh8dH2ZSl+1vTf+I4lnyfYI3ezbLMyOwGmIxhHmAjigJPHbaAjPvcHXSNiB1OUbrvu1yRRIENdoq7PWb3Z+o9k0UDuwDbRM6N3lp3pdpzgmJLavvwbFqnV2D3VmB8rQTGOPZWT9Y8Z5ov22/aff/IIWK6QkppNJJ2K+Md117v8wiQxU3Td6B4cEcRGmE//YzLx1NVrREjKKvJaILvrYkMQRvn41O1DfcI1L1X1/oPVvFBaegKk21wAtuUIpbpBCohF0ZYYs+ILY49GHlIQbu6N4bOXwn8Joac0q39K9IRmTelFoWocwGsYD9dXIivAvjYWPekSZtN0uDhIFY2vhhMZ8KgyA91h2vCxqk/ue7B94zBbWS3IHaiO3hM7vn3AnowBUPZfSA2MNAtncVzE6gvYDRwwnbumK+2gn36Bw==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Campus = _t, Facultad = _t, #"Programas Educativos" = _t, Sustentantes = _t, Admitidos = _t, #"Total Admitidos" = _t, #"Punto de corte" = _t, #"Cupo#(cr)#(lf)General" = _t])
+		in
+		    Source
+	lineageTag: 755ed46a-d828-490b-9a49-2c2776a96c99
+	queryGroup: 'Reportes Oficiales PDF'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,50 @@
+table Licenciaturas_Campus
+	lineageTag: 4f423cd7-e494-4d0b-8766-49a1eebf1cc6
+
+	column 'Programa de licenciatura'
+		dataType: string
+		lineageTag: ef3d6cf3-96cb-4482-8a61-a4ed82029a42
+		summarizeBy: none
+		sourceColumn: Programa de licenciatura
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Abv.1'
+		dataType: string
+		lineageTag: 13535bec-8e29-450f-a00a-28acf26dc948
+		summarizeBy: none
+		sourceColumn: Abv.1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Abr-Lic
+		dataType: string
+		lineageTag: 32a214c1-98bb-4fdd-83bc-6def18c232ee
+		summarizeBy: none
+		sourceColumn: Abr-Lic
+
+		annotation SummarizationSetBy = Automatic
+
+	column Campus
+		dataType: string
+		lineageTag: 11058788-935c-469a-83b3-5962c3d59470
+		summarizeBy: none
+		sourceColumn: Campus
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Licenciaturas_Campus = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://analiticaempresarial-my.sharepoint.com/personal/administrador_purpurasolutions_com/Documents/Licenciaturas%20UADY%20campus.xlsx"), null, true),
+				    Hoja1_Sheet = Source{[Item="Hoja1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Hoja1_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Programa de licenciatura", type text}, {"Abv.1", type text}, {"Abr-Lic", type text}, {"Campus", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

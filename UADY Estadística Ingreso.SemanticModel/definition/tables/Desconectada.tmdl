@@ -1,0 +1,338 @@
+table Desconectada
+	lineageTag: cf108ddf-0363-4c14-b52e-156f0726ab42
+
+	measure 'Avg. Índice Ceneval Admitivo Licenciatura' = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE ( Contenido[Name], Contenido[FOLIO CENEVAL], X )
+			VAR i =
+			    CALCULATE ( [Avg. Índice Ceneval Admitivo], Contenido[Name] = j )
+			RETURN
+			    i
+			
+			
+			
+			
+			```
+		formatString: #,0.0
+		lineageTag: 38b3b0c0-a440-4c10-abdd-45129470c72d
+
+		changedProperty = FormatString
+
+	measure Posición = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE ( Contenido[POSICIÓN], Contenido[FOLIO CENEVAL], X )
+			RETURN
+			    J
+			
+			```
+		formatString: 0
+		lineageTag: a774adc5-d160-4999-b6de-bdaaeabedf48
+
+	measure Estatus = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE ( Contenido[ESTATUS], Contenido[FOLIO CENEVAL], X )
+			RETURN
+			    J
+			
+			```
+		lineageTag: 0b44c6c7-b9bb-4dcb-a03c-18221df609dd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Índice Ceneval folio' = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE ( Contenido[INDICE CENEVAL], Contenido[FOLIO CENEVAL], X )
+			RETURN
+			    J
+			
+			```
+		formatString: #,0
+		lineageTag: ab7f7480-5696-46c4-a586-4fafae22ef2e
+
+		changedProperty = FormatString
+
+	measure 'Índice Pensamiento Mat. folio' = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE (
+			        Contenido[INDICE PENSAMIENTOMATEMATICO],
+			        Contenido[FOLIO CENEVAL], X
+			    )
+			RETURN
+			    J
+			
+			```
+		formatString: #,0
+		lineageTag: 9bb33527-a884-456f-9044-883b73d30656
+
+		changedProperty = FormatString
+
+	measure 'Nombre Licenciatura folio' = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE ( Contenido[Name], Contenido[FOLIO CENEVAL], X )
+			VAR i =
+			    LOOKUPVALUE ( Encabezado[Programa de licenciatura], Encabezado[Name], j )
+			RETURN
+			    i
+			
+			```
+		lineageTag: e12c32b5-c95f-4885-b7dd-428f12d8b96d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Punto de corte folio' = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE ( Contenido[Name], Contenido[FOLIO CENEVAL], X )
+			VAR i =
+			    LOOKUPVALUE ( Encabezado[Punto de corte], Encabezado[Name], j )
+			RETURN
+			    i
+			
+			```
+		formatString: #,0
+		lineageTag: 7f6ba7bd-807c-453d-b1bf-3558a621186d
+
+		changedProperty = FormatString
+
+	measure 'Name folio' = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE ( Contenido[Name], Contenido[FOLIO CENEVAL], X )
+			RETURN
+			    J
+			
+			```
+		lineageTag: 0c8b5ac3-3fcd-4705-a947-3762ed0e4893
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Max Posición Corte' = ```
+			
+			MAXX (
+			    FILTER (
+			        Contenido,
+			        Contenido[ESTATUS] = "Admitido"
+			            && Contenido[Name] = [Name folio]
+			    ),
+			    Contenido[POSICIÓN]
+			)
+			
+			
+			```
+		formatString: 0
+		lineageTag: 3249a794-2e0f-4e32-ae53-364c8d749bb5
+
+	measure 'Avg. Índice Pensamiento Matemático Admitivo Licenciatura' = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE ( Contenido[Name], Contenido[FOLIO CENEVAL], X )
+			VAR i =
+			    CALCULATE ( [Avg. Pensamiento Mat. Admitido], Contenido[Name] = j )
+			RETURN
+			    i
+			
+			```
+		lineageTag: 9d4fd657-c759-4920-8955-8cc6a63f156b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Iconos Estatus' = ```
+			
+			IF ( Desconectada[Estatus] = "Admitido", "🟢", "🔴" )
+			
+			```
+		lineageTag: 054c3097-8ce5-4dfc-8bfd-3a166df5fc7e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Punto de Corte Licenciatura' = ```
+			
+			VAR X =
+			    SELECTEDVALUE ( Desconectada[FOLIO CENEVAL] )
+			VAR j =
+			    LOOKUPVALUE ( Contenido[Name], Contenido[FOLIO CENEVAL], X )
+			VAR i =
+			    LOOKUPVALUE ( Encabezado[Punto de corte], Encabezado[Name], j )
+			RETURN
+			    i
+			
+			```
+		formatString: #,0
+		lineageTag: d404484f-9ca2-43ac-bd91-b09cf11786a6
+
+		changedProperty = FormatString
+
+	measure 'Distancia sobre la posición de Corte' = [Posición] - [Max Posición Corte]
+		formatString: 0
+		lineageTag: 86ca417a-ab22-4c73-b277-4102c97e778f
+
+	measure 'Posicion neg' = ```
+			
+			[Posición] * -1
+			
+			```
+		formatString: 0
+		lineageTag: 9c530c12-fa98-4aba-a593-1a510abbcb96
+
+	measure 'Max posicion corte neg' = ```
+			
+			[Max Posición Corte] * -1
+			
+			```
+		formatString: 0
+		lineageTag: 8ebcff95-a394-4052-9a1e-5f0b21ebaa36
+
+	measure 'Puntos Faltantes I. Ceneval' = ```
+			
+			[Punto de Corte Licenciatura] - [Índice Ceneval folio]
+			
+			```
+		formatString: #,0
+		lineageTag: 6a70ded3-bb2f-408b-b7cb-6baf78c68c2a
+
+	measure 'Label Tarjetas I.Ceneval' = ```
+			
+			IF (
+			    [Puntos Faltantes I. Ceneval] > 0,
+			    "Puntos Faltantes I. Ceneval",
+			    "Excedente de Puntos I. Ceneval"
+			)
+			
+			```
+		lineageTag: 2a215795-0f84-4c5d-83a7-5fca6afcf0cc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Label Tarjeta Distancia posicion de corte' = ```
+			
+			IF (
+			    [Distancia sobre la posición de Corte] > 0,
+			    "Lugares para alcanzar la posición de corte",
+			    "Lugares por encima de la posición de corte"
+			)
+			
+			```
+		lineageTag: 7b346a99-e179-43bd-b507-a7586c6f2e69
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Distancia sobre la posicion de corte ABS' = ABS( [Distancia sobre la posición de Corte] )
+		formatString: 0
+		lineageTag: 17083396-1a7d-40c8-844f-2430de874137
+
+	measure 'Puntos Faltantes I. Ceneval ABS' = ```
+			
+			ABS ( [Puntos Faltantes I. Ceneval] )
+			
+			```
+		formatString: 0
+		lineageTag: e1f51578-06c9-4c64-b7fc-913600ab3f10
+
+	measure 'Min Pensamiento Mat Admitido Desc' = ```
+			
+			MINX (
+			    FILTER ( Contenido, Contenido[Name] = [Name folio] ),
+			    [Avg. Pensamiento Mat. Admitido]
+			)
+			
+			```
+		lineageTag: 19f7177a-d120-4ab8-80f0-4fa945ba7d1e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Puntos Faltantes P. Matematico Minimo Admitido' = ```
+			
+			[Min Pensamiento Mat Admitido Desc] - [Índice Pensamiento Mat. folio]
+			
+			```
+		lineageTag: dcf32fbe-59ff-4400-ba8e-293084766a24
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Puntos Faltantes P. Mat. Min Admitido ABS' = ```
+			
+			ABS ( [Puntos Faltantes P. Matematico Minimo Admitido] )
+			
+			```
+		lineageTag: 0252df68-36ef-4133-9691-57ed6f62e1cb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Label Puntos Faltantes P. Mat' = ```
+			
+			IF (
+			    [Puntos Faltantes P. Matematico Minimo Admitido] > 0,
+			    "Puntos para alcanzar el I.P.Mat.Mín Admitido",
+			    "Exced. de Puntos sobre el I.P. Mín. Admitido"
+			)
+			
+			```
+		lineageTag: 9069c827-b941-46ce-8746-2ba7efa1f92d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'FOLIO CENEVAL'
+		dataType: string
+		lineageTag: 3f9acf6d-fd38-40f8-9534-50143cfefff4
+		summarizeBy: none
+		sourceColumn: FOLIO CENEVAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Name.2'
+		dataType: int64
+		formatString: 0
+		lineageTag: dfd64c86-71f3-4992-b864-4e0be766eca0
+		summarizeBy: sum
+		sourceColumn: Name.2
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Desconectada-bfa7d86d-2083-4c13-bc85-58c60a49b198 = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files("https://analiticaempresarial.sharepoint.com/sites/PurpuraSolutionsSite/", [ApiVersion = 15]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each ([Extension] = ".pdf")),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"Name", "Content"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Removed Other Columns", each ([Name] <> "INC.pdf")),
+				    #"Invoked Custom Function" = Table.AddColumn(#"Filtered Rows1", "FnContenido", each FnContenido([Content])),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Invoked Custom Function",{"Name", "FnContenido"}),
+				    #"Expanded FnContenido" = Table.ExpandTableColumn(#"Removed Other Columns1", "FnContenido", {"POSICIÓN", "FOLIO CENEVAL", "INDICE CENEVAL", "INDICE PENSAMIENTO#(lf)MATEMATICO", "ESTATUS"}, {"POSICIÓN", "FOLIO CENEVAL", "INDICE CENEVAL", "INDICE PENSAMIENTO#(lf)MATEMATICO", "ESTATUS"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded FnContenido",{{"Name", type text}, {"POSICIÓN", Int64.Type}, {"FOLIO CENEVAL", type text}, {"INDICE CENEVAL", Int64.Type}, {"INDICE PENSAMIENTO#(lf)MATEMATICO", Int64.Type}, {"ESTATUS", type text}}),
+				    #"Split Column by Delimiter" = Table.SplitColumn(#"Changed Type", "Name", Splitter.SplitTextByDelimiter("_", QuoteStyle.Csv), {"Name.1", "Name.2"}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Split Column by Delimiter",null,"2022",Replacer.ReplaceValue,{"Name.2"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value",".pdf","",Replacer.ReplaceText,{"Name.2"}),
+				    #"Removed Other Columns2" = Table.SelectColumns(#"Replaced Value1",{"Name.2", "FOLIO CENEVAL"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Removed Other Columns2",{{"Name.2", Int64.Type}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

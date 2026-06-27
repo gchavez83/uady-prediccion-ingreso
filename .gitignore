@@ -1,0 +1,27 @@
+# Power BI local caches
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# Python
+.venv/
+.venv-app/
+.venv*/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Modelos PyCaret pesados: NO los usa la app (se regeneran con src/train_*.py o el notebook).
+# La app solo necesita models/*_prod.pkl, que SÍ se versionan.
+models/modelo_clasificacion.pkl
+models/modelo_regresion.pkl
+
+# Fuentes pesadas de marca (la app solo usa assets/*.png en la raíz de assets/)
+assets/logos IA Enterprise/
+*.rar
+
+# Capturas temporales de validación responsive
+scratch_shots/
+
+# Artefactos de entrenamiento de CatBoost
+catboost_info/

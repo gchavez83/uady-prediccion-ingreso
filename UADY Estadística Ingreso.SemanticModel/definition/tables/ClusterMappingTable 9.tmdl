@@ -1,0 +1,71 @@
+table 'ClusterMappingTable 9'
+	isHidden
+	isPrivate
+	lineageTag: 0a89c4d7-4de6-474f-b368-7b609730cec5
+
+	column Abv_1
+		lineageTag: e92f4161-811d-4790-a797-6042613f94a1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Abv_1]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column ClusterId
+		formatString: 0
+		lineageTag: 9b997a09-df43-4fb6-81d7-0a28726d0706
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [ClusterId]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	partition 'ClusterMappingTable 9' = calculated
+		mode: import
+		source = ```
+				VAR __DS0FilterTable = 
+					TREATAS({2026}, 'Encabezado'[Ciclo])
+				
+				VAR __DS0FilterTable2 = 
+					FILTER(
+						KEEPFILTERS(VALUES('Consolidado_Reportes_Oficiales'[Cluster Final Rename])),
+						NOT('Consolidado_Reportes_Oficiales'[Cluster Final Rename] IN {BLANK()})
+					)
+				
+				VAR __DS0Core = 
+					SUMMARIZECOLUMNS(
+						'Encabezado'[Abv.1],
+						__DS0FilterTable,
+						__DS0FilterTable2,
+						"Avg__punto_de_corte", 'Metrics'[Avg. punto de corte],
+						"Pct_Ingreso", 'Metrics'[Pct Ingreso]
+					)
+				
+				VAR __DataTransformT0 = 
+					KMeansClustering(
+						SELECTCOLUMNS(
+							__DS0Core,
+							"Abv_1", 'Encabezado'[Abv.1],
+							"Avg__punto_de_corte", [Avg__punto_de_corte],
+							"Pct_Ingreso", [Pct_Ingreso]
+						),
+						{("[Abv_1]", "Item"),
+							("[Avg__punto_de_corte]", "Attribute"),
+							("[Pct_Ingreso]", "Attribute")},
+						{("[Abv_1]", BLANK()),
+							("ClusterId", "ClusterId")},
+						5
+					)
+				
+				RETURN __DataTransformT0
+				```
+			retainDataTillForceCalculate
+
+	annotation ClusterMappingTable = true
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2026","ObjectType":4},"LinkType":"UsedInGroup"}]
+

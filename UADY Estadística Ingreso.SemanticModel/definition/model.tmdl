@@ -1,0 +1,75 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: es-MX
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup 'Reportes Oficiales PDF'
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup 'Reportes Oficiales PDF\2024'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Reportes Oficiales PDF\2023'
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup 'Reportes Oficiales PDF\2022'
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup 'Reportes Oficiales PDF\2021'
+
+	annotation PBI_QueryGroupOrder = 3
+
+queryGroup 'Reportes Oficiales PDF\2020'
+
+	annotation PBI_QueryGroupOrder = 4
+
+queryGroup 'Reportes Oficiales PDF\2019'
+
+	annotation PBI_QueryGroupOrder = 5
+
+annotation PBI_QueryOrder = ["Encabezado","FnContenido","FnEncabezado","Contenido","Desconectada","FxCalendar","Calendario","Licenciatura_Desconectada","Metrics","Licenciaturas_Campus","Table023 (Page 17)","Table024 (Page 18)","2024","Table049 (Page 27)","Table050 (Page 28)","2023","Catalogo_Licenciaturas","Table046 (Page 29)","Table047 (Page 30)","2022","2021","2020","Table023 (Page 21)","Table024 (Page 22)","2019","Consolidado_Reportes_Oficiales","Cat_Licenciaturas_Abv"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation __TEdtr = 1
+
+annotation PBI_ProTooling = ["CalcGroup","DaxQueryView_Desktop","DevMode"]
+
+ref table Encabezado
+ref table Contenido
+ref table Desconectada
+ref table Parameter
+ref table 'métrica a incluir'
+ref table Calendario
+ref table 'Time Intelligence'
+ref table 'Relevant Metrics'
+ref table Licenciatura_Desconectada
+ref table 'Simulación Indice Ceneval'
+ref table 'Simulación Indice Pensamiento Mat.'
+ref table Metrics
+ref table ClusterMappingTable
+ref table 'ClusterMappingTable 2'
+ref table LY_Only
+ref table Licenciaturas_Campus
+ref table 'ClusterMappingTable 3'
+ref table Consolidado_Reportes_Oficiales
+ref table Metrics_OF
+ref table 'ClusterMappingTable 4'
+ref table 'ClusterMappingTable 5'
+ref table 'ClusterMappingTable 6'
+ref table 'ClusterMappingTable 7'
+ref table Comparativo
+ref table Cat_Licenciaturas_Abv
+ref table 'ClusterMappingTable 8'
+ref table 'ClusterMappingTable 9'
+
+ref cultureInfo en-US
+

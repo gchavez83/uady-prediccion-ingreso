@@ -1,0 +1,56 @@
+table Parameter
+	lineageTag: 1951f198-7101-4b80-a86f-b1baa3c1a9ce
+
+	column Parameter
+		lineageTag: cbdebc56-64ed-4940-a4e6-3e8dec6bb148
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: 9fb66b44-ac10-409a-80b8-4188e6c90e9b
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: cd11a6bb-493d-4860-956f-4d86615285f7
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Parameter-c32e184f-8f09-46fc-acd0-db2d3c2f9fdb = calculated
+		mode: import
+		source =
+				{
+				    ("Avg. Índice Ceneval Admitivo", NAMEOF([Avg. Índice Ceneval Admitivo]), 0),
+				    ("Min. Pensamiento Mat. Admitido", NAMEOF([Min Pensamiento Mat Admitido]), 1),
+				    ("Avg. punto de corte", NAMEOF([Avg. punto de corte]), 2),
+				    ("Sustentantes Total", NAMEOF([Sustentantes Total]), 3),
+				    ("Sustentantes Admitidos Total", NAMEOF([Sustentantes Admitidos Total]), 4),
+				    ("Avg. Pct Ingreso", NAMEOF([Pct Ingreso]), 5)
+				}
+
+	annotation PBI_Id = 50775659d99a419ebab17a8d7943827c
+
+	annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Encabezado","TableItemName":"(clusters punto de corte-Pct de Ingreso)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clústers 2024","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Encabezado","TableItemName":"Clusters_2025","ObjectType":4},"LinkType":"UsedInGroup"}]
+

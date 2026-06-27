@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "UADY Estadística Ingreso"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "59fddee8-c5f0-468c-a24c-29727183f216"
+  }
+}
