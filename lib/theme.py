@@ -47,6 +47,8 @@ def inject_theme() -> None:
     [data-testid="stHeader"]{{background:transparent;}}
     .stApp{{background:{IVORY};}}
     html,body,[class*="st-"],.stMarkdown,.stButton,p,li,div{{font-family:var(--sans);}}
+    /* Excepción: los iconos Material conservan su fuente (si no, la ligadura sale como texto) */
+    [data-testid="stIconMaterial"]{{font-family:'Material Symbols Rounded' !important;}}
     .block-container{{padding-top:4rem;max-width:1200px;}}
     h1,h2,h3{{font-family:var(--serif);font-weight:400;letter-spacing:-.01em;color:{INK};}}
 
