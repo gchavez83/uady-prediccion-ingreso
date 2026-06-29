@@ -1,9 +1,9 @@
 {
   "clasificacion_temporal_2026": {
-    "accuracy": 0.939376890076658,
-    "auc": 0.9908324480442207,
-    "recall": 0.9516908212560387,
-    "f1": 0.9223842967765172
+    "accuracy": 0.9504184541810254,
+    "auc": 0.9911123007479238,
+    "recall": 0.9301374953548867,
+    "f1": 0.9342166651115051
   },
   "regresion_temporal_2026": {
     "mae": 152.6512608029193,
@@ -13,5 +13,6 @@
   "classes_": [
     "Admitido",
     "No admitido"
-  ]
+  ],
+  "calibracion_clasificador": "sigmoid (Platt), cv=5"
 }

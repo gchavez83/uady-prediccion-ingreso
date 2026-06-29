@@ -23,6 +23,7 @@ import pickle
 
 import numpy as np
 from lightgbm import LGBMClassifier, LGBMRegressor
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import (
@@ -51,11 +52,22 @@ def make_preprocessor() -> ColumnTransformer:
     )
 
 
-def build_classifier() -> Pipeline:
-    return Pipeline([
+def build_classifier() -> CalibratedClassifierCV:
+    """LightGBM (balanced) envuelto en calibracion sigmoid (Platt).
+
+    El `class_weight='balanced'` resuelve el desbalance pero infla las
+    probabilidades en la franja fronteriza (con scores 40-70% la admision real
+    era ~25-35%). La calibracion sigmoid corrige ese sesgo para que el score
+    sea una probabilidad confiable. Validacion temporal 2026: Brier 0.0411 ->
+    0.0369 y accuracy@0.5 0.9394 -> 0.9504; el caso QFB@1048 pasa de 56.6%
+    (falso Admitido) a ~36% (No admitido, correcto).
+    """
+    base = Pipeline([
         ("prep", make_preprocessor()),
-        ("model", LGBMClassifier(random_state=123, class_weight="balanced", n_jobs=-1)),
+        ("model", LGBMClassifier(random_state=123, class_weight="balanced",
+                                 n_jobs=-1, verbose=-1)),
     ])
+    return CalibratedClassifierCV(base, method="sigmoid", cv=5)
 
 
 def build_regressor() -> Pipeline:
@@ -110,6 +122,7 @@ def main() -> None:
         pickle.dump(reg_final, f)
 
     report["classes_"] = list(clf_final.classes_)
+    report["calibracion_clasificador"] = "sigmoid (Platt), cv=5"
     (C.MODELS_DIR / "metrics_produccion.json").write_text(
         json.dumps(report, indent=2, ensure_ascii=False, default=float), encoding="utf-8"
     )

@@ -79,6 +79,13 @@ Conservar o superar estos números al reentrenar con datos 2022–2026:
 - Versiones del entorno Colab: Python 3.10.8, pycaret 3.3.2, scikit-learn 1.4.2, pandas 2.1.4, numpy 1.26.4, lightgbm 4.6.0.
 - **Desbalance de clases** (ESTATUS): No admitido 35,528 vs Admitido 17,347 (~67/33) → por eso `fix_imbalance=True`.
 
+### Calibración del clasificador de producción (IMPORTANTE — preservar al reentrenar)
+El clasificador productivo (`models/clf_prod.pkl`, generado por `src/build_production_models.py`) **va calibrado** con `CalibratedClassifierCV(method="sigmoid", cv=5)` envolviendo el `LGBMClassifier(class_weight="balanced")`. **No quitar la calibración al reentrenar.**
+- **Por qué:** `class_weight="balanced"` (sustituto de `fix_imbalance`) resuelve el desbalance pero **infla las probabilidades en la franja fronteriza** (scores crudos de 40–70% correspondían a una admisión real de solo ~25–35%). La calibración corrige ese sesgo para que el score sea una probabilidad confiable.
+- **Efecto medido** (validación temporal honesta: entrena ≤2025, prueba 2026): Brier 0.0411→0.0369, accuracy@0.5 0.9394→0.9504, F1 0.9224→0.9342, AUC sin cambio (~0.991). El recall baja un poco (0.952→0.930) a propósito: deja de inflar admisiones dudosas.
+- **Caso testigo:** QFB con Ceneval 1048 (admitido 2 de 5 ciclos; en 2026 NO) pasaba de ~51–57% (falso Admitido) a **~33%** (No admitido, correcto). Es error irreducible: la admisión depende del cupo/competencia del año, señal que las features (`Abv.1`+Ceneval+Pensamiento) no contienen porque `Ciclo` se ignora.
+- **Banda de "caso límite" en `app.py`:** con el score ya calibrado, `BAND_LO=40`, `BAND_HI=60` → ≥60% Admitido (verde), ≤40% No admitido (rojo), 40–60% "⚠️ Caso límite" (ámbar) en el resultado y en la tabla "Otras Opciones". No forzar un veredicto binario en la zona fronteriza.
+
 ## Power BI (`UADY Estadística Ingreso.pbip`)
 
 Proyecto PBIP con dos artefactos:

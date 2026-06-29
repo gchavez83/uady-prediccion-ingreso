@@ -31,6 +31,22 @@ COL_POSICION = "POSICION"
 POS_LABEL = "Admitido"
 PENS_MIN, PENS_MAX = 710, 1350
 
+# Banda de "caso limite": con el score ya CALIBRADO (sigmoid), la franja
+# 40-60% es la zona donde la admision depende del cupo/competencia del ano y
+# el historico muestra resultados mixtos para el mismo perfil. Ahi no damos un
+# veredicto binario falsamente seguro, sino una advertencia.
+BAND_LO, BAND_HI = 40.0, 60.0
+V_ADM, V_NO, V_LIM = "Admitido", "No admitido", "Caso límite"
+
+
+def verdict(score_admitido: float) -> str:
+    """Clasifica el score calibrado en Admitido / Caso limite / No admitido."""
+    if score_admitido >= BAND_HI:
+        return V_ADM
+    if score_admitido <= BAND_LO:
+        return V_NO
+    return V_LIM
+
 st.set_page_config(
     page_title="UADY — Predicción de Ingreso",
     page_icon=str(ICON) if ICON.exists() else "🎓",
@@ -118,8 +134,8 @@ def predict_all(clf, reg, ref: pd.DataFrame, ceneval: int, pensamiento: int) -> 
     })
     idx_adm = list(clf.classes_).index(POS_LABEL)
     out = ref.copy()
-    out["pred"] = clf.predict(X)
     out["score_admitido"] = (clf.predict_proba(X)[:, idx_adm] * 100).round(2)
+    out["pred"] = out["score_admitido"].apply(verdict)
     out["posicion"] = reg.predict(X).round().astype(int)
     return out
 
@@ -177,15 +193,26 @@ with col_res:
         c = st.session_state["calc"]
         sim = predict_all(clf, reg, ref, c["ceneval"], c["pensamiento"])
         mine = sim[sim["abv"] == c["abv"]].iloc[0]
-        admitido = mine["pred"] == POS_LABEL
+        v = mine["pred"]
         score_adm = mine["score_admitido"]
-        box = st.success if admitido else st.error
-        box(
+        box, titulo = {
+            V_ADM: (st.success, "✅ Admitido"),
+            V_NO: (st.error, "❌ No Admitido"),
+            V_LIM: (st.warning, "⚠️ Caso límite"),
+        }[v]
+        cuerpo = (
             f"**Prediction Score Admitido:** {score_adm:.2f}\n\n"
             f"**Prediction Score No Admitido:** {100 - score_adm:.2f}\n\n"
             f"**Prediction Score Position:** {int(mine['posicion'])}\n\n"
-            f"### {'✅ Admitido' if admitido else '❌ No Admitido'}"
+            f"### {titulo}"
         )
+        if v == V_LIM:
+            cuerpo += (
+                "\n\nTu puntaje cae en la **zona de frontera**: la admisión depende "
+                "del cupo y la competencia de cada año. Un mismo perfil con estos "
+                "índices ha sido admitido en algunos ciclos y rechazado en otros."
+            )
+        box(cuerpo)
     else:
         st.info("Completa el formulario y presiona **Calcular**.")
 
@@ -217,14 +244,18 @@ if "calc" in st.session_state:
     )
 
     def resaltar(row):
-        color = "background-color: #d4edda" if row["Estatus"] == POS_LABEL else ""
+        fondo = {V_ADM: "#d4edda", V_LIM: "#fff3cd"}.get(row["Estatus"], "")
+        color = f"background-color: {fondo}" if fondo else ""
         return [color] * len(row)
 
     st.dataframe(
         vista.style.apply(resaltar, axis=1),
         use_container_width=True, hide_index=True,
     )
-    st.caption("🟩 Verde = el modelo predice que **serías admitido** en ese programa con tus índices.")
+    st.caption(
+        "🟩 Verde = **serías admitido**.  🟨 Amarillo = **caso límite** "
+        "(depende del cupo del año).  Sin color = no admitido."
+    )
 
     # Botón de exportación explícito (visible y funcional también en móvil)
     csv = vista.to_csv(index=False).encode("utf-8-sig")
