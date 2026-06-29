@@ -43,6 +43,9 @@ def inject_theme() -> None:
     }}
     /* Canvas ivory + tipografía base Geist */
     [data-testid="stAppViewContainer"]{{background:{IVORY};}}
+    /* Barra superior transparente: se funde con el fondo de cada página */
+    [data-testid="stHeader"]{{background:transparent;}}
+    .stApp{{background:{IVORY};}}
     html,body,[class*="st-"],.stMarkdown,.stButton,p,li,div{{font-family:var(--sans);}}
     .block-container{{padding-top:4rem;max-width:1200px;}}
     h1,h2,h3{{font-family:var(--serif);font-weight:400;letter-spacing:-.01em;color:{INK};}}
@@ -87,13 +90,13 @@ def inject_theme() -> None:
       font-variant-numeric:tabular-nums;}}
     .kpi .k-spark{{height:34px;}}
     .kpi .k-spark svg{{width:100%;height:34px;display:block;}}
-    .kpi .k-meta{{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;}}
-    .kpi .k-delta{{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;
-      font-variant-numeric:tabular-nums;padding:3px 9px;border-radius:999px;white-space:nowrap;}}
+    .kpi .k-meta{{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-top:auto;}}
+    .kpi .k-delta{{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:600;
+      font-variant-numeric:tabular-nums;padding:3px 9px;border-radius:999px;white-space:nowrap;max-width:100%;}}
     .k-good{{color:{SUCCESS};background:rgba(11,143,107,.12);}}
     .k-bad{{color:{DANGER};background:rgba(197,48,48,.10);}}
     .k-neutral,.k-flat{{color:{SLATE};background:rgba(56,65,79,.08);}}
-    .kpi .k-vs{{font-family:var(--mono);font-size:.6rem;color:{SLATE_3};letter-spacing:.08em;}}
+    .kpi .k-vs{{font-family:var(--mono);font-size:.6rem;color:{SLATE_3};letter-spacing:.08em;white-space:nowrap;}}
     .kpi.k-hero{{background:linear-gradient(155deg,{INK},#13264a);border-color:transparent;}}
     .kpi.k-hero .k-lab{{color:#9fb0cc;}} .kpi.k-hero .k-val{{color:{AMBER};}}
     .kpi.k-hero .k-vs{{color:#7f90b4;}}

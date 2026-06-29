@@ -18,6 +18,7 @@ st.markdown(f"""
   background-image:
     radial-gradient(680px 380px at 88% -6%, rgba(243,154,30,.16), transparent 62%),
     radial-gradient(720px 520px at 100% 112%, rgba(42,111,219,.12), transparent 60%) !important;}}
+.stApp,[data-testid="stHeader"]{{background:{INK} !important;}}
 .syn-hero{{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;
   padding:30px 0 8px;}}
 .syn-hero .eb{{font-family:var(--mono);font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;
