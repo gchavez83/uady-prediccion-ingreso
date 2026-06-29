@@ -25,3 +25,7 @@ scratch_shots/
 
 # Artefactos de entrenamiento de CatBoost
 catboost_info/
+
+# Secretos (API keys) — NUNCA versionar
+.streamlit/secrets.toml
+.env

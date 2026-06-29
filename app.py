@@ -27,10 +27,12 @@ comparativo = st.Page("views/comparativo.py", title="Comparativo", icon=":materi
 tendencia = st.Page("views/tendencia.py", title="Tendencia", icon=":material/trending_up:", url_path="tendencia")
 clusters = st.Page("views/clusters.py", title="Clústers", icon=":material/bubble_chart:", url_path="clusters")
 folio = st.Page("views/folio.py", title="Consulta por Folio", icon=":material/person_search:", url_path="folio")
+chat = st.Page("views/chat.py", title="Pregúntale a Synapse", icon=":material/forum:", url_path="chat")
 
 pg = st.navigation({
     "Synapse": [landing],
     "Modelo": [modelo],
     "Dashboard": [resumen, comparativo, tendencia, clusters, folio],
+    "Asistente IA": [chat],
 })
 pg.run()
