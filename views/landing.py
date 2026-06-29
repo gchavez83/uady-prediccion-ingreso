@@ -27,6 +27,11 @@ st.markdown(f"""
 .syn-hero h1 em{{font-style:italic;color:{AMBER};}}
 .syn-hero p{{color:#93a1bc;font-size:1.05rem;max-width:46ch;margin:18px 0 0;}}
 .syn-mk{{justify-self:center;width:min(290px,80%);opacity:.96;}}
+@media(max-width:820px){{
+  .syn-hero{{grid-template-columns:1fr;gap:4px;}}
+  .syn-mk{{display:none;}}
+  .syn-hero h1{{font-size:2.2rem;}}
+}}
 .syn-stats{{display:flex;flex-wrap:wrap;border:1px solid rgba(191,198,210,.16);border-radius:14px;
   background:rgba(255,255,255,.025);margin:26px 0 6px;overflow:hidden;}}
 .syn-stats .s{{flex:1 1 0;min-width:120px;padding:14px 18px;border-right:1px solid rgba(191,198,210,.16);}}

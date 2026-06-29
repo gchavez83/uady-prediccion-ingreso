@@ -51,6 +51,14 @@ def inject_theme() -> None:
     [data-testid="stIconMaterial"]{{font-family:'Material Symbols Rounded' !important;}}
     .block-container{{padding-top:4rem;max-width:1200px;}}
     h1,h2,h3{{font-family:var(--serif);font-weight:400;letter-spacing:-.01em;color:{INK};}}
+    /* Responsive: apila las columnas (filtros, splits) en pantallas angostas */
+    @media(max-width:820px){{
+      [data-testid="stHorizontalBlock"]{{flex-direction:column;gap:.5rem !important;}}
+      [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]{{
+        width:100% !important;flex:1 1 100% !important;min-width:0 !important;}}
+      .block-container{{padding-left:1rem !important;padding-right:1rem !important;}}
+      h1{{font-size:1.9rem !important;}}
+    }}
 
     /* ---- Campos de formulario destacados sobre el canvas ivory ---- */
     [data-testid="stNumberInput"] div[data-baseweb="input"],
@@ -220,9 +228,10 @@ def stat_card(label: str, value: str, tone: str = "ink", sub: str = "", vsize: s
 
 
 def render_grid(cards: list[str], cols: int) -> None:
+    # auto-fit: en pantallas anchas caben `cols`; en angostas se reacomodan solas.
     st.markdown(
-        f'<div style="display:grid;grid-template-columns:repeat({cols},1fr);gap:12px;margin:6px 0 8px;">'
-        f'{"".join(cards)}</div>', unsafe_allow_html=True)
+        f'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));'
+        f'gap:12px;margin:6px 0 8px;">{"".join(cards)}</div>', unsafe_allow_html=True)
 
 
 def comparison_panel(title, mine, ref, mine_lab, ref_lab, gap_text, tone, lo, hi) -> str:
