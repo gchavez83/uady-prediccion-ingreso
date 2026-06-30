@@ -72,7 +72,7 @@ def predict_all(clf, reg, ref: pd.DataFrame, ceneval: int, pensamiento: int) -> 
     out = ref.copy()
     out["score_admitido"] = (clf.predict_proba(X)[:, idx_adm] * 100).round(2)
     out["pred"] = out["score_admitido"].apply(verdict)
-    out["posicion"] = reg.predict(X).round().astype(int)
+    out["posicion"] = reg.predict(X).round().clip(min=1).astype(int)
     return out
 
 
