@@ -3,7 +3,7 @@ from __future__ import annotations
 import streamlit as st
 
 from lib.data import load_fact, COL_CICLO, COL_EST, COL_ABV, ADM
-from lib.theme import synapse_mark, INK, AZURE, AMBER, IVORY
+from lib.theme import synapse_mark, INK, AZURE, AMBER, IVORY, SUCCESS
 
 df = load_fact()
 registros = len(df)
@@ -48,7 +48,7 @@ st.markdown(f"""
 .syn-card p{{color:#93a1bc;font-size:.92rem;margin:0 0 14px;}}
 .syn-card .go{{font-weight:600;color:#fff;font-size:.92rem;}}
 .syn-card .go b{{color:var(--ac);}}
-.syn-ia{{--ac:{AZURE};}} .syn-bi{{--ac:{AMBER};}}
+.syn-ia{{--ac:{AZURE};}} .syn-bi{{--ac:{AMBER};}} .syn-ai{{--ac:{SUCCESS};}}
 [data-testid="stSidebar"]{{background:{INK};}}
 </style>
 
@@ -71,7 +71,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-c1, c2 = st.columns(2, gap="medium")
+c1, c2, c3 = st.columns(3, gap="medium")
 with c1:
     st.markdown(f"""<a class="syn-card syn-ia" href="modelo" target="_self">
       <div class="nd">Nodo · IA / ML</div>
@@ -86,3 +86,10 @@ with c2:
       <p>Explora sustentantes, admitidos, puntos de corte, tendencias y clústers de
          programas a lo largo de cinco ciclos, por campus y licenciatura.</p>
       <div class="go">Abrir dashboard <b>→</b></div></a>""", unsafe_allow_html=True)
+with c3:
+    st.markdown(f"""<a class="syn-card syn-ai" href="chat" target="_self">
+      <div class="nd">Nodo · IA Generativa</div>
+      <h2>Synapse Chat</h2>
+      <p>Pregúntale en lenguaje natural sobre los datos de ingreso: cifras, cortes,
+         tendencias y comparativos respondidos al instante.</p>
+      <div class="go">Abrir chat <b>→</b></div></a>""", unsafe_allow_html=True)

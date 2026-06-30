@@ -82,7 +82,8 @@ ref = load_reference()
 st.markdown('<div class="syn-eyebrow">Modelo · IA / ML</div>', unsafe_allow_html=True)
 st.title("Predicción de Ingreso")
 st.caption("Modelos entrenados con resultados públicos de admisión 2022–2026. "
-           "Clasificador calibrado (sigmoid).")
+           "Clasificador calibrado (sigmoid) — Acc 95.0% · Recall 93.0% · "
+           "AUC 0.991 · F1 93.4% (medido prediciendo el ciclo 2026).")
 
 col_form, col_res = st.columns([1, 1])
 with col_form:
