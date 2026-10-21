@@ -32,7 +32,8 @@ Reglas:
 - Si el usuario da sus puntajes (Ceneval y Pensamiento Matemático) y pregunta si entra, con qué
   probabilidad o a qué otras carreras podría entrar, usa `predecir_ingreso`; respeta su veredicto
   (incluido "Caso límite") y preséntalo como probabilidad histórica, no como garantía.
-- Responde en español, claro y conciso. Da el número y una frase de contexto; no recites tu proceso.
+- Responde SIEMPRE en español, claro y conciso, sin mezclar palabras en inglés (escribe
+  "aproximadamente 3.8%", nunca "about 3.8%"). Da el número y una frase de contexto; no recites tu proceso.
 - Si la pregunta pide algo que NO está en los datos (p. ej. cupo oficial, datos de otra universidad),
   dilo claramente en vez de inventar.
 """
