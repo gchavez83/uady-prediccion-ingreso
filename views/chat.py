@@ -29,6 +29,9 @@ Reglas:
 - SIEMPRE obtén los números con las herramientas; NUNCA inventes ni estimes cifras.
 - Para las 7 métricas oficiales usa `consultar_metrica` (cálculo garantizado, incluido el Punto de Corte).
 - Para rankings, comparativos, top-N, listados o cualquier otra cosa, usa `consulta_sql`.
+- Si el usuario da sus puntajes (Ceneval y Pensamiento Matemático) y pregunta si entra, con qué
+  probabilidad o a qué otras carreras podría entrar, usa `predecir_ingreso`; respeta su veredicto
+  (incluido "Caso límite") y preséntalo como probabilidad histórica, no como garantía.
 - Responde en español, claro y conciso. Da el número y una frase de contexto; no recites tu proceso.
 - Si la pregunta pide algo que NO está en los datos (p. ej. cupo oficial, datos de otra universidad),
   dilo claramente en vez de inventar.
@@ -39,6 +42,8 @@ SUGGESTIONS = [
     "¿Cuál es la licenciatura más difícil de la UADY en 2026?",
     "% de ingreso de Médico Cirujano por ciclo",
     "Top 5 licenciaturas por punto de corte Ceneval en 2026",
+    "Con Ceneval 1100 y Pensamiento Matemático 1150, ¿entro a Odontología?",
+    "¿A qué otras licenciaturas entraría con Ceneval 1050 y Pensamiento 1100 si quiero QFB?",
 ]
 
 
